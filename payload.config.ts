@@ -5,6 +5,8 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
+import { migrations } from "./migrations";
+
 import { Media } from "./payload/collections/Media";
 import { Users } from "./payload/collections/Users";
 import { HomePage } from "./payload/globals/HomePage";
@@ -13,8 +15,30 @@ import { seedHomePage } from "./payload/seed/seed-home-page";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const databaseUrl = process.env.DATABASE_URL || "file:./payload.db";
-const isRemoteDatabase = databaseUrl.startsWith("libsql://");
+function getDatabaseUrl(): string {
+  const url = process.env.DATABASE_URL || "file:./payload.db";
+
+  // Turso HTTP is more reliable than WebSockets on Vercel serverless.
+  if (url.startsWith("libsql://") && process.env.VERCEL) {
+    return url.replace("libsql://", "https://");
+  }
+
+  return url;
+}
+
+const databaseUrl = getDatabaseUrl();
+const isRemoteDatabase =
+  databaseUrl.startsWith("libsql://") || databaseUrl.startsWith("https://");
+
+if (isRemoteDatabase && !process.env.DATABASE_AUTH_TOKEN) {
+  throw new Error(
+    "DATABASE_AUTH_TOKEN is required when DATABASE_URL uses libsql:// (Turso).",
+  );
+}
+
+if (!process.env.PAYLOAD_SECRET) {
+  throw new Error("PAYLOAD_SECRET environment variable is required.");
+}
 
 function normalizeUrl(url: string): string {
   return url.replace(/\/$/, "");
@@ -76,6 +100,7 @@ export default buildConfig({
   db: sqliteAdapter({
     // Remote Turso DBs should use migrations only — dev push causes duplicate index errors.
     push: !isRemoteDatabase,
+    prodMigrations: migrations,
     client: {
       url: databaseUrl,
       authToken: process.env.DATABASE_AUTH_TOKEN,
