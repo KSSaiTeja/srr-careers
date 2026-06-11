@@ -1,26 +1,98 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+@source "../app/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "../lib/**/*.{ts,tsx}";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #101928;
+
+  --brand-navy: #083f88;
+  --brand-navy-dark: #062f6a;
+  --brand-navy-deep: #00193b;
+  --brand-gold: #ffd549;
+  --brand-gold-dark: #ffc519;
+  --brand-gold-dark-text: #7c5f00;
+  --brand-cream: #fff3da;
+  --brand-lavender: #f4f3ff;
+  --brand-purple: #371ecb;
+  --brand-purple-light: #6d49f4;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-dark: var(--brand-navy-dark);
+  --color-brand-navy-deep: var(--brand-navy-deep);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-dark: var(--brand-gold-dark);
+  --color-brand-gold-dark-text: var(--brand-gold-dark-text);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-lavender: var(--brand-lavender);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-purple-light: var(--brand-purple-light);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-dm-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+
+.font-serif {
+  font-family: var(--font-dm-serif), Georgia, serif;
+}
+
+@keyframes enrollment-circle-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes enrollment-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.enrollment-success-circle {
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: enrollment-circle-draw 0.55s ease forwards;
+}
+
+.enrollment-success-check {
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: enrollment-check-draw 0.4s ease 0.45s forwards;
 }
