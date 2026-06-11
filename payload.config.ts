@@ -16,6 +16,12 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 function getDatabaseUrl(): string {
+  if (process.env.VERCEL && !process.env.DATABASE_URL) {
+    throw new Error(
+      "DATABASE_URL is not set on Vercel. Add your Turso libsql:// URL under Project Settings → Environment Variables (Production).",
+    );
+  }
+
   const url = process.env.DATABASE_URL || "file:./payload.db";
 
   // Turso HTTP is more reliable than WebSockets on Vercel serverless.
