@@ -31,4 +31,21 @@ Copy `.env.example` to `.env.local` and set:
 - `PAYLOAD_SECRET` — long random string (keep private)
 - `DATABASE_URL` — default `file:./payload.db` for local SQLite
 
-For production, use Postgres and run `npm run build` (migrations run automatically).
+## Deploying admin to Vercel
+
+Vercel cannot use `file:./payload.db`. Serverless functions have no persistent local disk, so `/admin` will fail if you copy the local database URL to Vercel.
+
+Use **Turso** (free tier) for a remote SQLite database:
+
+1. Install the Turso CLI and create a database: `turso db create srr-careers`
+2. Get the URL: `turso db show srr-careers --url`
+3. Create a token: `turso db tokens create srr-careers`
+4. In **Vercel → Project → Settings → Environment Variables**, set for Production (and Preview if needed):
+   - `PAYLOAD_SECRET` — same long random string as local (or a new one for production)
+   - `DATABASE_URL` — `libsql://...` from Turso (not `file:./payload.db`)
+   - `DATABASE_AUTH_TOKEN` — token from step 3
+   - `NEXT_PUBLIC_SERVER_URL` — `https://your-domain.vercel.app` (optional but recommended)
+5. Point local `.env.local` at the same Turso values, then run `npm run dev` once to create tables and your admin user.
+6. Redeploy on Vercel.
+
+Migrations run automatically during `npm run build` on Vercel.

@@ -1,4 +1,6 @@
 import type { GlobalConfig } from "payload";
+
+import { authenticated } from "../access/authenticated";
 import { iconSelectField } from "../fields/icon-select";
 
 const ctaFields = [
@@ -22,6 +24,10 @@ const ctaFields = [
 export const HomePage: GlobalConfig = {
   slug: "home-page",
   label: "Home Page",
+  access: {
+    read: () => true,
+    update: authenticated,
+  },
   admin: {
     group: "Website Pages",
     description:

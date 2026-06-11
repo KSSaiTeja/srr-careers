@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload";
 
+import { authenticated } from "../access/authenticated";
+
 export const Media: CollectionConfig = {
   slug: "media",
   admin: {
@@ -8,6 +10,9 @@ export const Media: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: authenticated,
+    update: authenticated,
+    delete: authenticated,
   },
   upload: {
     staticDir: "public/media",
