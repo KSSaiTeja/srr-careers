@@ -1,9 +1,12 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { newsletterSection } from "@/lib/constants/whats-new-content";
+import { NewsletterForm } from "@/components/whats-new/newsletter-form";
+import type { WhatsNewPageContent } from "@/lib/types/whats-new-page-content";
+
+type NewsletterSectionProps = {
+  content: WhatsNewPageContent["newsletter"];
+};
 
 /** Figma 90:2023 — Stay in the loop newsletter CTA band. */
-export function NewsletterSection() {
+export function NewsletterSection({ content }: NewsletterSectionProps) {
   return (
     <section
       aria-labelledby="newsletter-heading"
@@ -15,20 +18,14 @@ export function NewsletterSection() {
             id="newsletter-heading"
             className="font-serif text-3xl font-semibold italic leading-tight text-[#ffc31a] sm:text-4xl sm:leading-snug md:text-[48px] md:leading-[64px]"
           >
-            {newsletterSection.title}
+            {content.title}
           </h2>
           <p className="text-lg font-medium leading-normal text-[#d8d8d8] sm:text-xl">
-            {newsletterSection.description}
+            {content.description}
           </p>
         </div>
 
-        <Link
-          href={newsletterSection.ctaHref}
-          className="inline-flex items-center gap-2 rounded-2xl bg-[#ffc31a] px-6 py-3.5 text-base font-semibold text-black transition-colors hover:bg-brand-gold"
-        >
-          {newsletterSection.ctaLabel}
-          <ArrowUpRight className="h-4 w-4" aria-hidden />
-        </Link>
+        <NewsletterForm ctaLabel={content.ctaLabel} />
       </div>
     </section>
   );

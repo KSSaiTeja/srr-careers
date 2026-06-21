@@ -17,6 +17,7 @@
   --brand-lavender: #f4f3ff;
   --brand-purple: #371ecb;
   --brand-purple-light: #6d49f4;
+  --brand-purple-deep: #1a0a4d;
 }
 
 @theme inline {
@@ -33,6 +34,7 @@
   --color-brand-lavender: var(--brand-lavender);
   --color-brand-purple: var(--brand-purple);
   --color-brand-purple-light: var(--brand-purple-light);
+  --color-brand-purple-deep: var(--brand-purple-deep);
 
   --font-sans: var(--font-inter);
   --font-serif: var(--font-dm-serif);
@@ -59,6 +61,20 @@ html.lenis body {
 
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+/*
+ * Radix (Select/Dialog) locks scroll by setting `overflow: hidden !important`
+ * on the body. That makes the body the containing block for our
+ * `position: sticky` header, which then sticks to the scrolled-away top of the
+ * body and disappears. Scroll is still blocked via Radix's JS handlers, so we
+ * restore the body's normal overflow to keep the sticky header in view.
+ */
+html body[data-scroll-locked] {
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
 }
 
 body {

@@ -1,4 +1,6 @@
-import { socialProfiles } from "@/lib/constants/social";
+"use client";
+
+import { useSiteSettings } from "@/components/layout/site-settings-context";
 import { SocialIcon } from "@/components/ui/social-icon";
 import { cn } from "@/lib/utils/cn";
 
@@ -7,11 +9,13 @@ type FooterSocialLinksProps = {
 };
 
 export function FooterSocialLinks({ className }: FooterSocialLinksProps) {
+  const { social } = useSiteSettings();
+
   return (
     <div className={cn("flex flex-wrap items-center gap-3", className)}>
-      {socialProfiles.map((profile) => (
+      {social.map((profile) => (
         <a
-          key={profile.platform}
+          key={profile.platform + profile.href}
           href={profile.href}
           target="_blank"
           rel="noopener noreferrer"

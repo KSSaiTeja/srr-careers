@@ -1,3 +1,4 @@
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { cn } from "@/lib/utils/cn";
 
 type SectionHeadingProps = {
@@ -7,6 +8,9 @@ type SectionHeadingProps = {
   subtitle?: string;
   align?: "left" | "center";
   className?: string;
+  /** Blur-fade the heading in on scroll. Off by default to avoid clashing with
+   * a parent section that already animates as a whole. */
+  reveal?: boolean;
 };
 
 export function SectionHeading({
@@ -16,11 +20,13 @@ export function SectionHeading({
   subtitle,
   align = "center",
   className,
+  reveal = false,
 }: SectionHeadingProps) {
   const alignClass = align === "center" ? "text-center" : "text-left";
+  const Wrapper = reveal ? BlurReveal : "div";
 
   return (
-    <div className={cn("mb-10 sm:mb-12 lg:mb-16", alignClass, className)}>
+    <Wrapper className={cn("mb-10 sm:mb-12 lg:mb-16", alignClass, className)}>
       {eyebrow && (
         <p className="mb-4 text-base font-medium tracking-widest text-brand-navy sm:mb-6 sm:text-lg lg:text-xl">
           {eyebrow}
@@ -40,6 +46,6 @@ export function SectionHeading({
           {subtitle}
         </p>
       )}
-    </div>
+    </Wrapper>
   );
 }

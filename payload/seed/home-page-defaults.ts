@@ -2,16 +2,16 @@
 export const homePageDefaults = {
   hero: {
     badge: "#1 SAP FICO TRAINING INSTITUTE",
-    titleLine1: "Master SAP FICO with",
-    titleAccent: "S4 HANA",
-    primaryCta: { label: "Explore Curriculum", href: "#courses" },
-    secondaryCta: { label: "Speak with an Expert", href: "#pre-footer" },
+    titleLine1: "Master SAP FICO on",
+    titleAccent: "S/4 HANA",
+    primaryCta: { label: "View Courses & Fees", href: "/courses" },
+    secondaryCta: { label: "Book a Free Demo", href: "#pre-footer" },
     imageAlt:
       "Students learning SAP FICO — two students working on laptops",
   },
   problem: {
-    headingGray: "Does this relatable to your",
-    headingNavy: "SAP FICO Journey?",
+    headingGray: "Does any of this sound like your",
+    headingNavy: "SAP FICO journey?",
     items: [
       {
         icon: "chat",
@@ -47,7 +47,7 @@ export const homePageDefaults = {
       label: "RETURN ON INVESTMENT",
       value: "2.4",
       suffix: "x",
-      description: "Average salary jump within 90 days of placement.",
+      description: "Average salary multiple our placed consultants achieve.",
       partnersLabel: "800+ Partners",
     },
     placementCardTop: {
@@ -81,7 +81,7 @@ export const homePageDefaults = {
     titleHighlight: "SAP FICO Success",
     journeyHeading: "My Journey:",
     journeyBody:
-      "Meet Mr. Kumar, a highly experienced and passionate SAP FICO S/4HANA trainer associated with SRR Careers as a Full-Time Trainer, trained 250+ professionals across India, UAE, Qatar & Saudi.",
+      "Meet Mr. Kumar, a highly experienced and passionate SAP FICO S/4HANA trainer associated with SRR Careers as a Full-Time Trainer, trained 250+ professionals across India, UAE, Qatar, Saudi, Philippines, USA, Malaysia, Singapore & Kuwait.",
     skillsHeading: "Hands-on SAP Skills",
     skillsBody: "Master SAP FICO with accounting and finance skills.",
     featuresLeft: [
@@ -149,7 +149,7 @@ export const homePageDefaults = {
       },
       {
         num: "08",
-        title: "Integration MM / SD / HR",
+        title: "Integration FI with MM & SD",
         desc: "End-to-end cross-module business flows.",
       },
       {
@@ -161,7 +161,7 @@ export const homePageDefaults = {
     ctaEyebrow: "FULL SYLLABUS",
     ctaTitle: "See every topic, every project, every outcome.",
     cta: {
-      label: "View course detail",
+      label: "See the Full Syllabus",
       href: "/courses/sap-fico-consultant-track",
     },
   },
@@ -199,7 +199,7 @@ export const homePageDefaults = {
     headingLine2: "S/4 HANA FICO Live Demo",
     description:
       "Interact live with SAP industry experts. Get the complete roadmap and syllabus. 100% free — no credit card.",
-    phoneButtonLabel: "98485 40123",
+    phoneButtonLabel: "+91 92861 23457",
     emailButtonLabel: "Email us",
   },
 } as const;

@@ -1,16 +1,13 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  CircleCheck,
-  Layers,
-  Terminal,
-  Trophy,
-} from "lucide-react";
+import { CircleCheck, Layers, Terminal, Trophy } from "lucide-react";
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { CoursesSection } from "@/components/courses/courses-section";
-import {
-  offeringsSection,
-  type CourseOffering,
-} from "@/lib/constants/courses-content";
+import { EnrollButton } from "@/components/checkout/enroll-button";
+import { formatINR } from "@/lib/payment/format";
+import type {
+  CourseOffering,
+  CoursesPageContent,
+} from "@/lib/types/courses-page-content";
 import { cn } from "@/lib/utils/cn";
 
 function MetaColumn({
@@ -96,7 +93,7 @@ function OfferingCard({ course }: { course: CourseOffering }) {
           />
           <MetaColumn
             icon={Layers}
-            label="Modules"
+            label="Software"
             value={course.modules}
             variant={course.variant}
           />
@@ -132,55 +129,88 @@ function OfferingCard({ course }: { course: CourseOffering }) {
         </ul>
       </div>
 
-      <div className="flex items-center justify-between gap-4">
-        <Link
-          href={course.ctaHref}
-          className={cn(
-            "text-base font-bold transition-opacity hover:opacity-80",
-            isConsultant ? "text-white" : "text-brand-navy",
-          )}
-        >
-          {course.ctaLabel}
-        </Link>
-        <Link
-          href={course.ctaHref}
-          className={cn(
-            "flex size-12 items-center justify-center rounded-full transition-opacity hover:opacity-90",
-            isConsultant ? "bg-brand-gold text-black" : "bg-[#0b1023] text-white",
-          )}
-          aria-label={course.ctaLabel}
-        >
-          <ArrowRight className="size-6" strokeWidth={2} />
-        </Link>
+      <div className="flex flex-col gap-5">
+        <div className="flex items-end justify-between gap-3">
+          <div className="flex flex-col gap-1">
+            <span
+              className={cn(
+                "text-xs uppercase tracking-[2px]",
+                isConsultant ? "text-[#cacaca]" : "text-[#7b7b7b]",
+              )}
+            >
+              One-time fee
+            </span>
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span className="text-3xl font-bold tracking-[-1px] sm:text-[34px]">
+                {formatINR(course.price)}
+              </span>
+              {course.originalPrice ? (
+                <span
+                  className={cn(
+                    "text-base font-medium line-through",
+                    isConsultant ? "text-white/50" : "text-[#9a9a9a]",
+                  )}
+                >
+                  {formatINR(course.originalPrice)}
+                </span>
+              ) : null}
+            </div>
+          </div>
+          <Link
+            href={course.ctaHref}
+            className={cn(
+              "shrink-0 text-sm font-semibold underline underline-offset-4 transition-opacity hover:opacity-80",
+              isConsultant ? "text-white/80" : "text-brand-navy",
+            )}
+          >
+            {course.ctaLabel}
+          </Link>
+        </div>
+        <EnrollButton
+          product={{
+            slug: course.slug,
+            name: course.title,
+            amount: course.price,
+            currency: "INR",
+            originalAmount: course.originalPrice,
+          }}
+          tone={isConsultant ? "gold" : "navy"}
+          className="w-full"
+        />
       </div>
     </article>
   );
 }
 
+type OfferingsSectionProps = {
+  content: CoursesPageContent["offerings"];
+};
+
 /** Figma 73:265 — Our Offerings course cards. */
-export function OfferingsSection() {
+export function OfferingsSection({ content }: OfferingsSectionProps) {
   return (
     <CoursesSection
       aria-labelledby="offerings-heading"
       className="py-0"
     >
-      <div className="mb-12 flex flex-col items-center gap-6 text-center sm:mb-14 sm:gap-8">
+      <BlurReveal
+        as="div"
+        className="mb-12 flex flex-col items-center gap-6 text-center sm:mb-14 sm:gap-8"
+      >
         <p className="text-sm font-medium uppercase tracking-[3px] text-brand-navy sm:text-base sm:tracking-[5px] lg:text-xl">
-          {offeringsSection.eyebrow}
+          {content.eyebrow}
         </p>
         <h2
           id="offerings-heading"
           className="max-w-[781px] break-words text-3xl font-semibold leading-[1.25] tracking-[-1px] text-black sm:text-4xl sm:tracking-[-1.5px] lg:text-[48px] lg:leading-[1.3]"
         >
-          {offeringsSection.title}{" "}
-          <span className="text-brand-navy">
-            {offeringsSection.titleHighlight}
-          </span>
+          {content.title}{" "}
+          <span className="text-brand-navy">{content.titleHighlight}</span>
         </h2>
-      </div>
+      </BlurReveal>
 
       <div className="grid grid-cols-1 gap-10 md:gap-12 xl:grid-cols-2">
-        {offeringsSection.courses.map((course) => (
+        {content.courses.map((course) => (
           <OfferingCard key={course.id} course={course} />
         ))}
       </div>

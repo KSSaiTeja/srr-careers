@@ -1,11 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import {
-  pinnedUpdate,
-  updates,
-  type UpdateFilterCategory,
-} from "@/lib/constants/whats-new-content";
+import type {
+  UpdateFilterCategory,
+  WhatsNewUpdate,
+} from "@/lib/types/whats-new-page-content";
 import { WhatsNewSection } from "@/components/whats-new/whats-new-section";
 import { PinnedUpdateCard } from "@/components/whats-new/pinned-update-card";
 import { UpdateRow } from "@/components/whats-new/update-row";
@@ -19,19 +18,25 @@ function matchesCategory(
 }
 
 type UpdatesFeedSectionProps = {
+  updates: WhatsNewUpdate[];
   activeCategory: UpdateFilterCategory;
 };
 
-export function UpdatesFeedSection({ activeCategory }: UpdatesFeedSectionProps) {
-  const showPinned = matchesCategory(pinnedUpdate.category, activeCategory);
+export function UpdatesFeedSection({
+  updates,
+  activeCategory,
+}: UpdatesFeedSectionProps) {
+  const { pinnedUpdates, listedUpdates } = useMemo(() => {
+    const visible = updates.filter((item) =>
+      matchesCategory(item.category, activeCategory),
+    );
+    return {
+      pinnedUpdates: visible.filter((item) => item.pinned),
+      listedUpdates: visible.filter((item) => !item.pinned),
+    };
+  }, [updates, activeCategory]);
 
-  const filteredUpdates = useMemo(
-    () => updates.filter((item) => matchesCategory(item.category, activeCategory)),
-    [activeCategory],
-  );
-
-  const hasListItems = filteredUpdates.length > 0;
-  const isEmpty = !showPinned && !hasListItems;
+  const isEmpty = pinnedUpdates.length === 0 && listedUpdates.length === 0;
 
   return (
     <WhatsNewSection
@@ -41,11 +46,21 @@ export function UpdatesFeedSection({ activeCategory }: UpdatesFeedSectionProps) 
       containerClassName="relative"
     >
       <div className="flex flex-col gap-10 sm:gap-14 lg:gap-16">
-        {showPinned ? <PinnedUpdateCard /> : null}
+        {pinnedUpdates.length > 0 ? (
+          <div className="flex flex-col gap-8 sm:gap-10">
+            {pinnedUpdates.map((update) => (
+              <PinnedUpdateCard
+                key={update.id}
+                update={update}
+                headingId={`pinned-update-${update.id}`}
+              />
+            ))}
+          </div>
+        ) : null}
 
-        {hasListItems ? (
+        {listedUpdates.length > 0 ? (
           <div className="flex flex-col divide-y divide-[#d9d9d9]">
-            {filteredUpdates.map((update) => (
+            {listedUpdates.map((update) => (
               <UpdateRow key={update.id} update={update} />
             ))}
           </div>

@@ -1,10 +1,14 @@
-import { getWhatsAppHref } from "@/lib/constants/site-contact";
+"use client";
+
+import { useSiteSettings } from "@/components/layout/site-settings-context";
 import { SocialIcon } from "@/components/ui/social-icon";
 
 export function WhatsAppWidget() {
+  const { contact } = useSiteSettings();
+
   return (
     <a
-      href={getWhatsAppHref()}
+      href={contact.whatsappHref}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with SRR Careers on WhatsApp"

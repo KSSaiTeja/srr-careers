@@ -5,12 +5,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { mainNavItems } from "@/lib/constants/navigation";
+import { useSiteSettings } from "@/components/layout/site-settings-context";
 import { images } from "@/lib/constants/images";
 import { useScrollMotionReady } from "@/components/motion/lenis-context";
 import { usePrefersReducedMotion } from "@/lib/motion/use-prefers-reduced-motion";
+import { isNavActive } from "@/lib/utils/is-nav-active";
 import { cn } from "@/lib/utils/cn";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,6 +21,8 @@ export function SiteHeader() {
   const headerRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
   const { shouldAnimate } = useScrollMotionReady();
+  const { brand, nav, header } = useSiteSettings();
+  const pathname = usePathname();
 
   useGSAP(
     () => {
@@ -66,7 +70,7 @@ export function SiteHeader() {
             priority
           />
           <span className="truncate text-lg font-bold text-gray-900 sm:text-xl lg:text-2xl">
-            SRR Careers
+            {brand.siteName}
           </span>
         </Link>
 
@@ -74,34 +78,44 @@ export function SiteHeader() {
           className="hidden items-center gap-8 rounded-full bg-white/10 px-8 py-3 xl:flex xl:gap-14 xl:px-10 xl:py-4"
           aria-label="Main navigation"
         >
-          {mainNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "relative whitespace-nowrap text-sm font-semibold transition-colors xl:text-base",
-                item.href === "/"
-                  ? "text-brand-navy"
-                  : "text-gray-900 hover:text-brand-navy",
-              )}
-            >
-              {item.label}
-              {item.badge && (
-                <span
-                  className="absolute -right-2 -top-1 size-2 rounded-full bg-red-600"
-                  aria-hidden
-                />
-              )}
-            </Link>
-          ))}
+          {nav.map((item) => {
+            const active = isNavActive(item.href, pathname);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "relative whitespace-nowrap text-sm font-semibold transition-colors xl:text-base",
+                  active
+                    ? "text-brand-navy"
+                    : "text-gray-900 hover:text-brand-navy",
+                )}
+              >
+                {item.label}
+                {active && (
+                  <span
+                    className="absolute -bottom-1.5 left-0 right-0 h-0.5 rounded-full bg-brand-navy"
+                    aria-hidden
+                  />
+                )}
+                {item.badge && (
+                  <span
+                    className="absolute -right-2 -top-1 size-2 rounded-full bg-red-600"
+                    aria-hidden
+                  />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
-            href="#pre-footer"
+            href={header.ctaHref}
             className="hidden rounded-full bg-brand-gold px-4 py-3 text-sm font-semibold text-black transition-colors hover:bg-brand-gold-dark sm:inline-flex sm:px-5 sm:text-base lg:px-6"
           >
-            Book a Demo
+            {header.ctaLabel}
           </Link>
           <MobileNav />
         </div>

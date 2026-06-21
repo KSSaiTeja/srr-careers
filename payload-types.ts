@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'course-details': CourseDetail;
+    'blog-posts': BlogPost;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +80,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'course-details': CourseDetailsSelect<false> | CourseDetailsSelect<true>;
+    'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -88,10 +92,20 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    'site-settings': SiteSetting;
     'home-page': HomePage;
+    'courses-page': CoursesPage;
+    'our-story-page': OurStoryPage;
+    'whats-new-page': WhatsNewPage;
+    'blog-page': BlogPage;
   };
   globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'courses-page': CoursesPageSelect<false> | CoursesPageSelect<true>;
+    'our-story-page': OurStoryPageSelect<false> | OurStoryPageSelect<true>;
+    'whats-new-page': WhatsNewPageSelect<false> | WhatsNewPageSelect<true>;
+    'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -173,6 +187,193 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Individual course pages at /courses/<slug> (e.g. the Consultant Track and End User Track detail pages). Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "course-details".
+ */
+export interface CourseDetail {
+  id: number;
+  /**
+   * Shown in the admin list only.
+   */
+  name: string;
+  /**
+   * URL path under /courses/ — e.g. sap-fico-consultant-track.
+   */
+  slug: string;
+  meta: {
+    title: string;
+    description: string;
+  };
+  intro: {
+    pageTitle: string;
+    headline: string;
+    headlineHighlight: string;
+    subtext?: string | null;
+  };
+  overview: {
+    description: string;
+    /**
+     * Course fee for checkout.
+     */
+    price?: number | null;
+    originalPrice?: number | null;
+    primaryCta?: string | null;
+    secondaryCta?: string | null;
+    secondaryCtaHref?: string | null;
+    moduleCount?: string | null;
+    moduleLabel?: string | null;
+    moduleBlurb?: string | null;
+    metaCards?:
+      | {
+          icon: 'duration' | 'modules' | 'format' | 'outcome';
+          label: string;
+          value: string;
+          valueSuffix?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  whoIsItFor: {
+    eyebrow?: string | null;
+    title: string;
+    titleHighlight: string;
+    audience: string;
+    handsOnTitle?: string | null;
+    handsOnDescription?: string | null;
+    handsOnFeatures: string;
+  };
+  syllabus?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          /**
+           * e.g. "01"
+           */
+          number: string;
+          title: string;
+          description?: string | null;
+          topics: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  footerBlocks: {
+    alsoOffered: {
+      eyebrow?: string | null;
+      title: string;
+      href: string;
+      ctaLabel?: string | null;
+    };
+    limitedSeatsCta?: {
+      eyebrow?: string | null;
+      titleLine1?: string | null;
+      titleLine2?: string | null;
+      description?: string | null;
+      ctaLabel?: string | null;
+      ctaHref?: string | null;
+    };
+  };
+  faq?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    highlight?: string | null;
+    helperText?: string | null;
+    askLinkLabel?: string | null;
+    askLinkHref?: string | null;
+    items?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Articles shown on /blog and /blog/<slug>. Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts".
+ */
+export interface BlogPost {
+  id: number;
+  /**
+   * Shown in the admin list only.
+   */
+  name: string;
+  /**
+   * URL path under /blog/ — e.g. sap-fico-career-roadmap.
+   */
+  slug: string;
+  meta: {
+    title: string;
+    description: string;
+  };
+  content: {
+    title: string;
+    /**
+     * Shown on cards and at the top of the post.
+     */
+    excerpt: string;
+    /**
+     * Optional. Leave empty to use an on-brand gradient banner.
+     */
+    coverImage?: (number | null) | Media;
+    author: string;
+    authorRole?: string | null;
+    publishedDate: string;
+    readTime?: string | null;
+    category: string;
+    featured?: boolean | null;
+    tags?: string | null;
+  };
+  article?: {
+    tableOfContents?: string | null;
+    body?:
+      | (
+          | {
+              text: string;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'paragraph';
+            }
+          | {
+              text: string;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'heading';
+            }
+          | {
+              text: string;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'quote';
+            }
+          | {
+              items: string;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'list';
+            }
+          | {
+              image?: (number | null) | Media;
+              caption?: string | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'image';
+            }
+        )[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -203,6 +404,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'course-details';
+        value: number | CourseDetail;
+      } | null)
+    | ({
+        relationTo: 'blog-posts';
+        value: number | BlogPost;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -288,6 +497,192 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "course-details_select".
+ */
+export interface CourseDetailsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+        headline?: T;
+        headlineHighlight?: T;
+        subtext?: T;
+      };
+  overview?:
+    | T
+    | {
+        description?: T;
+        price?: T;
+        originalPrice?: T;
+        primaryCta?: T;
+        secondaryCta?: T;
+        secondaryCtaHref?: T;
+        moduleCount?: T;
+        moduleLabel?: T;
+        moduleBlurb?: T;
+        metaCards?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              value?: T;
+              valueSuffix?: T;
+              id?: T;
+            };
+      };
+  whoIsItFor?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        titleHighlight?: T;
+        audience?: T;
+        handsOnTitle?: T;
+        handsOnDescription?: T;
+        handsOnFeatures?: T;
+      };
+  syllabus?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              number?: T;
+              title?: T;
+              description?: T;
+              topics?: T;
+              id?: T;
+            };
+      };
+  footerBlocks?:
+    | T
+    | {
+        alsoOffered?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              href?: T;
+              ctaLabel?: T;
+            };
+        limitedSeatsCta?:
+          | T
+          | {
+              eyebrow?: T;
+              titleLine1?: T;
+              titleLine2?: T;
+              description?: T;
+              ctaLabel?: T;
+              ctaHref?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        highlight?: T;
+        helperText?: T;
+        askLinkLabel?: T;
+        askLinkHref?: T;
+        items?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts_select".
+ */
+export interface BlogPostsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  content?:
+    | T
+    | {
+        title?: T;
+        excerpt?: T;
+        coverImage?: T;
+        author?: T;
+        authorRole?: T;
+        publishedDate?: T;
+        readTime?: T;
+        category?: T;
+        featured?: T;
+        tags?: T;
+      };
+  article?:
+    | T
+    | {
+        tableOfContents?: T;
+        body?:
+          | T
+          | {
+              paragraph?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              heading?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              quote?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              list?:
+                | T
+                | {
+                    items?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              image?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -325,6 +720,90 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Site-wide chrome shared on every page — header, navigation, footer, contact details, and social links. Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  brand?: {
+    /**
+     * Shown next to the logo in the header and footer.
+     */
+    siteName?: string | null;
+    footerDescription?: string | null;
+    header?: {
+      ctaLabel?: string | null;
+      ctaHref?: string | null;
+    };
+  };
+  navigation?: {
+    items?:
+      | {
+          label: string;
+          href: string;
+          badge?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  contact?: {
+    phone?: string | null;
+    /**
+     * Leave blank to auto-build from the number.
+     */
+    phoneHref?: string | null;
+    email?: string | null;
+    /**
+     * Leave blank to auto-build a mailto link.
+     */
+    emailHref?: string | null;
+    whatsappNumber?: string | null;
+    whatsappLabel?: string | null;
+    whatsappPrefillMessage?: string | null;
+  };
+  socialGroup?: {
+    social?:
+      | {
+          platform: 'linkedin' | 'instagram' | 'whatsapp';
+          label: string;
+          href?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  footer?: {
+    exploreTitle?: string | null;
+    exploreLinks?:
+      | {
+          label: string;
+          /**
+           * Page path or # anchor or URL
+           */
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+    courseTitle?: string | null;
+    courseLinks?:
+      | {
+          label: string;
+          /**
+           * Page path or # anchor or URL
+           */
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+    contactTitle?: string | null;
+    copyright?: string | null;
+    craftedText?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * Everything visitors see on the homepage (srrcareers.com). Open each tab below — changes go live after you click Save.
@@ -493,6 +972,357 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
+ * The Courses page (/courses) — intro, the two track cards (Pick your track), learning approach, track comparison, and FAQ. Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses-page".
+ */
+export interface CoursesPage {
+  id: number;
+  intro?: {
+    pageTitle?: string | null;
+    headline?: string | null;
+    headlineHighlight?: string | null;
+    subtext?: string | null;
+  };
+  offerings?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    titleHighlight?: string | null;
+    courses?:
+      | {
+          variant: 'consultant' | 'end-user';
+          title: string;
+          description: string;
+          /**
+           * e.g. "40 Hrs"
+           */
+          duration?: string | null;
+          /**
+           * Optional, e.g. Live
+           */
+          durationSuffix?: string | null;
+          /**
+           * e.g. "S/4Hana"
+           */
+          modules?: string | null;
+          outcome: string;
+          /**
+           * Course fee shown on the card and checkout.
+           */
+          price?: number | null;
+          /**
+           * Strikethrough price for a discount badge.
+           */
+          originalPrice?: number | null;
+          /**
+           * Each line becomes a checklist item on the card.
+           */
+          highlights: string;
+          ctaLabel?: string | null;
+          ctaHref?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  learningApproach?: {
+    title?: string | null;
+    titleHighlight?: string | null;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    stats?: {
+      maxSeats?: {
+        value?: string | null;
+        label?: string | null;
+        description?: string | null;
+      };
+      mentorLed?: {
+        title?: string | null;
+        description?: string | null;
+      };
+      rating?: {
+        value?: string | null;
+        suffix?: string | null;
+      };
+    };
+  };
+  trackComparison?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    titleHighlight?: string | null;
+    tracks?:
+      | {
+          badgeVariant: 'consultant' | 'end-user';
+          badge: string;
+          personaPrefix?: string | null;
+          /**
+           * e.g. "Builder"
+           */
+          persona: string;
+          personaDescription: string;
+          workLabel?: string | null;
+          workItems: string;
+          toolsLabel?: string | null;
+          tools: string;
+          outcomeLabel?: string | null;
+          outcome: string;
+          tags: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  faq?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    highlight?: string | null;
+    helperText?: string | null;
+    askLinkLabel?: string | null;
+    askLinkHref?: string | null;
+    items?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The Our Story page (/our-story) — intro + metrics, values, the “We've orchestrated Excellence” pillars, and FAQ. The Mission and Testimonials blocks come from the Home Page global. Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "our-story-page".
+ */
+export interface OurStoryPage {
+  id: number;
+  intro?: {
+    pageTitle?: string | null;
+    headline?: string | null;
+    headlineHighlight?: string | null;
+    headlineSuffix?: string | null;
+    subtext?: string | null;
+    metrics?:
+      | {
+          /**
+           * e.g. "15,000+"
+           */
+          value: string;
+          label: string;
+          icon: 'users' | 'file-badge' | 'building-2' | 'medal' | 'heart' | 'target' | 'award' | 'graduation-cap';
+          id?: string | null;
+        }[]
+      | null;
+  };
+  values?: {
+    title?: string | null;
+    titleLine2?: string | null;
+    intro?: string | null;
+    /**
+     * The first card with “Featured” enabled gets the dark style.
+     */
+    principles?:
+      | {
+          description: string;
+          icon: 'users' | 'file-badge' | 'building-2' | 'medal' | 'heart' | 'target' | 'award' | 'graduation-cap';
+          featured?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  excellence?: {
+    title?: string | null;
+    highlight?: string | null;
+    pillars?:
+      | {
+          /**
+           * e.g. "01"
+           */
+          num: string;
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  faq?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    highlight?: string | null;
+    helperText?: string | null;
+    askLinkLabel?: string | null;
+    askLinkHref?: string | null;
+    items?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The What's New page (/whats-new) — page title, the update cards, and the newsletter band. Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "whats-new-page".
+ */
+export interface WhatsNewPage {
+  id: number;
+  intro?: {
+    pageTitle?: string | null;
+  };
+  feed?: {
+    /**
+     * Drag to reorder. Pinned cards appear first as large blocks; the rest show as the list below.
+     */
+    updates?:
+      | {
+          /**
+           * When enabled, this card is highlighted at the top and can show an optional button.
+           */
+          pinned?: boolean | null;
+          category: 'admissions' | 'curriculum' | 'placements' | 'notices' | 'events';
+          /**
+           * e.g. "2 DAYS AGO"
+           */
+          timeAgo: string;
+          badge: 'update' | 'update-navy' | 'notice' | 'alert';
+          badgeLabel: string;
+          title: string;
+          /**
+           * Each new line becomes its own paragraph in the card.
+           */
+          description: string;
+          /**
+           * Only used on pinned cards. Leave this and the link empty for no button.
+           */
+          ctaLabel?: string | null;
+          /**
+           * Page path or URL — e.g. "#pre-footer" or "/courses".
+           */
+          ctaHref?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  newsletter?: {
+    title?: string | null;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The /blog listing page header and sidebar labels. Posts, categories, and recent items come from the Blog Posts collection.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page".
+ */
+export interface BlogPage {
+  id: number;
+  intro: {
+    pageTitle: string;
+    headline: string;
+    headlineHighlight: string;
+    subtext?: string | null;
+  };
+  sidebar?: {
+    searchPlaceholder?: string | null;
+    categoryTitle?: string | null;
+    recentTitle?: string | null;
+    tagsTitle?: string | null;
+    popularTags?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  brand?:
+    | T
+    | {
+        siteName?: T;
+        footerDescription?: T;
+        header?:
+          | T
+          | {
+              ctaLabel?: T;
+              ctaHref?: T;
+            };
+      };
+  navigation?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              badge?: T;
+              id?: T;
+            };
+      };
+  contact?:
+    | T
+    | {
+        phone?: T;
+        phoneHref?: T;
+        email?: T;
+        emailHref?: T;
+        whatsappNumber?: T;
+        whatsappLabel?: T;
+        whatsappPrefillMessage?: T;
+      };
+  socialGroup?:
+    | T
+    | {
+        social?:
+          | T
+          | {
+              platform?: T;
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+      };
+  footer?:
+    | T
+    | {
+        exploreTitle?: T;
+        exploreLinks?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        courseTitle?: T;
+        courseLinks?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        contactTitle?: T;
+        copyright?: T;
+        craftedText?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page_select".
  */
@@ -654,6 +1484,258 @@ export interface HomePageSelect<T extends boolean = true> {
         description?: T;
         phoneButtonLabel?: T;
         emailButtonLabel?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses-page_select".
+ */
+export interface CoursesPageSelect<T extends boolean = true> {
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+        headline?: T;
+        headlineHighlight?: T;
+        subtext?: T;
+      };
+  offerings?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        titleHighlight?: T;
+        courses?:
+          | T
+          | {
+              variant?: T;
+              title?: T;
+              description?: T;
+              duration?: T;
+              durationSuffix?: T;
+              modules?: T;
+              outcome?: T;
+              price?: T;
+              originalPrice?: T;
+              highlights?: T;
+              ctaLabel?: T;
+              ctaHref?: T;
+              id?: T;
+            };
+      };
+  learningApproach?:
+    | T
+    | {
+        title?: T;
+        titleHighlight?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        stats?:
+          | T
+          | {
+              maxSeats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    description?: T;
+                  };
+              mentorLed?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                  };
+              rating?:
+                | T
+                | {
+                    value?: T;
+                    suffix?: T;
+                  };
+            };
+      };
+  trackComparison?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        titleHighlight?: T;
+        tracks?:
+          | T
+          | {
+              badgeVariant?: T;
+              badge?: T;
+              personaPrefix?: T;
+              persona?: T;
+              personaDescription?: T;
+              workLabel?: T;
+              workItems?: T;
+              toolsLabel?: T;
+              tools?: T;
+              outcomeLabel?: T;
+              outcome?: T;
+              tags?: T;
+              id?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        highlight?: T;
+        helperText?: T;
+        askLinkLabel?: T;
+        askLinkHref?: T;
+        items?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "our-story-page_select".
+ */
+export interface OurStoryPageSelect<T extends boolean = true> {
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+        headline?: T;
+        headlineHighlight?: T;
+        headlineSuffix?: T;
+        subtext?: T;
+        metrics?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              icon?: T;
+              id?: T;
+            };
+      };
+  values?:
+    | T
+    | {
+        title?: T;
+        titleLine2?: T;
+        intro?: T;
+        principles?:
+          | T
+          | {
+              description?: T;
+              icon?: T;
+              featured?: T;
+              id?: T;
+            };
+      };
+  excellence?:
+    | T
+    | {
+        title?: T;
+        highlight?: T;
+        pillars?:
+          | T
+          | {
+              num?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        highlight?: T;
+        helperText?: T;
+        askLinkLabel?: T;
+        askLinkHref?: T;
+        items?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "whats-new-page_select".
+ */
+export interface WhatsNewPageSelect<T extends boolean = true> {
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+      };
+  feed?:
+    | T
+    | {
+        updates?:
+          | T
+          | {
+              pinned?: T;
+              category?: T;
+              timeAgo?: T;
+              badge?: T;
+              badgeLabel?: T;
+              title?: T;
+              description?: T;
+              ctaLabel?: T;
+              ctaHref?: T;
+              id?: T;
+            };
+      };
+  newsletter?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page_select".
+ */
+export interface BlogPageSelect<T extends boolean = true> {
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+        headline?: T;
+        headlineHighlight?: T;
+        subtext?: T;
+      };
+  sidebar?:
+    | T
+    | {
+        searchPlaceholder?: T;
+        categoryTitle?: T;
+        recentTitle?: T;
+        tagsTitle?: T;
+        popularTags?: T;
       };
   updatedAt?: T;
   createdAt?: T;

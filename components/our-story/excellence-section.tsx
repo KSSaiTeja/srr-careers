@@ -1,6 +1,10 @@
 import { Target } from "lucide-react";
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { OurStorySection } from "@/components/our-story/our-story-section";
-import { excellencePillars } from "@/lib/constants/our-story-content";
+import type {
+  OurStoryExcellencePillar,
+  OurStoryPageContent,
+} from "@/lib/types/our-story-page-content";
 import { cn } from "@/lib/utils/cn";
 
 /** Subtle upward offset for card 02 — matches Figma stagger at xl+. */
@@ -16,7 +20,7 @@ function ExcellenceCard({
   title,
   description,
   className,
-}: (typeof excellencePillars)[number] & { className?: string }) {
+}: OurStoryExcellencePillar & { className?: string }) {
   return (
     <article
       data-reveal-item
@@ -52,24 +56,30 @@ function ExcellenceCard({
   );
 }
 
+type ExcellenceSectionProps = {
+  content: OurStoryPageContent["excellence"];
+};
+
 /** Figma Frame71 — excellence pillars; single responsive grid (no duplicate layouts). */
-export function ExcellenceSection() {
+export function ExcellenceSection({ content }: ExcellenceSectionProps) {
   return (
     <OurStorySection aria-labelledby="excellence-heading">
       <div className="flex flex-col gap-12 sm:gap-16 xl:gap-20">
-        <h2
-          id="excellence-heading"
-          className="text-3xl font-semibold leading-[1.2] tracking-[-1px] text-black sm:text-4xl sm:tracking-[-1.5px] xl:text-[48px] xl:leading-[63px]"
-        >
-          We&apos;ve orchestrated
-          <br />
-          <span className="text-brand-navy">Excellence.</span>
-        </h2>
+        <BlurReveal as="div">
+          <h2
+            id="excellence-heading"
+            className="text-3xl font-semibold leading-[1.2] tracking-[-1px] text-black sm:text-4xl sm:tracking-[-1.5px] xl:text-[48px] xl:leading-[63px]"
+          >
+            {content.title}
+            <br />
+            <span className="text-brand-navy">{content.highlight}</span>
+          </h2>
+        </BlurReveal>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 xl:grid-cols-4 xl:items-end xl:gap-5 2xl:gap-6">
-          {excellencePillars.map((pillar, index) => (
+          {content.pillars.map((pillar, index) => (
             <ExcellenceCard
-              key={pillar.num}
+              key={`${pillar.num}-${index}`}
               {...pillar}
               className={staggerClass[index]}
             />

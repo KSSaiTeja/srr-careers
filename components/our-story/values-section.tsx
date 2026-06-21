@@ -1,16 +1,15 @@
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { OurStorySection } from "@/components/our-story/our-story-section";
-import { ourValues } from "@/lib/constants/our-story-content";
+import type { OurStoryPageContent } from "@/lib/types/our-story-page-content";
+import { ourStoryIconMap } from "@/lib/utils/our-story-icon-map";
 import { cn } from "@/lib/utils/cn";
 
 function PrincipleCard({
   description,
-  icon: IconComponent,
+  icon,
   featured = false,
-}: {
-  description: string;
-  icon: (typeof ourValues.principles)[number]["icon"];
-  featured?: boolean;
-}) {
+}: OurStoryPageContent["values"]["principles"][number]) {
+  const IconComponent = ourStoryIconMap[icon];
   return (
     <article
       data-reveal-item
@@ -47,14 +46,19 @@ function PrincipleCard({
   );
 }
 
-/** Figma Frame42 — exactly 4 cards in 2×2; dark card top-left. */
-export function ValuesSection() {
-  const [first, second, third, fourth] = ourValues.principles;
+type ValuesSectionProps = {
+  content: OurStoryPageContent["values"];
+};
 
+/** Figma Frame42 — exactly 4 cards in 2×2; dark card top-left. */
+export function ValuesSection({ content: ourValues }: ValuesSectionProps) {
   return (
     <OurStorySection aria-labelledby="our-values-heading">
       <div className="flex w-full flex-col items-start gap-12 xl:flex-row xl:items-center xl:gap-10 2xl:gap-14">
-        <div className="flex w-full min-w-0 max-w-[618px] flex-1 flex-col gap-6">
+        <BlurReveal
+          as="div"
+          className="flex w-full min-w-0 max-w-[618px] flex-1 flex-col gap-6"
+        >
           <h2
             id="our-values-heading"
             className="text-4xl font-bold leading-[1.2] text-black sm:text-5xl sm:leading-[1.35] md:text-6xl lg:text-[80px] lg:leading-[1.45]"
@@ -65,13 +69,12 @@ export function ValuesSection() {
           <p className="text-lg font-normal leading-[1.45] text-black sm:text-xl lg:text-2xl">
             {ourValues.intro}
           </p>
-        </div>
+        </BlurReveal>
 
         <div className="grid w-full min-w-0 max-w-[566px] flex-1 grid-cols-1 gap-4 min-[400px]:grid-cols-2 sm:gap-x-[26px] sm:gap-y-[21px]">
-          <PrincipleCard {...first} featured />
-          <PrincipleCard {...second} />
-          <PrincipleCard {...third} />
-          <PrincipleCard {...fourth} />
+          {ourValues.principles.map((principle, index) => (
+            <PrincipleCard key={index} {...principle} />
+          ))}
         </div>
       </div>
     </OurStorySection>

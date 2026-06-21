@@ -1,25 +1,28 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CourseDetailPage } from "@/components/course-detail/course-detail-page";
+import type { CourseDetailSlug } from "@/lib/constants/course-detail-content";
 import {
-  COURSE_DETAIL_SLUGS,
-  getCourseDetail,
-  type CourseDetailSlug,
-} from "@/lib/constants/course-detail-content";
+  getCourseDetailContent,
+  getCourseDetailSlugs,
+} from "@/lib/payload/get-course-detail";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return COURSE_DETAIL_SLUGS.map((slug) => ({ slug }));
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const slugs = await getCourseDetailSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const course = getCourseDetail(slug);
+  const course = await getCourseDetailContent(slug);
 
   if (!course) {
     return { title: "Course Not Found | SRR Careers" };
@@ -33,7 +36,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
-  const course = getCourseDetail(slug);
+  const course = await getCourseDetailContent(slug);
 
   if (!course) {
     notFound();

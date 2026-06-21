@@ -9,28 +9,33 @@ import { OurStoryIntroSection } from "./our-story-intro-section";
 import { ValuesSection } from "./values-section";
 import { ExcellenceSection } from "./excellence-section";
 import { FaqSection } from "./faq-section";
+import type { OurStoryPageContent } from "@/lib/types/our-story-page-content";
+
+type OurStoryPageProps = {
+  content: OurStoryPageContent;
+};
 
 /**
  * Figma node 31:119 — top-to-bottom content stack (Frame 46:47).
  * Excludes off-canvas "Journey of SRR Careers" (31:1040).
  */
-export function OurStoryPage() {
+export function OurStoryPage({ content }: OurStoryPageProps) {
   return (
     <div className="min-h-screen overflow-x-clip bg-white">
       <PageBackground />
       <SiteHeader />
       <main className="flex flex-col gap-24 pb-24 sm:gap-28 sm:pb-28 md:gap-32 lg:gap-[136px] lg:pb-[136px]">
         <AnimatedSection variant="fade-up">
-          <OurStoryIntroSection />
+          <OurStoryIntroSection content={content.intro} />
         </AnimatedSection>
         <AnimatedSection variant="scale-up" staggerChildren>
-          <ValuesSection />
+          <ValuesSection content={content.values} />
         </AnimatedSection>
         <AnimatedSection variant="fade-up">
           <MissionSection eyebrow="OUR MISSION" className="py-0" />
         </AnimatedSection>
         <AnimatedSection variant="slide-left" staggerChildren>
-          <ExcellenceSection />
+          <ExcellenceSection content={content.excellence} />
         </AnimatedSection>
         <AnimatedSection variant="fade-in" staggerChildren>
           <TestimonialsSection
@@ -40,7 +45,7 @@ export function OurStoryPage() {
           />
         </AnimatedSection>
         <AnimatedSection variant="fade-up" staggerChildren>
-          <FaqSection />
+          <FaqSection content={content.faq} />
         </AnimatedSection>
         <AnimatedSection variant="fade-up">
           <PreFooterSection className="py-0" />

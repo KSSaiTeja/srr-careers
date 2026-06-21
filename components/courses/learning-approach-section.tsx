@@ -1,14 +1,21 @@
 import Link from "next/link";
 import { ArrowUpRight, Star, UsersRound, Zap } from "lucide-react";
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { CoursesSection } from "@/components/courses/courses-section";
-import { learningApproachSection } from "@/lib/constants/courses-content";
+import type { CoursesPageContent } from "@/lib/types/courses-page-content";
 import { cn } from "@/lib/utils/cn";
 
 const cardBase =
   "flex flex-col rounded-2xl border border-[#eaeaea] p-6 sm:p-7";
 
+type LearningApproachSectionProps = {
+  content: CoursesPageContent["learningApproach"];
+};
+
 /** Figma 76:371 — Built for the way Consultants Learn. */
-export function LearningApproachSection() {
+export function LearningApproachSection({
+  content: learningApproachSection,
+}: LearningApproachSectionProps) {
   const { stats } = learningApproachSection;
 
   return (
@@ -16,7 +23,7 @@ export function LearningApproachSection() {
       <div className="grid grid-cols-1 gap-10 md:gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-stretch lg:gap-14 xl:gap-16">
         {/* Copy + CTA */}
         <div className="flex flex-col justify-center gap-8 lg:gap-10">
-          <div className="flex flex-col gap-5 sm:gap-6">
+          <BlurReveal as="div" className="flex flex-col gap-5 sm:gap-6">
             <h2
               id="learning-approach-heading"
               className="text-3xl font-semibold leading-[1.25] tracking-[-1px] text-black sm:text-4xl sm:tracking-[-1.5px] lg:text-[48px] lg:leading-[1.3]"
@@ -29,7 +36,7 @@ export function LearningApproachSection() {
             <p className="max-w-[642px] text-base leading-relaxed text-black sm:text-lg lg:text-xl">
               {learningApproachSection.description}
             </p>
-          </div>
+          </BlurReveal>
 
           <Link
             href={learningApproachSection.ctaHref}

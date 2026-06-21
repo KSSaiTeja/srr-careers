@@ -1,9 +1,7 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { Icon } from "@/components/ui/icon";
 import { EnrollmentForm } from "@/components/home/enrollment-form";
-import { siteContact } from "@/lib/constants/site-contact";
-import { getHomePageFallback } from "@/lib/payload/home-page-fallback";
+import { PreFooterContactButtons } from "@/components/home/pre-footer-contact-buttons";
+import { getHomePageContent } from "@/lib/payload/get-home-page";
 import type { HomePageContent } from "@/lib/types/home-page-content";
 import { cn } from "@/lib/utils/cn";
 
@@ -13,12 +11,12 @@ type PreFooterSectionProps = {
   containerClassName?: string;
 };
 
-export function PreFooterSection({
+export async function PreFooterSection({
   content: contentProp,
   className,
   containerClassName,
 }: PreFooterSectionProps) {
-  const content = contentProp ?? getHomePageFallback().preFooter;
+  const content = contentProp ?? (await getHomePageContent()).preFooter;
   return (
     <section
       id="pre-footer"
@@ -26,13 +24,13 @@ export function PreFooterSection({
       className={cn("py-20 sm:py-24 lg:py-28", className)}
     >
       <Container className={containerClassName}>
-        <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-brand-navy to-brand-navy-deep sm:rounded-[40px]">
+        <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-brand-purple to-brand-purple-deep sm:rounded-[40px]">
           <div
             className="absolute -bottom-24 -left-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"
             aria-hidden
           />
           <div
-            className="absolute -top-16 right-0 h-64 w-64 rounded-full bg-brand-purple/20 blur-3xl"
+            className="absolute -top-16 right-0 h-64 w-64 rounded-full bg-brand-purple-light/30 blur-3xl"
             aria-hidden
           />
 
@@ -57,22 +55,10 @@ export function PreFooterSection({
                 {content.description}
               </p>
 
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  href={siteContact.phoneHref}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-base font-semibold text-brand-purple shadow-lg transition-colors hover:bg-gray-100"
-                >
-                  <Icon name="phone" className="h-4 w-4" strokeWidth={2} />
-                  {content.phoneButtonLabel}
-                </Link>
-                <Link
-                  href={siteContact.emailHref}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
-                >
-                  <Icon name="mail" className="h-4 w-4" strokeWidth={2} />
-                  {content.emailButtonLabel}
-                </Link>
-              </div>
+              <PreFooterContactButtons
+                phoneButtonLabel={content.phoneButtonLabel}
+                emailButtonLabel={content.emailButtonLabel}
+              />
             </div>
 
             <EnrollmentForm className="w-full min-w-0" />

@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Icon } from "@/components/ui/icon";
-import { getHomePageFallback } from "@/lib/payload/home-page-fallback";
+import { getHomePageContent } from "@/lib/payload/get-home-page";
 import type { HomePageContent } from "@/lib/types/home-page-content";
 import { cn } from "@/lib/utils/cn";
 
@@ -27,13 +27,13 @@ type TestimonialsSectionProps = {
   mutedBackground?: boolean;
 };
 
-export function TestimonialsSection({
+export async function TestimonialsSection({
   content: contentProp,
   eyebrow,
   className,
   mutedBackground = true,
 }: TestimonialsSectionProps) {
-  const base = contentProp ?? getHomePageFallback().testimonials;
+  const base = contentProp ?? (await getHomePageContent()).testimonials;
   const content = eyebrow ? { ...base, eyebrow } : base;
   return (
     <section
@@ -48,6 +48,7 @@ export function TestimonialsSection({
           eyebrow={content.eyebrow}
           title={content.title}
           highlight={content.titleHighlight}
+          reveal
         />
 
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

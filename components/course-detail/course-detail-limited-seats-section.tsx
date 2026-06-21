@@ -1,14 +1,17 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { CourseDetailSection } from "@/components/course-detail/course-detail-section";
+import { EnrollButton } from "@/components/checkout/enroll-button";
+import { formatINR } from "@/lib/payment/format";
 import type { CourseDetailContent } from "@/lib/constants/course-detail-content";
+import type { CheckoutProduct } from "@/lib/payment/types";
 
 type CourseDetailLimitedSeatsSectionProps = {
   content: CourseDetailContent["limitedSeatsCta"];
+  product: CheckoutProduct;
 };
 
 export function CourseDetailLimitedSeatsSection({
   content,
+  product,
 }: CourseDetailLimitedSeatsSectionProps) {
   return (
     <CourseDetailSection className="py-12 sm:py-16">
@@ -28,13 +31,11 @@ export function CourseDetailLimitedSeatsSection({
           <p className="mb-8 max-w-[800px] break-words px-2 text-lg font-medium text-[#d8d8d8] sm:px-0 sm:text-xl">
             {content.description}
           </p>
-          <Link
-            href={content.ctaHref}
-            className="inline-flex items-center gap-2 rounded-2xl bg-brand-gold px-6 py-3.5 text-base font-semibold text-black transition-colors hover:bg-brand-gold-dark"
-          >
-            {content.ctaLabel}
-            <ArrowRight className="size-5" strokeWidth={2} />
-          </Link>
+          <EnrollButton
+            product={product}
+            label={`${content.ctaLabel} · ${formatINR(product.amount)}`}
+            tone="gold"
+          />
         </div>
       </div>
     </CourseDetailSection>

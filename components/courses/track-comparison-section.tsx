@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { Briefcase, CircleCheck } from "lucide-react";
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { CoursesSection } from "@/components/courses/courses-section";
-import { trackComparisonSection } from "@/lib/constants/courses-content";
+import type {
+  CoursesPageContent,
+  TrackCard as TrackCardProps,
+} from "@/lib/types/courses-page-content";
 import { cn } from "@/lib/utils/cn";
-
-type TrackCardProps = (typeof trackComparisonSection.tracks)[number];
 
 function TrackCharacter({
   track,
@@ -173,15 +175,24 @@ function TrackCard({ track }: { track: TrackCardProps }) {
   );
 }
 
+type TrackComparisonSectionProps = {
+  content: CoursesPageContent["trackComparison"];
+};
+
 /** Figma 86:739 — Which SAP FICO career is Right for you? */
-export function TrackComparisonSection() {
+export function TrackComparisonSection({
+  content: trackComparisonSection,
+}: TrackComparisonSectionProps) {
   return (
     <CoursesSection
       id="track-comparison"
       aria-labelledby="track-comparison-heading"
       className="py-0"
     >
-      <div className="relative mb-12 flex flex-col items-center gap-6 text-center sm:mb-14 sm:gap-8">
+      <BlurReveal
+        as="div"
+        className="relative mb-12 flex flex-col items-center gap-6 text-center sm:mb-14 sm:gap-8"
+      >
         <p className="text-sm font-medium uppercase tracking-[3px] text-brand-navy sm:text-base sm:tracking-[5px] lg:text-xl">
           {trackComparisonSection.eyebrow}
         </p>
@@ -206,7 +217,7 @@ export function TrackComparisonSection() {
             aria-hidden
           />
         </div>
-      </div>
+      </BlurReveal>
 
       {/*
         Side-by-side only on very wide screens. Below that, full-width cards

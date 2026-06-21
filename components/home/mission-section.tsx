@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { images } from "@/lib/constants/images";
-import { getHomePageFallback } from "@/lib/payload/home-page-fallback";
+import { getHomePageContent } from "@/lib/payload/get-home-page";
 import type { HomePageContent } from "@/lib/types/home-page-content";
 import { cn } from "@/lib/utils/cn";
 
@@ -260,12 +260,12 @@ type MissionSectionProps = {
   className?: string;
 };
 
-export function MissionSection({
+export async function MissionSection({
   content: contentProp,
   eyebrow,
   className,
 }: MissionSectionProps) {
-  const base = contentProp ?? getHomePageFallback().mission;
+  const base = contentProp ?? (await getHomePageContent()).mission;
   const content = eyebrow ? { ...base, eyebrow } : base;
   return (
     <section

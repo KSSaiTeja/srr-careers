@@ -88,6 +88,31 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     };
   }, [usesSmoothScroll]);
 
+  // Own scroll position ourselves: stop the browser from restoring the old
+  // offset on refresh / back-forward navigation.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      const previous = window.history.scrollRestoration;
+      window.history.scrollRestoration = "manual";
+      return () => {
+        window.history.scrollRestoration = previous;
+      };
+    }
+  }, []);
+
+  // Reset to the top on every page switch and on first load. In-page anchor
+  // navigations (e.g. "/courses#track-comparison") keep their target.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash) return;
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true, force: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, lenis]);
+
   return (
     <ScrollMotionContext.Provider value={{ lenis, isReady }}>
       {children}

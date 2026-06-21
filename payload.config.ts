@@ -7,10 +7,24 @@ import sharp from "sharp";
 
 import { migrations } from "./migrations";
 
+import { BlogPosts } from "./payload/collections/BlogPosts";
+import { CourseDetails } from "./payload/collections/CourseDetails";
 import { Media } from "./payload/collections/Media";
 import { Users } from "./payload/collections/Users";
+import { BlogPage } from "./payload/globals/BlogPage";
+import { CoursesPage } from "./payload/globals/CoursesPage";
 import { HomePage } from "./payload/globals/HomePage";
+import { OurStoryPage } from "./payload/globals/OurStoryPage";
+import { SiteSettings } from "./payload/globals/SiteSettings";
+import { WhatsNewPage } from "./payload/globals/WhatsNewPage";
+import { seedBlogPage } from "./payload/seed/seed-blog-page";
+import { seedBlogPosts } from "./payload/seed/seed-blog-posts";
+import { seedCourseDetails } from "./payload/seed/seed-course-details";
+import { seedCoursesPage } from "./payload/seed/seed-courses-page";
 import { seedHomePage } from "./payload/seed/seed-home-page";
+import { seedOurStoryPage } from "./payload/seed/seed-our-story-page";
+import { seedSiteSettings } from "./payload/seed/seed-site-settings";
+import { seedWhatsNewPage } from "./payload/seed/seed-whats-new-page";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -94,8 +108,15 @@ export default buildConfig({
       description: "Manage SRR Careers website content",
     },
   },
-  collections: [Users, Media],
-  globals: [HomePage],
+  collections: [Users, Media, CourseDetails, BlogPosts],
+  globals: [
+    SiteSettings,
+    HomePage,
+    CoursesPage,
+    OurStoryPage,
+    WhatsNewPage,
+    BlogPage,
+  ],
   editor: lexicalEditor(),
   serverURL: getServerURL(),
   csrf: getCsrfOrigins(),
@@ -115,6 +136,13 @@ export default buildConfig({
   sharp,
   plugins: [],
   onInit: async (payload) => {
+    await seedSiteSettings(payload);
     await seedHomePage(payload);
+    await seedCoursesPage(payload);
+    await seedOurStoryPage(payload);
+    await seedCourseDetails(payload);
+    await seedWhatsNewPage(payload);
+    await seedBlogPage(payload);
+    await seedBlogPosts(payload);
   },
 });

@@ -1,17 +1,23 @@
 import Link from "next/link";
 import { Pin } from "lucide-react";
 import { UpdateBadge } from "@/components/whats-new/update-badge";
-import { pinnedUpdate } from "@/lib/constants/whats-new-content";
+import type { WhatsNewUpdate } from "@/lib/types/whats-new-page-content";
 
-export function PinnedUpdateCard() {
+type PinnedUpdateCardProps = {
+  update: WhatsNewUpdate;
+  /** Unique id for the heading, so multiple pinned cards stay accessible. */
+  headingId: string;
+};
+
+export function PinnedUpdateCard({ update, headingId }: PinnedUpdateCardProps) {
   return (
     <article
       className="relative flex flex-col gap-8 rounded-3xl bg-gradient-to-br from-[#00275a] to-[#002c67] p-6 sm:gap-10 sm:p-8"
-      aria-labelledby="pinned-update-title"
+      aria-labelledby={headingId}
     >
       <UpdateBadge
-        variant="update"
-        label="UPDATE"
+        variant={update.badge}
+        label={update.badgeLabel}
         onDark
         className="self-end sm:absolute sm:right-8 sm:top-8"
       />
@@ -26,28 +32,30 @@ export function PinnedUpdateCard() {
 
         <div className="space-y-4 tracking-[-0.75px]">
           <h2
-            id="pinned-update-title"
+            id={headingId}
             className="text-3xl font-bold leading-tight text-white sm:text-[48px] sm:leading-normal"
           >
-            {pinnedUpdate.title}
+            {update.title}
           </h2>
           <div className="text-xl leading-normal text-[#f3f3f3]">
-            {pinnedUpdate.description.map((line) => (
+            {update.description.map((line) => (
               <p key={line}>{line}</p>
             ))}
           </div>
         </div>
       </div>
 
-      <Link
-        href={pinnedUpdate.ctaHref}
-        className="inline-flex w-fit items-center justify-center rounded-2xl border border-brand-navy bg-white px-8 py-3 text-xl text-brand-navy transition-colors hover:bg-brand-lavender"
-      >
-        {pinnedUpdate.ctaLabel}
-        <span className="ml-2" aria-hidden>
-          →
-        </span>
-      </Link>
+      {update.cta ? (
+        <Link
+          href={update.cta.href}
+          className="inline-flex w-fit items-center justify-center rounded-2xl border border-brand-navy bg-white px-8 py-3 text-xl text-brand-navy transition-colors hover:bg-brand-lavender"
+        >
+          {update.cta.label}
+          <span className="ml-2" aria-hidden>
+            →
+          </span>
+        </Link>
+      ) : null}
     </article>
   );
 }

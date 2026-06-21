@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { OurStorySection } from "@/components/our-story/our-story-section";
-import { pageIntro } from "@/lib/constants/our-story-content";
+import type { OurStoryPageContent } from "@/lib/types/our-story-page-content";
+import { ourStoryIconMap } from "@/lib/utils/our-story-icon-map";
 import homeIcons from "@/lib/assets/home-icons";
 import ourStoryIcons from "@/lib/assets/our-story-icons";
 
@@ -63,12 +64,9 @@ function MetricDivider() {
 function MetricItem({
   value,
   label,
-  icon: IconComponent,
-}: {
-  value: string;
-  label: string;
-  icon: (typeof pageIntro.metrics)[number]["icon"];
-}) {
+  icon,
+}: OurStoryPageContent["intro"]["metrics"][number]) {
+  const IconComponent = ourStoryIconMap[icon];
   return (
     <div className="flex shrink-0 items-center gap-3 sm:gap-4">
       <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-brand-navy bg-white p-2.5 sm:size-14 sm:p-3">
@@ -104,10 +102,16 @@ function SapFicoUnderline() {
   );
 }
 
+type OurStoryIntroSectionProps = {
+  content: OurStoryPageContent["intro"];
+};
+
 /**
  * Figma 31:1093 — page title, two-line headline, subtext, single-row metrics.
  */
-export function OurStoryIntroSection() {
+export function OurStoryIntroSection({
+  content: pageIntro,
+}: OurStoryIntroSectionProps) {
   return (
     <section className="relative isolate" aria-labelledby="our-story-page-title">
       <div className="overflow-x-clip" aria-hidden>

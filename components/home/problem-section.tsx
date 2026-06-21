@@ -1,3 +1,4 @@
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { Container } from "@/components/ui/container";
 import { Icon } from "@/components/ui/icon";
 import type { HomePageContent } from "@/lib/types/home-page-content";
@@ -10,14 +11,14 @@ export function ProblemSection({ content }: ProblemSectionProps) {
   return (
     <section className="bg-white/50 py-16 sm:py-20 lg:py-24">
       <Container>
-        <div className="mb-10 text-center sm:mb-12 lg:mb-16">
+        <BlurReveal as="div" className="mb-10 text-center sm:mb-12 lg:mb-16">
           <p className="mb-3 text-3xl font-semibold text-gray-500 sm:mb-4 sm:text-4xl lg:text-5xl">
             {content.headingGray}
           </p>
           <h2 className="text-3xl font-semibold text-brand-navy sm:text-4xl lg:text-5xl">
             {content.headingNavy}
           </h2>
-        </div>
+        </BlurReveal>
 
         <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-3">
           {content.items.map((item) => (

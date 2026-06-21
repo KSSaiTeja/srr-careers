@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import { CoursesPage } from "@/components/courses/courses-page";
+import { getCoursesPageContent } from "@/lib/payload/get-courses-page";
 
 export const metadata: Metadata = {
-  title: "Courses | SRR Careers",
+  title: "SAP FICO Courses & Fees — Consultant & End-User Tracks | SRR Careers",
   description:
-    "Explore SAP FICO Consultant and End User tracks — live mentor-led cohorts, real S/4 HANA projects, and career-ready outcomes at SRR Careers.",
+    "Compare SAP S/4HANA FICO Consultant and End-User tracks — fees, duration, live mentor-led cohorts, and real client projects. Enrol online at SRR Careers.",
 };
 
-export default function Page() {
-  return <CoursesPage />;
+export const revalidate = 60;
+
+export default async function Page() {
+  const content = await getCoursesPageContent();
+
+  return <CoursesPage content={content} />;
 }

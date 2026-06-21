@@ -3,13 +3,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { mainNavItems } from "@/lib/constants/navigation";
+import { useSiteSettings } from "@/components/layout/site-settings-context";
+import { isNavActive } from "@/lib/utils/is-nav-active";
 import { cn } from "@/lib/utils/cn";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { nav, header } = useSiteSettings();
+  const pathname = usePathname();
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -63,37 +67,47 @@ export function MobileNav() {
               </div>
 
               <ul className="flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-6">
-                {mainNavItems.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={close}
-                      className={cn(
-                        "relative flex items-center rounded-xl px-4 py-3.5 text-base font-semibold transition-colors hover:bg-brand-lavender/60",
-                        item.href === "/"
-                          ? "text-brand-navy"
-                          : "text-gray-900",
-                      )}
-                    >
-                      {item.label}
-                      {item.badge ? (
-                        <span
-                          className="ml-2 size-2 rounded-full bg-red-600"
-                          aria-hidden
-                        />
-                      ) : null}
-                    </Link>
-                  </li>
-                ))}
+                {nav.map((item) => {
+                  const active = isNavActive(item.href, pathname);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={close}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "relative flex items-center rounded-xl px-4 py-3.5 text-base font-semibold transition-colors hover:bg-brand-lavender/60",
+                          active
+                            ? "bg-brand-lavender/60 text-brand-navy"
+                            : "text-gray-900",
+                        )}
+                      >
+                        {active && (
+                          <span
+                            className="absolute inset-y-2 left-0 w-1 rounded-full bg-brand-navy"
+                            aria-hidden
+                          />
+                        )}
+                        {item.label}
+                        {item.badge ? (
+                          <span
+                            className="ml-2 size-2 rounded-full bg-red-600"
+                            aria-hidden
+                          />
+                        ) : null}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
 
               <div className="border-t border-gray-100 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
                 <Link
-                  href="#pre-footer"
+                  href={header.ctaHref}
                   onClick={close}
                   className="flex w-full items-center justify-center rounded-full bg-brand-gold px-6 py-3.5 text-base font-semibold text-black transition-colors hover:bg-brand-gold-dark"
                 >
-                  Book a Demo
+                  {header.ctaLabel}
                 </Link>
               </div>
             </nav>

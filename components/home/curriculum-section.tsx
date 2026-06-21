@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { Container } from "@/components/ui/container";
 import { Icon } from "@/components/ui/icon";
 import type { HomePageContent } from "@/lib/types/home-page-content";
@@ -11,7 +12,7 @@ export function CurriculumSection({ content }: CurriculumSectionProps) {
   return (
     <section id="courses" className="py-16 sm:py-20 lg:py-24">
       <Container>
-        <div className="mb-10 text-center sm:mb-12 lg:mb-16">
+        <BlurReveal as="div" className="mb-10 text-center sm:mb-12 lg:mb-16">
           <p className="mb-4 text-base font-medium tracking-widest text-brand-navy sm:mb-6 sm:text-lg lg:text-xl">
             {content.eyebrow}
           </p>
@@ -23,7 +24,7 @@ export function CurriculumSection({ content }: CurriculumSectionProps) {
             <span className="text-brand-navy">{content.titleHighlight}</span>{" "}
             {content.titleLine2Suffix}
           </h2>
-        </div>
+        </BlurReveal>
 
         <ol className="divide-y divide-gray-200 border-t border-gray-200">
           {content.modules.map((module) => (

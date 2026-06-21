@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BlurReveal } from "@/components/motion/blur-reveal";
 import { OurStorySection } from "@/components/our-story/our-story-section";
 import { FaqList } from "@/components/our-story/faq-list";
 import { faqSection as defaultFaqSection } from "@/lib/constants/our-story-content";
@@ -37,7 +38,10 @@ export function FaqSection({
           className,
         )}
       >
-        <div className="w-full max-w-[494px] shrink-0 lg:sticky lg:top-28">
+        <BlurReveal
+          as="div"
+          className="w-full max-w-[494px] shrink-0 lg:sticky lg:top-28"
+        >
           <p className="mb-6 text-xl font-medium uppercase tracking-[5px] text-brand-navy">
             {content.eyebrow}
           </p>
@@ -58,7 +62,7 @@ export function FaqSection({
           >
             {content.askLinkLabel}
           </Link>
-        </div>
+        </BlurReveal>
 
         <FaqList
           items={[...content.items]}

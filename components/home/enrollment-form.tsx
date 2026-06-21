@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
 import { EnrollmentSuccessView } from "@/components/home/enrollment-success-view";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,17 +57,38 @@ export function EnrollmentForm({ className }: EnrollmentFormProps) {
   const [submission, setSubmission] = useState<EnrollmentSubmission | null>(
     null,
   );
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    if (submitting) return;
 
-    setSubmission({
+    const formData = new FormData(event.currentTarget);
+    const lead: EnrollmentSubmission = {
       fullName: String(formData.get("fullName") ?? ""),
       email: String(formData.get("email") ?? ""),
       mobile: String(formData.get("mobile") ?? ""),
       course: getCourseLabel(course),
-    });
+    };
+
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...lead, source: "enrollment-form" }),
+      });
+      if (!res.ok) throw new Error("submit failed");
+      setSubmission(lead);
+    } catch {
+      setError(
+        "Something went wrong submitting your details. Please try again or reach us on WhatsApp.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submission) {
@@ -142,13 +163,29 @@ export function EnrollmentForm({ className }: EnrollmentFormProps) {
           <input type="hidden" name="course" value={course} />
         </div>
 
+        {error ? (
+          <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+            {error}
+          </p>
+        ) : null}
+
         <Button
           type="submit"
           variant="accent"
-          className="mt-1 flex h-14 w-full items-center justify-center gap-2 text-base font-bold"
+          disabled={submitting}
+          className="mt-1 flex h-14 w-full items-center justify-center gap-2 text-base font-bold disabled:cursor-wait disabled:opacity-80"
         >
-          Enroll Now for Free Demo
-          <ArrowUpRight className="size-5" strokeWidth={2.5} />
+          {submitting ? (
+            <>
+              <Loader2 className="size-5 animate-spin" strokeWidth={2.5} />
+              Submitting…
+            </>
+          ) : (
+            <>
+              Book My Free Demo
+              <ArrowUpRight className="size-5" strokeWidth={2.5} />
+            </>
+          )}
         </Button>
       </form>
     </div>

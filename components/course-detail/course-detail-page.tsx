@@ -12,12 +12,21 @@ import { CourseDetailSyllabusSection } from "@/components/course-detail/course-d
 import { CourseDetailAlsoOfferedSection } from "@/components/course-detail/course-detail-also-offered-section";
 import { CourseDetailLimitedSeatsSection } from "@/components/course-detail/course-detail-limited-seats-section";
 import type { CourseDetailContent } from "@/lib/constants/course-detail-content";
+import type { CheckoutProduct } from "@/lib/payment/types";
 
 type CourseDetailPageProps = {
   course: CourseDetailContent;
 };
 
 export function CourseDetailPage({ course }: CourseDetailPageProps) {
+  const product: CheckoutProduct = {
+    slug: course.slug,
+    name: course.intro.pageTitle || course.meta.title,
+    amount: course.overview.price,
+    currency: "INR",
+    originalAmount: course.overview.originalPrice,
+  };
+
   return (
     <div className="relative min-h-screen overflow-x-clip bg-white">
       <PageBackground />
@@ -27,7 +36,10 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
           <div className="relative flex flex-col gap-12 sm:gap-16 md:gap-20">
             <CourseDetailIntroSection content={course.intro} />
             <div className="relative z-10 bg-gradient-to-b from-transparent via-white/80 to-white pt-2 sm:pt-4">
-              <CourseDetailOverviewSection content={course.overview} />
+              <CourseDetailOverviewSection
+                content={course.overview}
+                product={product}
+              />
             </div>
           </div>
         </AnimatedSection>
@@ -41,7 +53,10 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
           <CourseDetailAlsoOfferedSection content={course.alsoOffered} />
         </AnimatedSection>
         <AnimatedSection variant="fade-up">
-          <CourseDetailLimitedSeatsSection content={course.limitedSeatsCta} />
+          <CourseDetailLimitedSeatsSection
+            content={course.limitedSeatsCta}
+            product={product}
+          />
         </AnimatedSection>
         <AnimatedSection variant="fade-in" staggerChildren>
           <TestimonialsSection
