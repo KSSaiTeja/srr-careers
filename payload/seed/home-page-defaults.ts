@@ -111,6 +111,11 @@ export const homePageDefaults = {
     titleLine2: "to becoming a",
     titleHighlight: "S/4 HANA",
     titleLine2Suffix: "consultant",
+    notice: {
+      enabled: true,
+      text: "New to finance? Accounting basics are also taught to students from non-accounting backgrounds, so everyone starts on the same solid ground.",
+      highlight: "non-accounting backgrounds",
+    },
     modules: [
       {
         num: "01",

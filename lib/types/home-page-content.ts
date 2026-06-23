@@ -73,6 +73,10 @@ export type HomePageContent = {
     titleLine2: string;
     titleHighlight: string;
     titleLine2Suffix: string;
+    notice?: {
+      text: string;
+      highlight?: string;
+    };
     modules: { num: string; title: string; desc: string }[];
     ctaEyebrow: string;
     ctaTitle: string;

@@ -951,6 +951,17 @@ export interface HomePage {
     titleHighlight?: string | null;
     titleLine2Suffix?: string | null;
     /**
+     * Optional note shown above the modules list. Leave the text empty to hide it.
+     */
+    notice?: {
+      enabled?: boolean | null;
+      text?: string | null;
+      /**
+       * A phrase from the text above to emphasise (must match exactly).
+       */
+      highlight?: string | null;
+    };
+    /**
      * Number, title, and short description for each row.
      */
     modules?:
@@ -1480,6 +1491,13 @@ export interface HomePageSelect<T extends boolean = true> {
         titleLine2?: T;
         titleHighlight?: T;
         titleLine2Suffix?: T;
+        notice?:
+          | T
+          | {
+              enabled?: T;
+              text?: T;
+              highlight?: T;
+            };
         modules?:
           | T
           | {

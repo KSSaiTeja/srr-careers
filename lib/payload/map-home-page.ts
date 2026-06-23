@@ -36,6 +36,25 @@ function text(value: string | null | undefined, fallback: string): string {
   return trimmed && trimmed.length > 0 ? trimmed : fallback;
 }
 
+function mapNotice(
+  fromCms:
+    | {
+        enabled?: boolean | null;
+        text?: string | null;
+        highlight?: string | null;
+      }
+    | null
+    | undefined,
+  fallback: { enabled?: boolean; text?: string; highlight?: string } | undefined,
+): HomePageContent["curriculum"]["notice"] {
+  const source = fromCms ?? fallback;
+  const enabled = source?.enabled !== false;
+  const noticeText = (source?.text ?? "").trim();
+  if (!enabled || !noticeText) return undefined;
+  const highlight = (source?.highlight ?? "").trim();
+  return { text: noticeText, highlight: highlight || undefined };
+}
+
 export function mapHomePageFromCMS(
   global: HomePage | null | undefined,
 ): HomePageContent {
@@ -192,6 +211,7 @@ export function mapHomePageFromCMS(
         cms.curriculum?.titleLine2Suffix,
         d.curriculum.titleLine2Suffix,
       ),
+      notice: mapNotice(cms.curriculum?.notice, d.curriculum.notice),
       modules:
         cms.curriculum?.modules && cms.curriculum.modules.length > 0
           ? cms.curriculum.modules.map((m) => ({

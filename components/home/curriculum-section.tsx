@@ -1,4 +1,6 @@
+import { Info } from "lucide-react";
 import Link from "next/link";
+import { Fragment, type ReactNode } from "react";
 import { BlurReveal } from "@/components/motion/blur-reveal";
 import { Container } from "@/components/ui/container";
 import { Icon } from "@/components/ui/icon";
@@ -7,6 +9,22 @@ import type { HomePageContent } from "@/lib/types/home-page-content";
 type CurriculumSectionProps = {
   content: HomePageContent["curriculum"];
 };
+
+function renderWithHighlight(text: string, highlight?: string): ReactNode {
+  if (!highlight) return text;
+  const index = text.toLowerCase().indexOf(highlight.toLowerCase());
+  if (index === -1) return text;
+  const before = text.slice(0, index);
+  const match = text.slice(index, index + highlight.length);
+  const after = text.slice(index + highlight.length);
+  return (
+    <Fragment>
+      {before}
+      <span className="font-semibold text-brand-navy">{match}</span>
+      {after}
+    </Fragment>
+  );
+}
 
 export function CurriculumSection({ content }: CurriculumSectionProps) {
   return (
@@ -25,6 +43,21 @@ export function CurriculumSection({ content }: CurriculumSectionProps) {
             {content.titleLine2Suffix}
           </h2>
         </BlurReveal>
+
+        {content.notice ? (
+          <div className="mx-auto mb-8 flex max-w-[860px] items-start gap-3 rounded-2xl border border-brand-navy/15 bg-brand-navy/[0.04] px-5 py-4 sm:mb-10 sm:items-center sm:px-6">
+            <Info
+              className="mt-0.5 size-5 shrink-0 text-brand-navy sm:mt-0"
+              aria-hidden
+            />
+            <p className="text-sm leading-relaxed text-gray-700 sm:text-base">
+              {renderWithHighlight(
+                content.notice.text,
+                content.notice.highlight,
+              )}
+            </p>
+          </div>
+        ) : null}
 
         <ol className="divide-y divide-gray-200 border-t border-gray-200">
           {content.modules.map((module) => (
