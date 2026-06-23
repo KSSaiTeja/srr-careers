@@ -47,7 +47,11 @@ export const courseDetailsDefaults = [
         { icon: "duration", label: "Duration", value: "S/4 Hana", valueSuffix: "Live" },
         { icon: "modules", label: "Modules", value: "11 Modules" },
         { icon: "format", label: "Format", value: "Live", valueSuffix: "Mentored cohort" },
-        { icon: "outcome", label: "Outcome", value: "Job-ready FICO Consultant" },
+        {
+          icon: "outcome",
+          label: "Outcome",
+          value: "Become SAP S/4HANA Consultant Private Cloud",
+        },
       ],
     },
     whoIsItFor: {
@@ -65,6 +69,11 @@ export const courseDetailsDefaults = [
     syllabus: {
       eyebrow: "Curriculum",
       title: "Full Syllabus",
+      notice: {
+        enabled: true,
+        text: "New to finance? Accounting basics are also taught to students from non-accounting backgrounds, so everyone starts on the same solid ground.",
+        highlight: "non-accounting backgrounds",
+      },
       items: [
         {
           number: "01",
@@ -172,7 +181,11 @@ export const courseDetailsDefaults = [
         { icon: "duration", label: "Duration", value: "S/4 Hana", valueSuffix: "Live" },
         { icon: "modules", label: "Modules", value: "8 Modules" },
         { icon: "format", label: "Format", value: "Live", valueSuffix: "Mentored cohort" },
-        { icon: "outcome", label: "Outcome", value: "Confident SAP FICO End User" },
+        {
+          icon: "outcome",
+          label: "Outcome",
+          value: "Become SAP S/4HANA End User Private Cloud",
+        },
       ],
     },
     whoIsItFor: {
@@ -190,6 +203,11 @@ export const courseDetailsDefaults = [
     syllabus: {
       eyebrow: "Curriculum",
       title: "Full Syllabus",
+      notice: {
+        enabled: true,
+        text: "New to finance? Accounting basics are also taught to students from non-accounting backgrounds, so everyone starts on the same solid ground.",
+        highlight: "non-accounting backgrounds",
+      },
       items: [
         {
           number: "01",

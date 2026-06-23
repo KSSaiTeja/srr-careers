@@ -1,1 +1,1 @@
-export type SocialPlatform = "linkedin" | "instagram" | "whatsapp";
+export type SocialPlatform = "linkedin" | "youtube" | "instagram" | "whatsapp";

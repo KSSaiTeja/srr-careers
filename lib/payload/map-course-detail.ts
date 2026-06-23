@@ -40,6 +40,25 @@ function positiveNumber(
   return typeof value === "number" && value > 0 ? value : undefined;
 }
 
+function mapNotice(
+  notice:
+    | {
+        enabled?: boolean | null;
+        text?: string | null;
+        highlight?: string | null;
+      }
+    | null
+    | undefined,
+): CourseDetailContent["syllabus"]["notice"] {
+  const enabled = notice?.enabled !== false;
+  const noticeText = text(notice?.text);
+  if (!enabled || !noticeText) return undefined;
+  return {
+    text: noticeText,
+    highlight: text(notice?.highlight) || undefined,
+  };
+}
+
 export function mapCourseDetailFromCMS(
   doc: RawCourseDetail,
 ): CourseDetailContent {
@@ -93,6 +112,7 @@ export function mapCourseDetailFromCMS(
     syllabus: {
       eyebrow: text(doc.syllabus?.eyebrow, "Curriculum"),
       title: text(doc.syllabus?.title, "Full Syllabus"),
+      notice: mapNotice(doc.syllabus?.notice),
       items: (doc.syllabus?.items ?? []).map((item, index) => {
         const number = text(item.number, String(index + 1).padStart(2, "0"));
         return {

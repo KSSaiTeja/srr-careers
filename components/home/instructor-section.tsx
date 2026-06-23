@@ -3,8 +3,6 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Icon } from "@/components/ui/icon";
 import { InstructorBackgroundBlob } from "@/components/home/instructor-background-blob";
-import { InstructorLinkedInButton } from "@/components/home/instructor-linkedin-button";
-import { images } from "@/lib/constants/images";
 import type { HomePageContent } from "@/lib/types/home-page-content";
 import { cn } from "@/lib/utils/cn";
 
@@ -90,28 +88,6 @@ function InstructorCard({
             {content.skillsHeading}
           </h4>
           <p className="text-sm text-gray-600">{content.skillsBody}</p>
-        </div>
-
-        <div className="relative mt-1 min-h-[72px]">
-          <InstructorLinkedInButton />
-
-          <div
-            className="pointer-events-none absolute right-0 bottom-0 z-10 flex h-[88px] w-[88px] items-center justify-center"
-            aria-hidden
-          >
-            <div className="rotate-[17.43deg]">
-              <div className="-rotate-[23.04deg]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={images.instructorSignature}
-                  alt=""
-                  width={63}
-                  height={63}
-                  className="h-[63px] w-[62px] max-w-none object-contain"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </article>

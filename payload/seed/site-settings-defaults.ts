@@ -19,7 +19,21 @@ export const siteSettingsDefaults = {
     items: [
       { label: "Home", href: "/", badge: false },
       { label: "Our Story", href: "/our-story", badge: false },
-      { label: "Courses", href: "/courses", badge: false },
+      {
+        label: "Courses",
+        href: "/courses",
+        badge: false,
+        children: [
+          {
+            label: "Consultant Level Training",
+            href: "/courses/sap-fico-consultant-track",
+          },
+          {
+            label: "End User Level Training",
+            href: "/courses/sap-fico-end-user-track",
+          },
+        ],
+      },
       { label: "Blog", href: "/blog", badge: false },
       { label: "What's New?", href: "/whats-new", badge: true },
     ],
@@ -29,7 +43,7 @@ export const siteSettingsDefaults = {
     phoneHref: "tel:+919286123457",
     email: "suresh@srrcareers.in",
     emailHref: "mailto:suresh@srrcareers.in",
-    whatsappNumber: "918091345674",
+    whatsappNumber: "919286123457",
     whatsappLabel: "WhatsApp us",
     whatsappPrefillMessage:
       "Hi SRR Careers, I would like to know more about your SAP S/4 HANA FICO training.",
@@ -39,12 +53,12 @@ export const siteSettingsDefaults = {
       {
         platform: "linkedin",
         label: "LinkedIn",
-        href: "https://www.linkedin.com/company/srr-careers",
+        href: "https://www.linkedin.com/company/srrcareers/?viewAsMember=true",
       },
       {
         platform: "instagram",
         label: "Instagram",
-        href: "https://www.instagram.com/srrcareers",
+        href: "https://www.instagram.com/suresh_srrcareers?igsh=MWRrcXg3cjJxNjBrZg==",
       },
       {
         platform: "whatsapp",
@@ -62,7 +76,7 @@ export const siteSettingsDefaults = {
       { label: "Blog", href: "/blog" },
       { label: "Contact", href: "#pre-footer" },
     ],
-    courseTitle: "Course",
+    courseTitle: "SAP FI-CO with S/4 HANA",
     courseLinks: [
       { label: "SAP S/4Hana FICO", href: "/courses" },
       { label: "Consultant Track", href: "/courses/sap-fico-consultant-track" },
