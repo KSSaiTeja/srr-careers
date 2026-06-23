@@ -66,6 +66,10 @@ export type CourseDetailContent = {
   syllabus: {
     eyebrow: string;
     title: string;
+    notice?: {
+      text: string;
+      highlight?: string;
+    };
     items: SyllabusItem[];
   };
   alsoOffered: {

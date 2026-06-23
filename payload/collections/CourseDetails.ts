@@ -209,6 +209,37 @@ export const CourseDetails: CollectionConfig = {
             { name: "eyebrow", type: "text", defaultValue: "Curriculum" },
             { name: "title", type: "text", defaultValue: "Full Syllabus" },
             {
+              name: "notice",
+              type: "group",
+              label: "Info bar (above modules)",
+              admin: {
+                description:
+                  "Optional note shown above the modules list. Leave the text empty to hide it.",
+              },
+              fields: [
+                {
+                  name: "enabled",
+                  type: "checkbox",
+                  label: "Show info bar",
+                  defaultValue: true,
+                },
+                {
+                  name: "text",
+                  type: "textarea",
+                  label: "Info text",
+                },
+                {
+                  name: "highlight",
+                  type: "text",
+                  label: "Highlighted phrase",
+                  admin: {
+                    description:
+                      "A phrase from the text above to emphasise (must match exactly).",
+                  },
+                },
+              ],
+            },
+            {
               name: "items",
               type: "array",
               label: "Modules",

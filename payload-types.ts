@@ -247,6 +247,17 @@ export interface CourseDetail {
   syllabus?: {
     eyebrow?: string | null;
     title?: string | null;
+    /**
+     * Optional note shown above the modules list. Leave the text empty to hide it.
+     */
+    notice?: {
+      enabled?: boolean | null;
+      text?: string | null;
+      /**
+       * A phrase from the text above to emphasise (must match exactly).
+       */
+      highlight?: string | null;
+    };
     items?:
       | {
           /**
@@ -554,6 +565,13 @@ export interface CourseDetailsSelect<T extends boolean = true> {
     | {
         eyebrow?: T;
         title?: T;
+        notice?:
+          | T
+          | {
+              enabled?: T;
+              text?: T;
+              highlight?: T;
+            };
         items?:
           | T
           | {
@@ -746,6 +764,19 @@ export interface SiteSetting {
           label: string;
           href: string;
           badge?: boolean | null;
+          /**
+           * Optional. Add sub-links to turn this nav item into a hover dropdown (desktop) or expandable accordion (mobile). Leave empty for a flat link.
+           */
+          children?:
+            | {
+                label: string;
+                /**
+                 * Page path or # anchor or URL
+                 */
+                href: string;
+                id?: string | null;
+              }[]
+            | null;
           id?: string | null;
         }[]
       | null;
@@ -768,7 +799,7 @@ export interface SiteSetting {
   socialGroup?: {
     social?:
       | {
-          platform: 'linkedin' | 'instagram' | 'whatsapp';
+          platform: 'linkedin' | 'youtube' | 'instagram' | 'whatsapp';
           label: string;
           href?: string | null;
           id?: string | null;
@@ -1269,6 +1300,13 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               label?: T;
               href?: T;
               badge?: T;
+              children?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    id?: T;
+                  };
               id?: T;
             };
       };

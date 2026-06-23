@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
+import { ChevronDown } from "lucide-react";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { useSiteSettings } from "@/components/layout/site-settings-context";
 import { images } from "@/lib/constants/images";
@@ -80,32 +81,78 @@ export function SiteHeader() {
         >
           {nav.map((item) => {
             const active = isNavActive(item.href, pathname);
+            const hasChildren = Boolean(item.children?.length);
             return (
-              <Link
+              <div
                 key={item.href}
-                href={item.href}
-                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative whitespace-nowrap text-sm font-semibold transition-colors xl:text-base",
-                  active
-                    ? "text-brand-navy"
-                    : "text-gray-900 hover:text-brand-navy",
+                  "group/navitem relative",
+                  hasChildren && "static",
                 )}
               >
-                {item.label}
-                {active && (
-                  <span
-                    className="absolute -bottom-1.5 left-0 right-0 h-0.5 rounded-full bg-brand-navy"
-                    aria-hidden
-                  />
+                <Link
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  aria-haspopup={hasChildren ? "true" : undefined}
+                  aria-expanded={hasChildren ? "false" : undefined}
+                  className={cn(
+                    "relative inline-flex items-center gap-1 whitespace-nowrap text-sm font-semibold transition-colors xl:text-base",
+                    active
+                      ? "text-brand-navy"
+                      : "text-gray-900 hover:text-brand-navy",
+                  )}
+                >
+                  {item.label}
+                  {hasChildren && (
+                    <ChevronDown
+                      className="size-3.5 transition-transform duration-200 group-hover/navitem:rotate-180 group-focus-within/navitem:rotate-180"
+                      aria-hidden
+                    />
+                  )}
+                  {active && !hasChildren && (
+                    <span
+                      className="absolute -bottom-1.5 left-0 right-0 h-0.5 rounded-full bg-brand-navy"
+                      aria-hidden
+                    />
+                  )}
+                  {item.badge && (
+                    <span
+                      className="absolute -right-2 -top-1 size-2 rounded-full bg-red-600"
+                      aria-hidden
+                    />
+                  )}
+                </Link>
+
+                {hasChildren && (
+                  <div
+                    className="invisible absolute left-1/2 top-full z-50 mt-2 w-64 -translate-x-1/2 opacity-0 transition-all duration-150 group-hover/navitem:visible group-hover/navitem:opacity-100 group-focus-within/navitem:visible group-focus-within/navitem:opacity-100"
+                    role="menu"
+                  >
+                    <ul className="overflow-hidden rounded-2xl border border-gray-100 bg-white p-2 shadow-xl shadow-black/5 ring-1 ring-black/5">
+                      {item.children?.map((child) => {
+                        const childActive = isNavActive(child.href, pathname);
+                        return (
+                          <li key={child.href} role="none">
+                            <Link
+                              href={child.href}
+                              role="menuitem"
+                              aria-current={childActive ? "page" : undefined}
+                              className={cn(
+                                "block rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
+                                childActive
+                                  ? "bg-brand-lavender/60 text-brand-navy"
+                                  : "text-gray-700 hover:bg-brand-lavender/40 hover:text-brand-navy",
+                              )}
+                            >
+                              {child.label}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
                 )}
-                {item.badge && (
-                  <span
-                    className="absolute -right-2 -top-1 size-2 rounded-full bg-red-600"
-                    aria-hidden
-                  />
-                )}
-              </Link>
+              </div>
             );
           })}
         </nav>

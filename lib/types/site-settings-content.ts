@@ -1,9 +1,15 @@
 import type { SocialPlatform } from "@/lib/constants/social";
 
+export type NavChildLink = {
+  label: string;
+  href: string;
+};
+
 export type NavLink = {
   label: string;
   href: string;
   badge: boolean;
+  children?: NavChildLink[];
 };
 
 export type FooterLink = {

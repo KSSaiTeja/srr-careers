@@ -120,6 +120,38 @@ export const SiteSettings: GlobalConfig = {
                     },
                   ],
                 },
+                {
+                  name: "children",
+                  type: "array",
+                  label: "Dropdown sub-links",
+                  admin: {
+                    initCollapsed: true,
+                    description:
+                      "Optional. Add sub-links to turn this nav item into a hover dropdown (desktop) or expandable accordion (mobile). Leave empty for a flat link.",
+                  },
+                  fields: [
+                    {
+                      type: "row",
+                      fields: [
+                        {
+                          name: "label",
+                          type: "text",
+                          required: true,
+                          admin: { width: "45%" },
+                        },
+                        {
+                          name: "href",
+                          type: "text",
+                          required: true,
+                          admin: {
+                            width: "55%",
+                            description: "Page path or # anchor or URL",
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
               ],
             },
           ],
@@ -174,7 +206,7 @@ export const SiteSettings: GlobalConfig = {
               name: "whatsappNumber",
               type: "text",
               label: "WhatsApp number (digits only, with country code)",
-              defaultValue: "918091345674",
+              defaultValue: "919286123457",
             },
             {
               type: "row",
@@ -215,6 +247,7 @@ export const SiteSettings: GlobalConfig = {
                       defaultValue: "linkedin",
                       options: [
                         { label: "LinkedIn", value: "linkedin" },
+                        { label: "YouTube", value: "youtube" },
                         { label: "Instagram", value: "instagram" },
                         { label: "WhatsApp", value: "whatsapp" },
                       ],

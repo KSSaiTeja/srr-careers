@@ -37,12 +37,42 @@ export function mapSiteSettingsFromCMS(
   const cmsNav = cms.navigation?.items;
   const nav: NavLink[] =
     cmsNav && cmsNav.length > 0
-      ? cmsNav.map((item) => ({
-          label: text(item.label),
-          href: text(item.href, "#"),
-          badge: Boolean(item.badge),
-        }))
-      : d.navigation.items.map((item) => ({ ...item }));
+      ? cmsNav.map((item) => {
+          const cmsChildren = item.children;
+          const children =
+            cmsChildren && cmsChildren.length > 0
+              ? cmsChildren.map((child) => ({
+                  label: text(child.label),
+                  href: text(child.href, "#"),
+                }))
+              : undefined;
+          return {
+            label: text(item.label),
+            href: text(item.href, "#"),
+            badge: Boolean(item.badge),
+            ...(children && children.length > 0 ? { children } : {}),
+          };
+        })
+      : d.navigation.items.map((item) => {
+          const fallbackChildren = (
+            "children" in item ? item.children : undefined
+          ) as
+            | ReadonlyArray<{ label: string; href: string }>
+            | undefined;
+          return {
+            label: item.label,
+            href: item.href,
+            badge: item.badge,
+            ...(fallbackChildren && fallbackChildren.length > 0
+              ? {
+                  children: fallbackChildren.map((child) => ({
+                    label: child.label,
+                    href: child.href,
+                  })),
+                }
+              : {}),
+          };
+        });
 
   const phone = text(cms.contact?.phone, d.contact.phone);
   const email = text(cms.contact?.email, d.contact.email);

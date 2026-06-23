@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { useSiteSettings } from "@/components/layout/site-settings-context";
 import { isNavActive } from "@/lib/utils/is-nav-active";
 import { cn } from "@/lib/utils/cn";
@@ -12,10 +12,15 @@ import { cn } from "@/lib/utils/cn";
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
   const { nav, header } = useSiteSettings();
   const pathname = usePathname();
 
   const close = useCallback(() => setOpen(false), []);
+
+  const toggleExpanded = useCallback((href: string) => {
+    setExpanded((current) => (current === href ? null : href));
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -69,17 +74,16 @@ export function MobileNav() {
               <ul className="flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-6">
                 {nav.map((item) => {
                   const active = isNavActive(item.href, pathname);
+                  const hasChildren = Boolean(item.children?.length);
+                  const isOpen = expanded === item.href;
                   return (
                     <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        onClick={close}
-                        aria-current={active ? "page" : undefined}
+                      <div
                         className={cn(
-                          "relative flex items-center rounded-xl px-4 py-3.5 text-base font-semibold transition-colors hover:bg-brand-lavender/60",
+                          "relative flex items-center rounded-xl transition-colors",
                           active
-                            ? "bg-brand-lavender/60 text-brand-navy"
-                            : "text-gray-900",
+                            ? "bg-brand-lavender/60"
+                            : "hover:bg-brand-lavender/60",
                         )}
                       >
                         {active && (
@@ -88,14 +92,74 @@ export function MobileNav() {
                             aria-hidden
                           />
                         )}
-                        {item.label}
-                        {item.badge ? (
-                          <span
-                            className="ml-2 size-2 rounded-full bg-red-600"
-                            aria-hidden
-                          />
-                        ) : null}
-                      </Link>
+                        <Link
+                          href={item.href}
+                          onClick={close}
+                          aria-current={active ? "page" : undefined}
+                          className={cn(
+                            "flex flex-1 items-center px-4 py-3.5 text-base font-semibold",
+                            active ? "text-brand-navy" : "text-gray-900",
+                          )}
+                        >
+                          {item.label}
+                          {item.badge ? (
+                            <span
+                              className="ml-2 size-2 rounded-full bg-red-600"
+                              aria-hidden
+                            />
+                          ) : null}
+                        </Link>
+                        {hasChildren && (
+                          <button
+                            type="button"
+                            onClick={() => toggleExpanded(item.href)}
+                            aria-expanded={isOpen}
+                            aria-controls={`mobile-submenu-${item.href}`}
+                            aria-label={`Toggle ${item.label} sub-menu`}
+                            className="mr-2 inline-flex size-9 shrink-0 items-center justify-center rounded-lg text-gray-600 transition-colors hover:bg-white/60"
+                          >
+                            <ChevronDown
+                              className={cn(
+                                "size-5 transition-transform duration-200",
+                                isOpen && "rotate-180",
+                              )}
+                              aria-hidden
+                            />
+                          </button>
+                        )}
+                      </div>
+
+                      {hasChildren && (
+                        <ul
+                          id={`mobile-submenu-${item.href}`}
+                          className={cn(
+                            "mt-1 mb-1 flex flex-col gap-1 overflow-hidden pl-4 transition-all",
+                            isOpen ? "max-h-96" : "max-h-0",
+                          )}
+                          hidden={!isOpen}
+                        >
+                          {item.children?.map((child) => {
+                            const childActive = isNavActive(child.href, pathname);
+                            return (
+                              <li key={child.href}>
+                                <Link
+                                  href={child.href}
+                                  onClick={close}
+                                  aria-current={childActive ? "page" : undefined}
+                                  className={cn(
+                                    "block rounded-lg py-2.5 pl-4 pr-4 text-sm font-medium transition-colors",
+                                    childActive
+                                      ? "bg-brand-lavender/50 text-brand-navy"
+                                      : "text-gray-700 hover:bg-brand-lavender/40 hover:text-brand-navy",
+                                  )}
+                                >
+                                  {child.label}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
                     </li>
                   );
                 })}

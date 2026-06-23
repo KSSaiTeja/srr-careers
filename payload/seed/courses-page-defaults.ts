@@ -22,11 +22,11 @@ export const coursesPageDefaults = {
         variant: "consultant",
         title: "SAP FICO - Consultant Track",
         description:
-          "End-to-end SAP S/4HANA Finance & Controlling configuration.",
+          "End-to-end SAP S/4 HANA financial accounting and controlling configurations",
         duration: "40 Hrs",
         durationSuffix: "",
         modules: "S/4Hana",
-        outcome: "Job-ready FI Consultant",
+        outcome: "Become SAP S/4HANA Consultant Private Cloud",
         price: 35000,
         originalPrice: 45000,
         highlights:
@@ -41,7 +41,7 @@ export const coursesPageDefaults = {
         duration: "15 Hrs",
         durationSuffix: "",
         modules: "S/4Hana",
-        outcome: "Job-ready FI End-User",
+        outcome: "Become SAP S/4HANA End User Private Cloud",
         price: 15000,
         originalPrice: 20000,
         highlights:
@@ -92,9 +92,9 @@ export const coursesPageDefaults = {
         workItems:
           "System Design & Configuration\nEnd-to-end Implementation\nUser Acceptance Testing\nPerformance Optimization\nPost-Deployment Support",
         toolsLabel: "TOOLS YOU'LL TOUCH",
-        tools: "SAP S/4 HANA\nSAP GUI\nSAP Fiori\nSAP Business",
+        tools: "SAP GUI\nSAP Fiori",
         outcomeLabel: "OUTCOME",
-        outcome: "Become a SAP FICO Consultant",
+        outcome: "Become SAP S/4HANA Consultant Private Cloud",
         tags: "High Growth\nHigh Respect\nHigh Earning",
       },
       {
@@ -108,9 +108,9 @@ export const coursesPageDefaults = {
         workItems:
           "Master creations & updates\nBusiness transaction posting\nRunning scheduled programs\nGenerating reports\nTalking with customers, vendors & cross module end-users",
         toolsLabel: "TOOLS YOU'LL TOUCH",
-        tools: "SAP S/4 HANA\nSAP GUI\nSAP Fiori\nSAP Business",
+        tools: "SAP GUI\nSAP Fiori",
         outcomeLabel: "OUTCOME",
-        outcome: "Become a SAP FICO End-User",
+        outcome: "Become SAP S/4HANA End User Private Cloud",
         tags: "Job Security\nHigh Demand\nQuick Start",
       },
     ],
