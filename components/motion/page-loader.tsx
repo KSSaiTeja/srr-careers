@@ -56,10 +56,10 @@ export function PageLoader() {
             <Image
               src={images.logo}
               alt="SRR Careers"
-              width={64}
-              height={64}
+              width={1024}
+              height={410}
               priority
-              className="h-16 w-16 object-contain"
+              className="h-auto w-56 object-contain sm:w-64"
             />
             <div className="h-[3px] w-24 overflow-hidden rounded-full bg-brand-navy/10">
               <motion.div

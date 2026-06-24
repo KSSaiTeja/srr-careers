@@ -22,7 +22,7 @@ export function SiteHeader() {
   const headerRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
   const { shouldAnimate } = useScrollMotionReady();
-  const { brand, nav, header } = useSiteSettings();
+  const { nav, header } = useSiteSettings();
   const pathname = usePathname();
 
   useGSAP(
@@ -58,21 +58,15 @@ export function SiteHeader() {
       className="sticky top-0 z-50 border-b border-white/30 bg-white/20 pt-[env(safe-area-inset-top)] backdrop-blur-md"
     >
       <div className="mx-auto flex max-w-7xl min-w-0 items-center justify-between gap-3 px-5 py-4 sm:px-6 sm:py-5 md:px-10 lg:gap-6 lg:px-14 lg:py-6 xl:px-20 2xl:px-28">
-        <Link
-          href="/"
-          className="flex min-w-0 shrink items-center gap-2 sm:gap-2.5"
-        >
+        <Link href="/" className="flex shrink-0 items-center">
           <Image
             src={images.logo}
             alt="SRR Careers"
-            width={48}
-            height={48}
-            className="size-10 shrink-0 object-contain sm:size-12"
+            width={1024}
+            height={410}
+            className="h-12 w-auto object-contain sm:h-14"
             priority
           />
-          <span className="truncate text-lg font-bold text-gray-900 sm:text-xl lg:text-2xl">
-            {brand.siteName}
-          </span>
         </Link>
 
         <nav

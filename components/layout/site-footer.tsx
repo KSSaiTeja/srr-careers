@@ -44,17 +44,14 @@ export function SiteFooter() {
       <Container className="py-10 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4 lg:gap-10">
           <div className="max-w-sm sm:col-span-2 lg:col-span-1 lg:max-w-xs">
-            <Link href="/" className="mb-4 inline-flex items-center gap-2.5">
+            <Link href="/" className="mb-4 inline-flex items-center">
               <Image
                 src={images.logo}
                 alt={brand.siteName}
-                width={36}
-                height={36}
-                className="h-9 w-9 object-contain"
+                width={1024}
+                height={410}
+                className="h-12 w-auto object-contain"
               />
-              <span className="text-xl font-bold text-[#0b1023]">
-                {brand.siteName}
-              </span>
             </Link>
             <p className="text-sm leading-5 text-[#5a637b]">
               {brand.footerDescription}
