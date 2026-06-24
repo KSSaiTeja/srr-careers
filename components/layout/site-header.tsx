@@ -62,8 +62,8 @@ export function SiteHeader() {
           <Image
             src={images.logo}
             alt="SRR Careers"
-            width={1024}
-            height={410}
+            width={950}
+            height={380}
             className="h-12 w-auto object-contain sm:h-14"
             priority
           />

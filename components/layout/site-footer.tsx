@@ -48,8 +48,8 @@ export function SiteFooter() {
               <Image
                 src={images.logo}
                 alt={brand.siteName}
-                width={1024}
-                height={410}
+                width={950}
+                height={380}
                 className="h-12 w-auto object-contain"
               />
             </Link>

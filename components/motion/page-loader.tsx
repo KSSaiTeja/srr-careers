@@ -56,8 +56,8 @@ export function PageLoader() {
             <Image
               src={images.logo}
               alt="SRR Careers"
-              width={1024}
-              height={410}
+              width={950}
+              height={380}
               priority
               className="h-auto w-56 object-contain sm:w-64"
             />
