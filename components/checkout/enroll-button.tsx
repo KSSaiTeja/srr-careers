@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import {
   CheckoutResultDialog,
   type CheckoutResult,
 } from "@/components/checkout/checkout-result-dialog";
+import {
+  EnrollFormDialog,
+  type EnrollFormStep1Values,
+  type EnrollFormValues,
+} from "@/components/checkout/enroll-form-dialog";
 import { loadRazorpay } from "@/lib/payment/load-razorpay";
 import type { CheckoutProduct, CreateOrderResponse } from "@/lib/payment/types";
 import { cn } from "@/lib/utils/cn";
@@ -31,9 +36,8 @@ type EnrollButtonProps = {
 };
 
 /**
- * Buy/enroll CTA. Creates a Razorpay order, opens checkout, then verifies the
- * payment. If Razorpay isn't configured yet (no credentials), it routes the
- * user to the enquiry/demo flow so the lead is never lost.
+ * Buy/enroll CTA. Two-step form → Razorpay checkout → verify payment.
+ * Step 1 syncs a `lead` row immediately so drop-offs are never lost.
  */
 export function EnrollButton({
   product,
@@ -41,41 +45,105 @@ export function EnrollButton({
   tone = "navy",
   className,
   showArrow = true,
-  fallbackHref = "#pre-footer",
+  fallbackHref = "#demo-class",
 }: EnrollButtonProps) {
-  const [loading, setLoading] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
+  const [leadToken, setLeadToken] = useState<string | null>(null);
+  const [step1Submitting, setStep1Submitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [step1Error, setStep1Error] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
   const [result, setResult] = useState<CheckoutResult | null>(null);
 
   function goToFallback() {
     if (typeof window !== "undefined") window.location.assign(fallbackHref);
   }
 
-  async function handleClick() {
-    if (loading) return;
-    setLoading(true);
+  function resetForm() {
+    setLeadToken(null);
+    setStep1Error(null);
+    setServerError(null);
+  }
+
+  async function handleStep1Complete(values: EnrollFormStep1Values) {
+    if (step1Submitting) return;
+    setStep1Submitting(true);
+    setStep1Error(null);
+    try {
+      const res = await fetch("/api/checkout/draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: product.slug,
+          leadToken: leadToken ?? undefined,
+          name: values.name,
+          email: values.email,
+          mobile: values.mobile,
+          planType: values.planType,
+          firstInstallmentAmount: values.firstInstallmentAmount,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setStep1Error(data?.error ?? "Could not save your details. Please try again.");
+        throw new Error("draft failed");
+      }
+
+      setLeadToken(data.leadToken as string);
+    } finally {
+      setStep1Submitting(false);
+    }
+  }
+
+  async function handleSubmit(values: EnrollFormValues) {
+    if (submitting) return;
+    setSubmitting(true);
+    setServerError(null);
     try {
       const res = await fetch("/api/checkout/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slug: product.slug,
-          name: product.name,
-          amount: product.amount,
+          leadToken: values.leadToken,
+          name: values.name,
+          email: values.email,
+          mobile: values.mobile,
+          planType: values.planType,
+          firstInstallmentAmount: values.firstInstallmentAmount,
+          addressLine1: values.addressLine1,
+          addressLine2: values.addressLine2,
+          city: values.city,
+          state: values.state,
+          pincode: values.pincode,
         }),
       });
 
       if (res.status === 503) {
+        setFormOpen(false);
+        resetForm();
         goToFallback();
         return;
       }
-      if (!res.ok) throw new Error("order failed");
 
-      const order = (await res.json()) as CreateOrderResponse;
+      const data = await res.json();
+      if (!res.ok) {
+        setServerError(data?.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      const order = data as CreateOrderResponse;
       const loaded = await loadRazorpay();
       if (!loaded || !window.Razorpay) {
+        setFormOpen(false);
+        resetForm();
         goToFallback();
         return;
       }
+
+      setFormOpen(false);
+      resetForm();
 
       const rzp = new window.Razorpay({
         key: order.keyId,
@@ -85,6 +153,11 @@ export function EnrollButton({
         name: "SRR Careers",
         description: order.name,
         theme: { color: "#0b1023" },
+        prefill: {
+          name: order.prefill.name,
+          email: order.prefill.email,
+          contact: order.prefill.contact,
+        },
         handler: async (response) => {
           try {
             const verify = await fetch("/api/checkout/verify", {
@@ -96,9 +169,9 @@ export function EnrollButton({
                 signature: response.razorpay_signature,
               }),
             });
-            const data = await verify.json();
+            const verifyData = await verify.json();
             setResult({
-              status: verify.ok && data.ok ? "success" : "error",
+              status: verify.ok && verifyData.ok ? "success" : "error",
               courseName: order.name,
               amount: order.amount,
               paymentId: response.razorpay_payment_id,
@@ -113,13 +186,32 @@ export function EnrollButton({
             });
           }
         },
-        modal: { ondismiss: () => setLoading(false) },
       });
+
+      rzp.on("payment.failed", (response) => {
+        const orderId = response?.error?.metadata?.order_id ?? order.orderId;
+        const reason =
+          response?.error?.description ?? response?.error?.reason ?? undefined;
+        void fetch("/api/checkout/failed", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId, reason }),
+        }).catch(() => {});
+        setResult({
+          status: "error",
+          courseName: order.name,
+          amount: order.amount,
+          message:
+            reason ??
+            "Your payment didn't go through. No money was deducted — you can try again.",
+        });
+      });
+
       rzp.open();
     } catch {
-      goToFallback();
+      setServerError("Something went wrong. Please try again.");
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   }
 
@@ -127,23 +219,39 @@ export function EnrollButton({
     <>
       <button
         type="button"
-        onClick={handleClick}
-        disabled={loading}
+        onClick={() => {
+          resetForm();
+          setFormOpen(true);
+        }}
         className={cn(
-          "inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-base font-semibold transition-colors disabled:cursor-wait disabled:opacity-80",
+          "inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-base font-semibold transition-colors",
           toneClasses[tone],
           className,
         )}
       >
-        {loading ? (
-          <Loader2 className="size-5 animate-spin" />
-        ) : (
-          <>
-            {label}
-            {showArrow ? <ArrowRight className="size-5" strokeWidth={2} /> : null}
-          </>
-        )}
+        {label}
+        {showArrow ? <ArrowRight className="size-5" strokeWidth={2} /> : null}
       </button>
+
+      {formOpen ? (
+        <EnrollFormDialog
+          open={formOpen}
+          courseName={product.name}
+          coursePrice={product.amount}
+          leadToken={leadToken}
+          step1Submitting={step1Submitting}
+          submitting={submitting}
+          serverError={serverError}
+          step1Error={step1Error}
+          onClose={() => {
+            if (step1Submitting || submitting) return;
+            setFormOpen(false);
+            resetForm();
+          }}
+          onStep1Complete={handleStep1Complete}
+          onSubmit={handleSubmit}
+        />
+      ) : null}
 
       {result ? (
         <CheckoutResultDialog

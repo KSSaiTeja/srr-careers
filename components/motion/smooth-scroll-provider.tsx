@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ScrollMotionContext } from "@/components/motion/lenis-context";
 import { usePrefersReducedMotion } from "@/lib/motion/use-prefers-reduced-motion";
+import { scrollToAnchor, isSamePageAnchorHref, resolveAnchorHash } from "@/lib/navigation/scroll-to-anchor";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -112,6 +113,50 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       window.scrollTo(0, 0);
     }
   }, [pathname, lenis]);
+
+  // Lenis replaces native scrolling, so hash links must be handled explicitly.
+  useEffect(() => {
+    if (typeof window === "undefined" || !isReady) return;
+
+    const navigateToHash = (hash: string, immediate = false) => {
+      requestAnimationFrame(() => {
+        scrollToAnchor(hash, lenis, { immediate });
+      });
+    };
+
+    const onHashChange = () => {
+      navigateToHash(window.location.hash);
+    };
+
+    const onClick = (event: MouseEvent) => {
+      const anchor = (event.target as Element).closest("a[href]");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href?.startsWith("#") || href === "#") return;
+
+      const target = isSamePageAnchorHref(href, window.location.pathname);
+      if (!target) return;
+
+      event.preventDefault();
+      const hash = resolveAnchorHash(href);
+      if (!hash) return;
+      window.history.pushState(null, "", hash);
+      navigateToHash(hash);
+    };
+
+    if (window.location.hash) {
+      navigateToHash(window.location.hash, true);
+    }
+
+    window.addEventListener("hashchange", onHashChange);
+    document.addEventListener("click", onClick, true);
+
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      document.removeEventListener("click", onClick, true);
+    };
+  }, [isReady, lenis, pathname]);
 
   return (
     <ScrollMotionContext.Provider value={{ lenis, isReady }}>

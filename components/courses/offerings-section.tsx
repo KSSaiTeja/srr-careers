@@ -144,16 +144,6 @@ function OfferingCard({ course }: { course: CourseOffering }) {
               <span className="text-3xl font-bold tracking-[-1px] sm:text-[34px]">
                 {formatINR(course.price)}
               </span>
-              {course.originalPrice ? (
-                <span
-                  className={cn(
-                    "text-base font-medium line-through",
-                    isConsultant ? "text-white/50" : "text-[#9a9a9a]",
-                  )}
-                >
-                  {formatINR(course.originalPrice)}
-                </span>
-              ) : null}
             </div>
           </div>
           <Link

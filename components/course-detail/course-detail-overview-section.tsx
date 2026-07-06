@@ -41,11 +41,6 @@ export function CourseDetailOverviewSection({
               <span className="text-3xl font-bold tracking-[-1px] text-black sm:text-4xl">
                 {formatINR(content.price)}
               </span>
-              {content.originalPrice ? (
-                <span className="text-lg font-medium text-[#9a9a9a] line-through">
-                  {formatINR(content.originalPrice)}
-                </span>
-              ) : null}
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <EnrollButton

@@ -19,7 +19,18 @@ export type RazorpayOptions = {
   modal?: { ondismiss?: () => void };
 };
 
-export type RazorpayInstance = { open: () => void };
+export type RazorpayFailedResponse = {
+  error?: {
+    description?: string;
+    reason?: string;
+    metadata?: { order_id?: string; payment_id?: string };
+  };
+};
+
+export type RazorpayInstance = {
+  open: () => void;
+  on: (event: string, handler: (response: RazorpayFailedResponse) => void) => void;
+};
 
 declare global {
   interface Window {

@@ -31,7 +31,7 @@ export const HomePage: GlobalConfig = {
   admin: {
     group: "Website Pages",
     description:
-      "Everything visitors see on the homepage (srrcareers.com). Open each tab below — changes go live after you click Save.",
+      "Everything visitors see on the homepage (srrcareers.in). Open each tab below — changes go live after you click Save.",
   },
   fields: [
     {
@@ -340,7 +340,7 @@ export const HomePage: GlobalConfig = {
         {
           label: "5 · Curriculum",
           name: "curriculum",
-          description: "Nine-module syllabus list and syllabus CTA.",
+          description: "Eleven-module syllabus list and syllabus CTA.",
           fields: [
             {
               name: "eyebrow",
@@ -350,7 +350,7 @@ export const HomePage: GlobalConfig = {
             {
               name: "titleLine1",
               type: "text",
-              defaultValue: "A nine-module journey",
+              defaultValue: "An eleven-module journey",
             },
             {
               name: "titleLine2",

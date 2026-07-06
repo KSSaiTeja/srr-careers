@@ -226,7 +226,7 @@ export const OurStoryPage: GlobalConfig = {
                 {
                   name: "askLinkHref",
                   type: "text",
-                  defaultValue: "#pre-footer",
+                  defaultValue: "#demo-class",
                   admin: { width: "50%" },
                 },
               ],

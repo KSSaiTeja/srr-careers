@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     "Latest updates from SRR Careers — admissions, curriculum changes, placements, notices, and live events for SAP S/4 HANA FICO learners.",
 };
 
-export const revalidate = 60;
+// Render on every request so CMS edits are reflected instantly (no caching).
+export const revalidate = 0;
 
 export default async function Page() {
   const content = await getWhatsNewPageContent();

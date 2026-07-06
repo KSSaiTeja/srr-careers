@@ -21,7 +21,7 @@ export const whatsNewPageDefaults = {
         description:
           "Join Senior Consultant Ravi Menon for a 90-minute live walkthrough on June 8, 7:00 PM IST.\nQ&A included.",
         ctaLabel: "Register Now",
-        ctaHref: "#pre-footer",
+        ctaHref: "#demo-class",
       },
       {
         pinned: false,

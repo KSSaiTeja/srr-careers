@@ -19,8 +19,8 @@ export async function PreFooterSection({
   const content = contentProp ?? (await getHomePageContent()).preFooter;
   return (
     <section
-      id="pre-footer"
-      aria-labelledby="pre-footer-heading"
+      id="demo-class"
+      aria-labelledby="demo-class-heading"
       className={cn("py-20 sm:py-24 lg:py-28", className)}
     >
       <Container className={containerClassName}>
@@ -43,7 +43,7 @@ export async function PreFooterSection({
               </div>
 
               <h2
-                id="pre-footer-heading"
+                id="demo-class-heading"
                 className="mb-5 text-3xl font-bold leading-[1.15] tracking-tight text-white sm:mb-6 sm:text-4xl lg:text-5xl xl:text-[3.25rem]"
               >
                 {content.headingLine1}

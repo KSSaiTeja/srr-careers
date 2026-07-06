@@ -9,6 +9,12 @@ import * as migration_20260621_131107_add_course_prices from './20260621_131107_
 import * as migration_20260623_085425_nav_dropdown_children from './20260623_085425_nav_dropdown_children';
 import * as migration_20260623_120000_syllabus_notice from './20260623_120000_syllabus_notice';
 import * as migration_20260623_130000_home_curriculum_notice from './20260623_130000_home_curriculum_notice';
+import * as migration_20260626_120000_demo_class_anchor from './20260626_120000_demo_class_anchor';
+import * as migration_20260626_123840_payment_enrollments from './20260626_123840_payment_enrollments';
+import * as migration_20260626_130000_enrollment_installment_dates from './20260626_130000_enrollment_installment_dates';
+import * as migration_20260626_140000_enrollment_mail_flags from './20260626_140000_enrollment_mail_flags';
+import * as migration_20260626_150000_drop_unused_mail_flags from './20260626_150000_drop_unused_mail_flags';
+import * as migration_20260701_120000_enrollment_address_lead from './20260701_120000_enrollment_address_lead';
 
 export const migrations = [
   {
@@ -54,16 +60,46 @@ export const migrations = [
   {
     up: migration_20260623_085425_nav_dropdown_children.up,
     down: migration_20260623_085425_nav_dropdown_children.down,
-    name: '20260623_085425_nav_dropdown_children'
+    name: '20260623_085425_nav_dropdown_children',
   },
   {
     up: migration_20260623_120000_syllabus_notice.up,
     down: migration_20260623_120000_syllabus_notice.down,
-    name: '20260623_120000_syllabus_notice'
+    name: '20260623_120000_syllabus_notice',
   },
   {
     up: migration_20260623_130000_home_curriculum_notice.up,
     down: migration_20260623_130000_home_curriculum_notice.down,
-    name: '20260623_130000_home_curriculum_notice'
+    name: '20260623_130000_home_curriculum_notice',
+  },
+  {
+    up: migration_20260626_120000_demo_class_anchor.up,
+    down: migration_20260626_120000_demo_class_anchor.down,
+    name: '20260626_120000_demo_class_anchor',
+  },
+  {
+    up: migration_20260626_123840_payment_enrollments.up,
+    down: migration_20260626_123840_payment_enrollments.down,
+    name: '20260626_123840_payment_enrollments'
+  },
+  {
+    up: migration_20260626_130000_enrollment_installment_dates.up,
+    down: migration_20260626_130000_enrollment_installment_dates.down,
+    name: '20260626_130000_enrollment_installment_dates'
+  },
+  {
+    up: migration_20260626_140000_enrollment_mail_flags.up,
+    down: migration_20260626_140000_enrollment_mail_flags.down,
+    name: '20260626_140000_enrollment_mail_flags'
+  },
+  {
+    up: migration_20260626_150000_drop_unused_mail_flags.up,
+    down: migration_20260626_150000_drop_unused_mail_flags.down,
+    name: '20260626_150000_drop_unused_mail_flags'
+  },
+  {
+    up: migration_20260701_120000_enrollment_address_lead.up,
+    down: migration_20260701_120000_enrollment_address_lead.down,
+    name: '20260701_120000_enrollment_address_lead'
   },
 ];

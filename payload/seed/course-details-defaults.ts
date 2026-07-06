@@ -67,67 +67,79 @@ export const courseDetailsDefaults = [
         "Full configuration on S/4 HANA (Incl. ECC vs S/4 HANA differences)\nGST & TDS configuration + posting\nAsset Accounting end-to-end with AUC capitalisation",
     },
     syllabus: {
-      eyebrow: "Curriculum",
-      title: "Full Syllabus",
+      eyebrow: "CURRICULUM",
+      title: "An Eleven-module Journey",
       notice: {
         enabled: true,
-        text: "New to finance? Accounting basics are also taught to students from non-accounting backgrounds, so everyone starts on the same solid ground.",
-        highlight: "non-accounting backgrounds",
+        text: "For students from non-accounting backgrounds — Basics of Accounting is also covered, so everyone starts on the same solid ground.",
+        highlight: "Basics of Accounting",
       },
       items: [
         {
           number: "01",
-          title: "ERP & SAP Foundations",
+          title: "SAP & ERP Fundamentals",
           topics:
-            "Introduction to ERP\nECC vs S/4 HANA differences\nR/3 Architecture\nASAP methodology",
+            "Introduction to ERP & SAP\nECC vs S/4 HANA differences\nSAP navigation & transaction codes\nASAP / Activate methodology",
         },
         {
           number: "02",
-          title: "Organizational Structure & Global Data",
+          title: "Company Code – Global Data",
           topics:
-            "Company & Company code\nDocument types & number ranges\nBusiness area & Segment\nField status variant\nPosting period variant\nFiscal year variant & Posting keys",
+            "Company & company code configuration\nFiscal year & posting period variants\nField status variant & posting keys\nDocument types & number ranges",
         },
         {
           number: "03",
-          title: "Financial Accounting (FI)",
+          title: "Business Partner (Customer & Supplier)",
           topics:
-            "General ledger configuration\nJournal entries & posting\nFinancial statement versions\nParallel accounting",
+            "Business partner roles & categories\nCustomer master data configuration\nVendor master data configuration\nBP integration with FI transactions",
         },
         {
           number: "04",
-          title: "Accounts Payable (AP)",
+          title: "Financial Statement Version",
           topics:
-            "Vendor master data\nInvoice verification\nPayment program & clearing\nWithholding tax setup",
+            "FSV structure & hierarchy\nFinancial statement layout design\nVersion assignment to company code\nReporting & financial statement output",
         },
         {
           number: "05",
-          title: "Accounts Receivable (AR)",
+          title: "General Ledger Accounting",
           topics:
-            "Customer master data\nBilling documents\nIncoming payments\nDunning & correspondence",
+            "Chart of accounts configuration\nGL account master & posting\nJournal entries & document flow\nParallel ledger concepts",
         },
         {
           number: "06",
-          title: "Asset Accounting (AA)",
+          title: "Accounts Receivables",
           topics:
-            "Asset classes & master data\nAcquisition & retirement\nDepreciation runs\nAUC capitalisation",
+            "Customer invoice processing\nIncoming payments & clearing\nDunning & correspondence\nAR reporting & analytics",
         },
         {
           number: "07",
-          title: "Controlling (CO)",
+          title: "Accounts Payables",
           topics:
-            "Cost centers & profit centers\nInternal orders\nProduct costing basics\nCOPA configuration",
+            "Vendor invoice verification\nPayment program & clearing\nWithholding tax configuration\nAP reporting & reconciliation",
         },
         {
           number: "08",
-          title: "Integration FI with MM & SD",
+          title: "Taxation",
           topics:
-            "MM–FI integration flows\nSD–FI billing integration\nHR–FI payroll posting\nEnd-to-end scenario walkthroughs",
+            "Tax codes & tax procedures\nGST configuration & posting\nTDS / withholding tax setup\nStatutory compliance reporting",
         },
         {
           number: "09",
-          title: "Real-Time Scenarios",
+          title: "Asset Accounting",
           topics:
-            "Implementation case studies\nUAT & cutover support\nError analysis & fixes\nInterview & project readiness",
+            "Asset classes & master data\nAcquisition, retirement & transfer\nDepreciation runs & areas\nAUC capitalisation",
+        },
+        {
+          number: "10",
+          title: "Controlling",
+          topics:
+            "Cost centers & profit centers\nInternal orders & product costing\nCOPA basics & configuration\nCO–FI integration",
+        },
+        {
+          number: "11",
+          title: "Integration",
+          topics:
+            "MM–FI integration flows\nSD–FI billing integration\nEnd-to-end scenario walkthroughs\nCross-module troubleshooting",
         },
       ],
     },
@@ -145,7 +157,7 @@ export const courseDetailsDefaults = [
         description:
           "Secure your seat in the next live cohort. Pay online and get instant confirmation, or talk to us first if you have questions.",
         ctaLabel: "Enroll Now",
-        ctaHref: "#pre-footer",
+        ctaHref: "#demo-class",
       },
     },
     faq: sharedFaq,
@@ -173,13 +185,13 @@ export const courseDetailsDefaults = [
       primaryCta: "Enroll Now",
       secondaryCta: "Explore Curriculum",
       secondaryCtaHref: "#syllabus",
-      moduleCount: "8",
+      moduleCount: "7",
       moduleLabel: "Modules",
       moduleBlurb:
         "Practical modules aligned to real finance operations. Every session ends in live SAP transactions.",
       metaCards: [
         { icon: "duration", label: "Duration", value: "S/4 Hana", valueSuffix: "Live" },
-        { icon: "modules", label: "Modules", value: "8 Modules" },
+        { icon: "modules", label: "Modules", value: "7 Modules" },
         { icon: "format", label: "Format", value: "Live", valueSuffix: "Mentored cohort" },
         {
           icon: "outcome",
@@ -202,7 +214,7 @@ export const courseDetailsDefaults = [
     },
     syllabus: {
       eyebrow: "Curriculum",
-      title: "Full Syllabus",
+      title: "An Nine-module journey",
       notice: {
         enabled: true,
         text: "New to finance? Accounting basics are also taught to students from non-accounting backgrounds, so everyone starts on the same solid ground.",
@@ -251,12 +263,6 @@ export const courseDetailsDefaults = [
           topics:
             "Tax code selection\nGST posting workflows\nTDS withholding entries\nStatutory report basics",
         },
-        {
-          number: "08",
-          title: "Live Business Scenarios",
-          topics:
-            "Month-end close simulation\nError resolution drills\nCross-module document flow\nRole-based practice tickets",
-        },
       ],
     },
     footerBlocks: {
@@ -273,7 +279,7 @@ export const courseDetailsDefaults = [
         description:
           "Secure your seat in the next live cohort. Pay online and get instant confirmation, or talk to us first if you have questions.",
         ctaLabel: "Enroll Now",
-        ctaHref: "#pre-footer",
+        ctaHref: "#demo-class",
       },
     },
     faq: sharedFaq,

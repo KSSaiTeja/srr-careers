@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     "Practical guides, real client scenarios, and career advice for aspiring SAP S/4HANA FICO consultants from the SRR Careers team.",
 };
 
-export const revalidate = 60;
+// Render on every request so CMS edits are reflected instantly (no caching).
+export const revalidate = 0;
 
 export default async function Page() {
   const [content, posts] = await Promise.all([

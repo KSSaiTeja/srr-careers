@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     "Compare SAP S/4HANA FICO Consultant and End-User tracks — fees, duration, live mentor-led cohorts, and real client projects. Enrol online at SRR Careers.",
 };
 
-export const revalidate = 60;
+// Render on every request so CMS edits are reflected instantly (no caching).
+export const revalidate = 0;
 
 export default async function Page() {
   const content = await getCoursesPageContent();

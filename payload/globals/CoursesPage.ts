@@ -108,8 +108,12 @@ export const CoursesPage: GlobalConfig = {
                       type: "number",
                       label: "Price (₹, whole rupees)",
                       admin: {
+                        // Price is managed centrally in Course Details → Overview
+                        // → Price (the single source of truth for the card, the
+                        // course page, and the Razorpay charge). Hidden here to
+                        // avoid a duplicate, conflicting input.
+                        hidden: true,
                         width: "50%",
-                        description: "Course fee shown on the card and checkout.",
                       },
                     },
                     {
@@ -117,8 +121,8 @@ export const CoursesPage: GlobalConfig = {
                       type: "number",
                       label: "Original price (₹, optional)",
                       admin: {
+                        hidden: true,
                         width: "50%",
-                        description: "Strikethrough price for a discount badge.",
                       },
                     },
                   ],
@@ -383,7 +387,7 @@ export const CoursesPage: GlobalConfig = {
                 {
                   name: "askLinkHref",
                   type: "text",
-                  defaultValue: "#pre-footer",
+                  defaultValue: "#demo-class",
                   admin: { width: "50%" },
                 },
               ],

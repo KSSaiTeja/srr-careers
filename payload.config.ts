@@ -9,6 +9,7 @@ import { migrations } from "./migrations";
 
 import { BlogPosts } from "./payload/collections/BlogPosts";
 import { CourseDetails } from "./payload/collections/CourseDetails";
+import { Enrollments } from "./payload/collections/Enrollments";
 import { Media } from "./payload/collections/Media";
 import { Users } from "./payload/collections/Users";
 import { BlogPage } from "./payload/globals/BlogPage";
@@ -108,7 +109,7 @@ export default buildConfig({
       description: "Manage SRR Careers website content",
     },
   },
-  collections: [Users, Media, CourseDetails, BlogPosts],
+  collections: [Users, Media, CourseDetails, BlogPosts, Enrollments],
   globals: [
     SiteSettings,
     HomePage,

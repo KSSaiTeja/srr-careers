@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     "Discover how SRR Careers trains finance professionals into world-class SAP S/4 HANA FICO consultants — our journey, values, and mission.",
 };
 
-export const revalidate = 60;
+// Render on every request so CMS edits are reflected instantly (no caching).
+export const revalidate = 0;
 
 export default async function Page() {
   const content = await getOurStoryPageContent();

@@ -327,7 +327,7 @@ export const CourseDetails: CollectionConfig = {
                     {
                       name: "ctaHref",
                       type: "text",
-                      defaultValue: "#pre-footer",
+                      defaultValue: "#demo-class",
                       admin: { width: "50%" },
                     },
                   ],
@@ -364,7 +364,7 @@ export const CourseDetails: CollectionConfig = {
                 {
                   name: "askLinkHref",
                   type: "text",
-                  defaultValue: "#pre-footer",
+                  defaultValue: "#demo-class",
                   admin: { width: "50%" },
                 },
               ],

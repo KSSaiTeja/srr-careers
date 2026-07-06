@@ -76,7 +76,7 @@ export const SiteSettings: GlobalConfig = {
                       name: "ctaHref",
                       type: "text",
                       label: "Button link",
-                      defaultValue: "#pre-footer",
+                      defaultValue: "#demo-class",
                       admin: { width: "50%" },
                     },
                   ],

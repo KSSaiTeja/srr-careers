@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     'course-details': CourseDetail;
     'blog-posts': BlogPost;
+    enrollments: Enrollment;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     'course-details': CourseDetailsSelect<false> | CourseDetailsSelect<true>;
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
+    enrollments: EnrollmentsSelect<false> | EnrollmentsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -385,6 +387,71 @@ export interface BlogPost {
   createdAt: string;
 }
 /**
+ * Checkout + payment records. The Razorpay webhook keeps status in sync; do not edit status by hand unless reconciling.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enrollments".
+ */
+export interface Enrollment {
+  id: number;
+  name: string;
+  email: string;
+  mobile: string;
+  courseSlug: string;
+  /**
+   * Snapshot of the course title at checkout time.
+   */
+  courseName?: string | null;
+  planType: 'single' | 'installment';
+  status: 'lead' | 'pending' | 'failed' | 'success';
+  /**
+   * Amount charged for this transaction (whole INR).
+   */
+  amount: number;
+  /**
+   * First installment amount (whole INR), if applicable.
+   */
+  firstInstallmentAmount?: number | null;
+  /**
+   * Full course price at checkout time (whole INR).
+   */
+  coursePrice?: number | null;
+  currency?: string | null;
+  /**
+   * Date the (first) payment succeeded.
+   */
+  paymentDate?: string | null;
+  /**
+   * Due date for the next installment (one month after payment). Empty for single payments / fully-paid plans.
+   */
+  nextInstallmentDate?: string | null;
+  /**
+   * Stable id from step 1. Used as the Google Sheet upsert key.
+   */
+  leadToken?: string | null;
+  /**
+   * Razorpay order id (draft_* placeholder until checkout step 2).
+   */
+  orderId: string;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  city?: string | null;
+  state?: string | null;
+  pincode?: string | null;
+  /**
+   * Razorpay payment id.
+   */
+  paymentId?: string | null;
+  /**
+   * Populated when a payment fails.
+   */
+  failureReason?: string | null;
+  mailedSuccess?: boolean | null;
+  mailedFailed?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -423,6 +490,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'blog-posts';
         value: number | BlogPost;
+      } | null)
+    | ({
+        relationTo: 'enrollments';
+        value: number | Enrollment;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -701,6 +772,38 @@ export interface BlogPostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enrollments_select".
+ */
+export interface EnrollmentsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  mobile?: T;
+  courseSlug?: T;
+  courseName?: T;
+  planType?: T;
+  status?: T;
+  amount?: T;
+  firstInstallmentAmount?: T;
+  coursePrice?: T;
+  currency?: T;
+  paymentDate?: T;
+  nextInstallmentDate?: T;
+  leadToken?: T;
+  orderId?: T;
+  addressLine1?: T;
+  addressLine2?: T;
+  city?: T;
+  state?: T;
+  pincode?: T;
+  paymentId?: T;
+  failureReason?: T;
+  mailedSuccess?: T;
+  mailedFailed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -837,7 +940,7 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * Everything visitors see on the homepage (srrcareers.com). Open each tab below — changes go live after you click Save.
+ * Everything visitors see on the homepage (srrcareers.in). Open each tab below — changes go live after you click Save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page".
@@ -1049,13 +1152,7 @@ export interface CoursesPage {
            */
           modules?: string | null;
           outcome: string;
-          /**
-           * Course fee shown on the card and checkout.
-           */
           price?: number | null;
-          /**
-           * Strikethrough price for a discount badge.
-           */
           originalPrice?: number | null;
           /**
            * Each line becomes a checklist item on the card.

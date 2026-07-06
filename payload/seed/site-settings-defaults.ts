@@ -12,7 +12,7 @@ export const siteSettingsDefaults = {
       "A dedicated finishing school for SAP S/4 HANA FICO consultants. Live mentors, real client scenarios, lifetime career support.",
     header: {
       ctaLabel: "Book a Free Demo",
-      ctaHref: "#pre-footer",
+      ctaHref: "#demo-class",
     },
   },
   navigation: {
@@ -74,14 +74,14 @@ export const siteSettingsDefaults = {
       { label: "About", href: "/our-story" },
       { label: "Course", href: "/courses" },
       { label: "Blog", href: "/blog" },
-      { label: "Contact", href: "#pre-footer" },
+      { label: "Contact", href: "#demo-class" },
     ],
     courseTitle: "SAP FI-CO with S/4 HANA",
     courseLinks: [
       { label: "SAP S/4Hana FICO", href: "/courses" },
       { label: "Consultant Track", href: "/courses/sap-fico-consultant-track" },
       { label: "End-User Track", href: "/courses/sap-fico-end-user-track" },
-      { label: "Book a Free Demo", href: "#pre-footer" },
+      { label: "Book a Free Demo", href: "#demo-class" },
     ],
     contactTitle: "Contact",
     copyright: "© 2026 SRR Careers. All rights reserved.",

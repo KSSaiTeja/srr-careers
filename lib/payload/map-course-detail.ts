@@ -136,7 +136,7 @@ export function mapCourseDetailFromCMS(
       titleLine2: text(footer?.limitedSeatsCta?.titleLine2, "Reserve yours."),
       description: text(footer?.limitedSeatsCta?.description),
       ctaLabel: text(footer?.limitedSeatsCta?.ctaLabel, "Book a Free Demo"),
-      ctaHref: text(footer?.limitedSeatsCta?.ctaHref, "#pre-footer"),
+      ctaHref: text(footer?.limitedSeatsCta?.ctaHref, "#demo-class"),
     },
     faq: {
       eyebrow: text(doc.faq?.eyebrow, "FAQs"),
@@ -144,7 +144,7 @@ export function mapCourseDetailFromCMS(
       highlight: text(doc.faq?.highlight, "before the  demo."),
       helperText: text(doc.faq?.helperText),
       askLinkLabel: text(doc.faq?.askLinkLabel, "Ask us anything →"),
-      askLinkHref: text(doc.faq?.askLinkHref, "#pre-footer"),
+      askLinkHref: text(doc.faq?.askLinkHref, "#demo-class"),
       items: (doc.faq?.items ?? []).map((item) => ({
         question: text(item.question),
         answer: text(item.answer),

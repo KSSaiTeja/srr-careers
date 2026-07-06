@@ -122,7 +122,7 @@ export const coursesPageDefaults = {
     helperText:
       "Can't find the answer you're looking for? Drop us a note - a senior counsellor responds within a working day.",
     askLinkLabel: "Ask us anything →",
-    askLinkHref: "#pre-footer",
+    askLinkHref: "#demo-class",
     items: [
       {
         question: "Do i need prior SAP experience to join?",

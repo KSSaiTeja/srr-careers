@@ -7,7 +7,8 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 60;
+// Render on every request so CMS edits are reflected instantly (no caching).
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const slugs = await getBlogSlugs();
