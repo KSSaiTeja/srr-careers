@@ -10,7 +10,7 @@ export function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
   if (posts.length === 0) return null;
 
   return (
-    <section className="bg-brand-lavender/30 py-16 sm:py-20 lg:py-24">
+    <section className="bg-brand-lavender/30 py-8 sm:py-10 lg:py-12">
       <Container>
         <h2 className="mb-10 text-3xl font-semibold text-gray-900 sm:mb-12 sm:text-4xl">
           You may also like

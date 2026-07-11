@@ -13,24 +13,45 @@ export const siteSettingsDefaults = {
     header: {
       ctaLabel: "Book a Free Demo",
       ctaHref: "#demo-class",
+      secondaryCtaLabel: "Join our team",
+      secondaryCtaHref: "/join-our-team",
     },
   },
   navigation: {
     items: [
       { label: "Home", href: "/", badge: false },
       { label: "Our Story", href: "/our-story", badge: false },
+      { label: "Our Team", href: "/our-team", badge: false },
       {
         label: "Courses",
         href: "/courses",
         badge: false,
+        // Nested SAP group is applied in mapSiteSettingsFromCMS via
+        // `coursesNavChildren` (Payload children stay flat label/href pairs).
         children: [
           {
-            label: "Consultant Level Training",
+            label: "Consultant Track",
             href: "/courses/sap-fico-consultant-track",
           },
           {
-            label: "End User Level Training",
+            label: "End User Track",
             href: "/courses/sap-fico-end-user-track",
+          },
+          {
+            label: "Advanced Excel",
+            href: "/courses/advanced-excel",
+          },
+        ],
+      },
+      {
+        label: "Workshops",
+        href: "/workshops",
+        badge: false,
+        // Full list applied in mapSiteSettingsFromCMS via `workshopsNavChildren`.
+        children: [
+          {
+            label: "Career Pathways and Success Strategies",
+            href: "/workshops/career-pathways-and-success-strategies",
           },
         ],
       },
@@ -72,15 +93,23 @@ export const siteSettingsDefaults = {
     exploreLinks: [
       { label: "Home", href: "/" },
       { label: "About", href: "/our-story" },
+      { label: "Our Team", href: "/our-team" },
       { label: "Course", href: "/courses" },
       { label: "Blog", href: "/blog" },
+      { label: "Internships", href: "/internships" },
+      { label: "Join our team", href: "/join-our-team" },
       { label: "Contact", href: "#demo-class" },
     ],
     courseTitle: "SAP FI-CO with S/4 HANA",
     courseLinks: [
-      { label: "SAP S/4Hana FICO", href: "/courses" },
       { label: "Consultant Track", href: "/courses/sap-fico-consultant-track" },
       { label: "End-User Track", href: "/courses/sap-fico-end-user-track" },
+      { label: "Advanced Excel", href: "/courses/advanced-excel" },
+      {
+        label: "Campus Recruitment Training",
+        href: "/courses/campus-recruitment-training",
+      },
+      { label: "All Workshops", href: "/workshops" },
       { label: "Book a Free Demo", href: "#demo-class" },
     ],
     contactTitle: "Contact",

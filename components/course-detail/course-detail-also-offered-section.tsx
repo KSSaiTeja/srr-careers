@@ -11,7 +11,7 @@ export function CourseDetailAlsoOfferedSection({
   content,
 }: CourseDetailAlsoOfferedSectionProps) {
   return (
-    <CourseDetailSection className="py-16 sm:py-20">
+    <CourseDetailSection className="py-8 sm:py-10">
       <div className="flex flex-col gap-6 rounded-[30px] border border-[#e3e3f2] bg-white p-6 sm:gap-8 sm:p-8 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0 flex flex-col gap-2.5">
           <p className="text-sm font-semibold uppercase tracking-[1.98px] text-[#5a637b] sm:text-base">

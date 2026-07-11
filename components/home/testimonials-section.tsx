@@ -39,7 +39,7 @@ export async function TestimonialsSection({
     <section
       className={cn(
         mutedBackground && "bg-white/50",
-        "py-16 sm:py-20 lg:py-24",
+        "py-8 sm:py-10 lg:py-12",
         className,
       )}
     >

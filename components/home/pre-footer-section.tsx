@@ -21,7 +21,7 @@ export async function PreFooterSection({
     <section
       id="demo-class"
       aria-labelledby="demo-class-heading"
-      className={cn("py-20 sm:py-24 lg:py-28", className)}
+      className={cn("py-10 sm:py-12 lg:py-14", className)}
     >
       <Container className={containerClassName}>
         <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-brand-purple to-brand-purple-deep sm:rounded-[40px]">

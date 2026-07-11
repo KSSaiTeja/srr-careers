@@ -284,4 +284,286 @@ export const courseDetailsDefaults = [
     },
     faq: sharedFaq,
   },
+  {
+    name: "Advanced Excel Workshop",
+    slug: "advanced-excel",
+    meta: {
+      title: "Advanced Excel Workshop | SRR Careers",
+      description:
+        "Master advanced Excel formulas, Pivot Tables, dashboards, and automation. Hands-on workshop for students and professionals — 12–16 hours, customizable.",
+    },
+    intro: {
+      pageTitle: "Advanced Excel",
+      headline: "Workshop",
+      headlineHighlight: "for professionals",
+      subtext:
+        "Practical, hands-on learning with real-world business scenarios — from advanced formulas to interactive dashboards.",
+    },
+    overview: {
+      description:
+        "In today's data-driven business environment, Microsoft Excel is one of the most sought-after skills across industries. Our Advanced Excel Workshop helps students and professionals master powerful Excel features that improve productivity, simplify data analysis, and support better business decision-making. Participants learn to work with large datasets, create insightful reports, automate repetitive tasks, and build interactive dashboards.",
+      price: 15000,
+      originalPrice: 20000,
+      primaryCta: "Enroll Now",
+      secondaryCta: "Explore Curriculum",
+      secondaryCtaHref: "#syllabus",
+      moduleCount: "10",
+      moduleLabel: "Topics",
+      moduleBlurb:
+        "Interactive sessions, practical assignments, and industry-based case studies you can apply immediately.",
+      metaCards: [
+        {
+          icon: "duration",
+          label: "Duration",
+          value: "12–16 Hours",
+          valueSuffix: "Flexible",
+        },
+        { icon: "modules", label: "Topics", value: "10 Key Areas" },
+        {
+          icon: "format",
+          label: "Format",
+          value: "Hands-on",
+          valueSuffix: "Workshop",
+        },
+        {
+          icon: "outcome",
+          label: "Outcome",
+          value: "Excel fluency for analysis & reporting",
+        },
+      ],
+    },
+    whoIsItFor: {
+      eyebrow: "who is it for",
+      title: "Built for learners who",
+      titleHighlight: "work with data.",
+      audience:
+        "Students preparing for campus placements and internships\nFinance, operations, and analytics professionals\nAnyone who wants to move beyond basic spreadsheets\nTeams that need faster reporting and cleaner data workflows",
+      handsOnTitle: "Skills you can use immediately.",
+      handsOnDescription:
+        "Real business scenarios so every technique transfers to academic projects and the workplace.",
+      handsOnFeatures:
+        "Work confidently with large datasets\nBuild insightful reports and interactive dashboards\nAutomate repetitive tasks with macros basics",
+    },
+    syllabus: {
+      eyebrow: "Curriculum",
+      title: "Key Topics Covered",
+      notice: {
+        enabled: true,
+        text: "Recommended duration: 12–16 hours — adjustable for campus or corporate batches.",
+        highlight: "12–16 hours",
+      },
+      items: [
+        {
+          number: "01",
+          title: "Advanced Formulas and Functions",
+          topics:
+            "Complex formula patterns\nNested functions\nError handling\nProductivity shortcuts",
+        },
+        {
+          number: "02",
+          title: "Lookup Functions",
+          topics:
+            "VLOOKUP\nXLOOKUP\nINDEX & MATCH\nWhen to use each lookup approach",
+        },
+        {
+          number: "03",
+          title: "Pivot Tables and Pivot Charts",
+          topics:
+            "Building pivot tables\nPivot charts for insight\nSlicers and filters\nSummarising large datasets",
+        },
+        {
+          number: "04",
+          title: "Data Validation and Conditional Formatting",
+          topics:
+            "Input rules and dropdowns\nHighlighting exceptions\nVisual cues for decision-making\nClean data entry workflows",
+        },
+        {
+          number: "05",
+          title: "Data Cleaning and Analysis",
+          topics:
+            "Cleaning messy data\nText and date tools\nDeduplication basics\nPreparing data for reporting",
+        },
+        {
+          number: "06",
+          title: "Charts and Interactive Dashboards",
+          topics:
+            "Chart selection for clarity\nDashboard layout principles\nInteractive controls\nPresenting insights to stakeholders",
+        },
+        {
+          number: "07",
+          title: "Financial and Business Reporting",
+          topics:
+            "Business report structures\nFinancial summaries\nKPI-style views\nStakeholder-ready outputs",
+        },
+        {
+          number: "08",
+          title: "What-If Analysis",
+          topics:
+            "Scenario planning\nGoal Seek\nData tables\nDecision support techniques",
+        },
+        {
+          number: "09",
+          title: "Basic Automation with Macros",
+          topics:
+            "Recording macros\nRunning repetitive workflows\nSafe automation habits\nWhen macros save the most time",
+        },
+        {
+          number: "10",
+          title: "Productivity Tips and Best Practices",
+          topics:
+            "Keyboard shortcuts\nWorkbook organisation\nNaming and structure conventions\nHabits that scale with team use",
+        },
+      ],
+    },
+    footerBlocks: {
+      alsoOffered: {
+        eyebrow: "Also offered",
+        title: "Campus Recruitment Training",
+        href: "/courses/campus-recruitment-training",
+        ctaLabel: "Explore Workshop Details",
+      },
+      limitedSeatsCta: {
+        eyebrow: "NEXT WORKSHOP OPENS SOON",
+        titleLine1: "Ready to level up",
+        titleLine2: "your Excel skills?",
+        description:
+          "Secure your seat online. Pay securely and get instant confirmation — or talk to us about campus and corporate batches.",
+        ctaLabel: "Enroll Now",
+        ctaHref: "#demo-class",
+      },
+    },
+    faq: sharedFaq,
+  },
+  {
+    name: "Campus Recruitment Training",
+    slug: "campus-recruitment-training",
+    meta: {
+      title: "Campus Recruitment Training (CRT) | SRR Careers",
+      description:
+        "Comprehensive campus placement preparation — aptitude, communication, resume building, group discussions, and interview skills with SRR Careers.",
+    },
+    intro: {
+      pageTitle: "Campus Recruitment",
+      headline: "Training",
+      headlineHighlight: "(CRT)",
+      subtext:
+        "Practical, industry-oriented placement preparation — aptitude, communication, interviews, and career readiness.",
+    },
+    overview: {
+      description:
+        "Campus Recruitment Training (CRT) is a comprehensive placement preparation program designed to equip students with the skills and confidence required to succeed in campus recruitment drives. At SRR Careers, our CRT program provides practical, industry-oriented training through interactive sessions, mock assessments, resume building, group discussions, and interview preparation — with personalized guidance to improve problem-solving, professional communication, and overall placement readiness.",
+      price: 0,
+      primaryCta: "Book a Free Demo",
+      secondaryCta: "Explore Curriculum",
+      secondaryCtaHref: "#syllabus",
+      moduleCount: "08",
+      moduleLabel: "Focus Areas",
+      moduleBlurb:
+        "Real-world examples, hands-on practice, and continuous feedback for recruitment confidence.",
+      metaCards: [
+        {
+          icon: "duration",
+          label: "Focus",
+          value: "Placement",
+          valueSuffix: "Ready",
+        },
+        { icon: "modules", label: "Coverage", value: "8 Focus Areas" },
+        {
+          icon: "format",
+          label: "Format",
+          value: "Interactive",
+          valueSuffix: "Mock drills",
+        },
+        {
+          icon: "outcome",
+          label: "Outcome",
+          value: "Confident campus placements",
+        },
+      ],
+    },
+    whoIsItFor: {
+      eyebrow: "who is it for",
+      title: "Designed for students who want to",
+      titleHighlight: "get placed.",
+      audience:
+        "Final-year and pre-final students preparing for campus drives\nStudents targeting IT, finance, manufacturing, or consulting roles\nLearners who need stronger aptitude and communication skills\nAnyone seeking structured interview and GD practice",
+      handsOnTitle: "Practice that builds confidence.",
+      handsOnDescription:
+        "Mock tests, mock interviews, and continuous feedback so students perform with clarity during recruitment.",
+      handsOnFeatures:
+        "Personalized guidance on problem-solving and communication\nResume building and LinkedIn profile guidance\nCorporate etiquette and professional skills",
+    },
+    syllabus: {
+      eyebrow: "Curriculum",
+      title: "Our CRT Program Covers",
+      items: [
+        {
+          number: "01",
+          title: "Quantitative Aptitude, Logical Reasoning & Verbal Ability",
+          topics:
+            "Quantitative aptitude fundamentals\nLogical reasoning practice\nVerbal ability for assessments\nTimed problem-solving drills",
+        },
+        {
+          number: "02",
+          title: "Communication & Soft Skills",
+          topics:
+            "Professional communication\nClarity and confidence in speech\nWorkplace soft skills\nPresentation basics",
+        },
+        {
+          number: "03",
+          title: "Resume Building & LinkedIn Profile Guidance",
+          topics:
+            "Resume structure for campus roles\nHighlighting projects and achievements\nLinkedIn profile optimisation\nPersonal branding basics",
+        },
+        {
+          number: "04",
+          title: "Group Discussion Techniques",
+          topics:
+            "GD formats and expectations\nStructuring arguments\nListening and turn-taking\nPractice rounds with feedback",
+        },
+        {
+          number: "05",
+          title: "HR & Technical Interview Preparation",
+          topics:
+            "Common HR questions\nTechnical interview readiness\nSTAR-style answers\nMock interview practice",
+        },
+        {
+          number: "06",
+          title: "Corporate Etiquette & Professional Skills",
+          topics:
+            "Workplace etiquette\nProfessional presence\nEmail and meeting basics\nFirst-impression skills",
+        },
+        {
+          number: "07",
+          title: "Mock Tests and Mock Interviews",
+          topics:
+            "Assessment-style mock tests\nInterview simulations\nFeedback loops\nImprovement tracking",
+        },
+        {
+          number: "08",
+          title: "Career Guidance and Placement Readiness",
+          topics:
+            "Industry awareness\nRole fit and career paths\nPlacement process readiness\nConfidence for recruitment day",
+        },
+      ],
+    },
+    footerBlocks: {
+      alsoOffered: {
+        eyebrow: "Also offered",
+        title: "Advanced Excel Workshop",
+        href: "/courses/advanced-excel",
+        ctaLabel: "Explore Course Details",
+      },
+      limitedSeatsCta: {
+        eyebrow: "NEXT BATCH STARTS SOON",
+        titleLine1: "Maximise your",
+        titleLine2: "placement opportunities.",
+        description:
+          "Whether preparing for IT, finance, manufacturing, consulting, or other industries — talk to us about bringing CRT to your campus.",
+        ctaLabel: "Book a Free Demo",
+        ctaHref: "#demo-class",
+      },
+    },
+    faq: sharedFaq,
+  },
 ] as const;

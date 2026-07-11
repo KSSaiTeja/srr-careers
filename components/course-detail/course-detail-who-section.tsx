@@ -8,7 +8,7 @@ type CourseDetailWhoSectionProps = {
 
 export function CourseDetailWhoSection({ content }: CourseDetailWhoSectionProps) {
   return (
-    <CourseDetailSection className="py-16 sm:py-20">
+    <CourseDetailSection className="py-8 sm:py-10">
       <div className="flex flex-col gap-12 xl:flex-row xl:items-start xl:gap-14 2xl:gap-16">
         <div className="flex min-w-0 flex-1 flex-col gap-8 xl:max-w-[726px]">
           <div className="flex flex-col gap-5 sm:gap-6">

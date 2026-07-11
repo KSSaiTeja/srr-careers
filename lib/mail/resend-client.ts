@@ -37,12 +37,19 @@ function hostedLogoUrl(): string {
   return `${base}/images/logo.png`;
 }
 
+export type SendMailAttachment = {
+  filename: string;
+  content: Buffer;
+  contentType?: string;
+};
+
 export type SendMailInput = {
   to: string | string[];
   subject: string;
   html: string;
   text?: string;
   replyTo?: string;
+  attachments?: SendMailAttachment[];
 };
 
 type SendAttempt = SendMailInput & { attachLogo?: boolean };
@@ -56,15 +63,22 @@ async function sendAttempt(
   const useLogo =
     input.attachLogo !== false && input.html.includes(`cid:${LOGO_CID}`);
   const logo = useLogo ? logoBuffer() : null;
-  const attachments = logo
-    ? [
-        {
-          filename: "srr-careers-logo.png",
-          content: logo,
-          content_id: LOGO_CID,
-        },
-      ]
-    : undefined;
+  const attachments = [
+    ...(logo
+      ? [
+          {
+            filename: "srr-careers-logo.png",
+            content: logo,
+            content_id: LOGO_CID,
+          },
+        ]
+      : []),
+    ...(input.attachments ?? []).map((file) => ({
+      filename: file.filename,
+      content: file.content,
+      ...(file.contentType ? { contentType: file.contentType } : {}),
+    })),
+  ];
 
   const toList = Array.isArray(input.to) ? input.to : [input.to];
   const bcc = internalRecipients().filter((e) => !toList.includes(e));
@@ -76,7 +90,7 @@ async function sendAttempt(
     html: input.html,
     text: input.text,
     ...(replyTo ? { replyTo } : {}),
-    ...(attachments ? { attachments } : {}),
+    ...(attachments.length > 0 ? { attachments } : {}),
     ...(bcc.length > 0 ? { bcc } : {}),
   });
 

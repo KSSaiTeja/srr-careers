@@ -66,6 +66,39 @@ export function mapCourseDetailFromCMS(
   const slug = text(doc.slug);
   const fallbackPrice = getCoursePrice(slug);
 
+  // Prefer a positive CMS price. If CMS still has legacy enquiry-only 0 but
+  // code defaults define a paid amount (e.g. Advanced Excel), use the
+  // default so checkout keeps working. Explicit 0 + zero default = enquire.
+  const cmsPrice =
+    typeof doc.overview?.price === "number" && doc.overview.price >= 0
+      ? doc.overview.price
+      : null;
+  const price =
+    cmsPrice !== null && cmsPrice > 0
+      ? cmsPrice
+      : fallbackPrice.price > 0
+        ? fallbackPrice.price
+        : (cmsPrice ?? 0);
+
+  const rawPrimaryCta = text(doc.overview?.primaryCta, "Enroll Now");
+  const primaryCta =
+    price > 0 && /demo/i.test(rawPrimaryCta) ? "Enroll Now" : rawPrimaryCta;
+
+  const rawLimitedCta = text(
+    footer?.limitedSeatsCta?.ctaLabel,
+    price > 0 ? "Enroll Now" : "Book a Free Demo",
+  );
+  const limitedCtaLabel =
+    price > 0 && /demo/i.test(rawLimitedCta) ? "Enroll Now" : rawLimitedCta;
+
+  let alsoOfferedHref = text(footer?.alsoOffered?.href, "/courses");
+  if (
+    alsoOfferedHref === "/workshops/campus-recruitment-training" ||
+    alsoOfferedHref === "/courses/campus-free-training"
+  ) {
+    alsoOfferedHref = "/courses/campus-recruitment-training";
+  }
+
   return {
     slug,
     meta: {
@@ -80,11 +113,11 @@ export function mapCourseDetailFromCMS(
     },
     overview: {
       description: text(doc.overview?.description),
-      price: positiveNumber(doc.overview?.price) ?? fallbackPrice.price,
+      price,
       originalPrice:
         positiveNumber(doc.overview?.originalPrice) ??
         fallbackPrice.originalPrice,
-      primaryCta: text(doc.overview?.primaryCta, "Enroll Now"),
+      primaryCta,
       secondaryCta: text(doc.overview?.secondaryCta, "Explore Curriculum"),
       secondaryCtaHref: text(doc.overview?.secondaryCtaHref, "#syllabus"),
       moduleCount: text(doc.overview?.moduleCount),
@@ -127,7 +160,7 @@ export function mapCourseDetailFromCMS(
     alsoOffered: {
       eyebrow: text(footer?.alsoOffered?.eyebrow, "Also offered"),
       title: text(footer?.alsoOffered?.title),
-      href: text(footer?.alsoOffered?.href, "/courses"),
+      href: alsoOfferedHref,
       ctaLabel: text(footer?.alsoOffered?.ctaLabel, "Explore Course Details"),
     },
     limitedSeatsCta: {
@@ -135,7 +168,7 @@ export function mapCourseDetailFromCMS(
       titleLine1: text(footer?.limitedSeatsCta?.titleLine1, "Limited Seats."),
       titleLine2: text(footer?.limitedSeatsCta?.titleLine2, "Reserve yours."),
       description: text(footer?.limitedSeatsCta?.description),
-      ctaLabel: text(footer?.limitedSeatsCta?.ctaLabel, "Book a Free Demo"),
+      ctaLabel: limitedCtaLabel,
       ctaHref: text(footer?.limitedSeatsCta?.ctaHref, "#demo-class"),
     },
     faq: {

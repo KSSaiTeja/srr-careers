@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useSiteSettings } from "@/components/layout/site-settings-context";
+import type { NavChildLink } from "@/lib/types/site-settings-content";
 import { isNavActive } from "@/lib/utils/is-nav-active";
 import { cn } from "@/lib/utils/cn";
 
@@ -13,13 +14,23 @@ export function MobileNav() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const { nav, header } = useSiteSettings();
   const pathname = usePathname();
 
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => {
+    setOpen(false);
+    setExpanded(null);
+    setExpandedGroup(null);
+  }, []);
 
   const toggleExpanded = useCallback((href: string) => {
     setExpanded((current) => (current === href ? null : href));
+    setExpandedGroup(null);
+  }, []);
+
+  const toggleGroup = useCallback((key: string) => {
+    setExpandedGroup((current) => (current === key ? null : key));
   }, []);
 
   useEffect(() => {
@@ -42,6 +53,81 @@ export function MobileNav() {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open, close]);
+
+  const renderChild = (child: NavChildLink) => {
+    const groupKey = `${child.label}-${child.href}`;
+    const isGroup = Boolean(child.isGroup && child.children?.length);
+    const groupOpen = expandedGroup === groupKey;
+
+    if (isGroup) {
+      return (
+        <li key={groupKey}>
+          <button
+            type="button"
+            onClick={() => toggleGroup(groupKey)}
+            aria-expanded={groupOpen}
+            className="flex w-full items-center justify-between rounded-lg py-2.5 pl-4 pr-2 text-left text-sm font-medium text-gray-700 transition-colors hover:bg-brand-lavender/40 hover:text-brand-navy"
+          >
+            {child.label}
+            <ChevronDown
+              className={cn(
+                "size-4 transition-transform duration-200",
+                groupOpen && "rotate-180",
+              )}
+              aria-hidden
+            />
+          </button>
+          <ul
+            className={cn(
+              "mb-1 flex flex-col gap-1 overflow-hidden pl-3 transition-all",
+              groupOpen ? "max-h-40" : "max-h-0",
+            )}
+            hidden={!groupOpen}
+          >
+            {child.children?.map((sub) => {
+              const subActive = isNavActive(sub.href, pathname);
+              return (
+                <li key={sub.href}>
+                  <Link
+                    href={sub.href}
+                    onClick={close}
+                    aria-current={subActive ? "page" : undefined}
+                    className={cn(
+                      "block rounded-lg py-2.5 pl-4 pr-4 text-sm font-medium transition-colors",
+                      subActive
+                        ? "bg-brand-lavender/50 text-brand-navy"
+                        : "text-gray-700 hover:bg-brand-lavender/40 hover:text-brand-navy",
+                    )}
+                  >
+                    {sub.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </li>
+      );
+    }
+
+    const childActive = isNavActive(child.href, pathname);
+    return (
+      <li key={child.href}>
+        <Link
+          href={child.href}
+          onClick={close}
+          aria-current={childActive ? "page" : undefined}
+          className={cn(
+            "block rounded-lg py-2.5 pl-4 pr-4 text-sm font-medium transition-colors",
+            childActive
+              ? "bg-brand-lavender/50 text-brand-navy"
+              : "text-gray-700 hover:bg-brand-lavender/40 hover:text-brand-navy",
+          )}
+        >
+          {child.label}
+        </Link>
+      </li>
+    );
+  };
 
   const panel =
     open && mounted
@@ -134,30 +220,11 @@ export function MobileNav() {
                           id={`mobile-submenu-${item.href}`}
                           className={cn(
                             "mt-1 mb-1 flex flex-col gap-1 overflow-hidden pl-4 transition-all",
-                            isOpen ? "max-h-96" : "max-h-0",
+                            isOpen ? "max-h-[40rem]" : "max-h-0",
                           )}
                           hidden={!isOpen}
                         >
-                          {item.children?.map((child) => {
-                            const childActive = isNavActive(child.href, pathname);
-                            return (
-                              <li key={child.href}>
-                                <Link
-                                  href={child.href}
-                                  onClick={close}
-                                  aria-current={childActive ? "page" : undefined}
-                                  className={cn(
-                                    "block rounded-lg py-2.5 pl-4 pr-4 text-sm font-medium transition-colors",
-                                    childActive
-                                      ? "bg-brand-lavender/50 text-brand-navy"
-                                      : "text-gray-700 hover:bg-brand-lavender/40 hover:text-brand-navy",
-                                  )}
-                                >
-                                  {child.label}
-                                </Link>
-                              </li>
-                            );
-                          })}
+                          {item.children?.map((child) => renderChild(child))}
                         </ul>
                       )}
                     </li>
@@ -165,7 +232,14 @@ export function MobileNav() {
                 })}
               </ul>
 
-              <div className="border-t border-gray-100 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+              <div className="flex flex-col gap-3 border-t border-gray-100 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+                <Link
+                  href={header.secondaryCtaHref}
+                  onClick={close}
+                  className="flex w-full items-center justify-center rounded-full border border-brand-navy/25 px-6 py-3.5 text-base font-semibold text-brand-navy transition-colors hover:border-brand-navy/50 hover:bg-brand-lavender/40"
+                >
+                  {header.secondaryCtaLabel}
+                </Link>
                 <Link
                   href={header.ctaHref}
                   onClick={close}

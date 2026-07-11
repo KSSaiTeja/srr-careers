@@ -269,7 +269,7 @@ export async function MissionSection({
   const content = eyebrow ? { ...base, eyebrow } : base;
   return (
     <section
-      className={cn("py-16 sm:py-20 lg:py-24", className)}
+      className={cn("py-8 sm:py-10 lg:py-12", className)}
       aria-labelledby="mission-heading"
     >
       <Container className="flex flex-col items-center gap-10 sm:gap-12">

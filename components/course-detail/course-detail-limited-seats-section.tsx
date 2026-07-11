@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CourseDetailSection } from "@/components/course-detail/course-detail-section";
 import { EnrollButton } from "@/components/checkout/enroll-button";
 import { formatINR } from "@/lib/payment/format";
@@ -13,8 +14,10 @@ export function CourseDetailLimitedSeatsSection({
   content,
   product,
 }: CourseDetailLimitedSeatsSectionProps) {
+  const enquireOnly = product.amount <= 0;
+
   return (
-    <CourseDetailSection className="py-12 sm:py-16">
+    <CourseDetailSection className="py-6 sm:py-8">
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-navy to-black px-5 py-12 sm:rounded-[40px] sm:px-10 sm:py-16 md:px-12 md:py-20">
         <div className="relative mx-auto flex max-w-[800px] flex-col items-center text-center">
           <p className="mb-8 break-words text-center text-sm font-semibold uppercase tracking-[2px] text-white sm:text-base sm:tracking-[4px]">
@@ -31,11 +34,20 @@ export function CourseDetailLimitedSeatsSection({
           <p className="mb-8 max-w-[800px] break-words px-2 text-lg font-medium text-[#d8d8d8] sm:px-0 sm:text-xl">
             {content.description}
           </p>
-          <EnrollButton
-            product={product}
-            label={`${content.ctaLabel} · ${formatINR(product.amount)}`}
-            tone="gold"
-          />
+          {enquireOnly ? (
+            <Link
+              href={content.ctaHref}
+              className="inline-flex items-center justify-center rounded-2xl bg-brand-gold px-6 py-3.5 text-base font-semibold text-black transition-colors hover:bg-brand-gold-dark sm:text-lg"
+            >
+              {content.ctaLabel}
+            </Link>
+          ) : (
+            <EnrollButton
+              product={product}
+              label={`${content.ctaLabel} · ${formatINR(product.amount)}`}
+              tone="gold"
+            />
+          )}
         </div>
       </div>
     </CourseDetailSection>

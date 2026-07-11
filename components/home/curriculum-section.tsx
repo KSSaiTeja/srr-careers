@@ -28,7 +28,7 @@ function renderWithHighlight(text: string, highlight?: string): ReactNode {
 
 export function CurriculumSection({ content }: CurriculumSectionProps) {
   return (
-    <section id="courses" className="py-16 sm:py-20 lg:py-24">
+    <section id="courses" className="py-8 sm:py-10 lg:py-12">
       <Container>
         <BlurReveal as="div" className="mb-10 text-center sm:mb-12 lg:mb-16">
           <p className="mb-4 text-base font-medium tracking-widest text-brand-navy sm:mb-6 sm:text-lg lg:text-xl">

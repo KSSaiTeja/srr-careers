@@ -36,6 +36,25 @@ function text(value: string | null | undefined, fallback: string): string {
   return trimmed && trimmed.length > 0 ? trimmed : fallback;
 }
 
+/** Older SAP-only demo copy still present in some CMS rows. */
+const LEGACY_PRE_FOOTER = {
+  badge: "LIMITED SEATS — NEXT BATCH",
+  headingLine1: "Book your free SAP",
+  headingLine2: "S/4 HANA FICO Live Demo",
+  description:
+    "Interact live with SAP industry experts. Get the complete roadmap and syllabus. 100% free — no credit card.",
+} as const;
+
+function migratePreFooterField(
+  cmsValue: string | null | undefined,
+  nextDefault: string,
+  legacyValue: string,
+): string {
+  const trimmed = cmsValue?.trim();
+  if (!trimmed || trimmed === legacyValue) return nextDefault;
+  return trimmed;
+}
+
 function mapNotice(
   fromCms:
     | {
@@ -242,10 +261,27 @@ export function mapHomePageFromCMS(
           : d.testimonials.items.map((t) => ({ ...t })),
     },
     preFooter: {
-      badge: text(cms.preFooter?.badge, d.preFooter.badge),
-      headingLine1: text(cms.preFooter?.headingLine1, d.preFooter.headingLine1),
-      headingLine2: text(cms.preFooter?.headingLine2, d.preFooter.headingLine2),
-      description: text(cms.preFooter?.description, d.preFooter.description),
+      // Prefer universal demo copy when CMS still has the older SAP-only wording.
+      badge: migratePreFooterField(
+        cms.preFooter?.badge,
+        d.preFooter.badge,
+        LEGACY_PRE_FOOTER.badge,
+      ),
+      headingLine1: migratePreFooterField(
+        cms.preFooter?.headingLine1,
+        d.preFooter.headingLine1,
+        LEGACY_PRE_FOOTER.headingLine1,
+      ),
+      headingLine2: migratePreFooterField(
+        cms.preFooter?.headingLine2,
+        d.preFooter.headingLine2,
+        LEGACY_PRE_FOOTER.headingLine2,
+      ),
+      description: migratePreFooterField(
+        cms.preFooter?.description,
+        d.preFooter.description,
+        LEGACY_PRE_FOOTER.description,
+      ),
       phoneButtonLabel: text(
         cms.preFooter?.phoneButtonLabel,
         d.preFooter.phoneButtonLabel,

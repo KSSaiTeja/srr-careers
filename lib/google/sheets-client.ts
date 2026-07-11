@@ -1,11 +1,14 @@
 import { google, type sheets_v4 } from "googleapis";
+import { getGoogleAuth, GOOGLE_SHEETS_SCOPES } from "@/lib/google/auth";
 
 /**
  * Google Sheets backend via a service account (replaces the brittle Apps Script
- * web-app). Three tabs in one spreadsheet, all auto-created with headers:
- *   - "Subscriptions" newsletter sign-ups          (append)
- *   - "Leads"         demo-class enquiries          (append)
- *   - "Enrollments"   checkout records (upsert by Enrollment Ref)
+ * web-app). Tabs in one spreadsheet, all auto-created with headers:
+ *   - "Subscriptions"  newsletter sign-ups          (append)
+ *   - "Leads"          demo-class enquiries          (append)
+ *   - "Enrollments"    checkout records (upsert by Enrollment Ref)
+ *   - "Join Our Team"  faculty / team applications   (append)
+ *   - "Internships"    student internship applications (append)
  *
  * Setup (one-time):
  *   1. Google Cloud Console → create a Service Account → add a JSON key.
@@ -21,8 +24,6 @@ import { google, type sheets_v4 } from "googleapis";
  *
  * Until configured, isSheetsConfigured() is false and callers no-op / 503.
  */
-
-const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
 type RgbColor = { red: number; green: number; blue: number };
 
@@ -49,55 +50,13 @@ function getSpreadsheetId(): string | undefined {
   return process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
 }
 
-/** Normalises a PEM private key pasted via env (strips wrapping quotes, fixes \n). */
-function normalizeKey(raw: string): string {
-  let key = raw.trim();
-  if (
-    (key.startsWith('"') && key.endsWith('"')) ||
-    (key.startsWith("'") && key.endsWith("'"))
-  ) {
-    key = key.slice(1, -1);
-  }
-  // Some env loaders keep the literal two-character "\n"; turn those into real
-  // newlines. (A correctly expanded key already has real newlines — left as-is.)
-  if (key.includes("\\n")) key = key.replace(/\\n/g, "\n");
-  return key;
-}
-
-function loadCredentials(): { email: string; key: string } | null {
-  const b64 =
-    process.env.GOOGLE_SERVICE_ACCOUNT_JSON_BASE64 ??
-    process.env.GOOGLE_SERVICE_ACCOUNT_KEY_BASE64;
-  if (b64) {
-    try {
-      const json = JSON.parse(Buffer.from(b64.trim(), "base64").toString("utf8"));
-      if (json.client_email && json.private_key) {
-        return { email: json.client_email, key: normalizeKey(json.private_key) };
-      }
-    } catch (error) {
-      console.error("[sheets] GOOGLE_SERVICE_ACCOUNT_JSON_BASE64 is invalid", error);
-    }
-  }
-
-  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const rawKey = process.env.GOOGLE_PRIVATE_KEY;
-  if (email && rawKey) return { email, key: normalizeKey(rawKey) };
-
-  return null;
-}
-
 function getSheets(): sheets_v4.Sheets | null {
   if (!getSpreadsheetId()) return null;
   if (cachedSheets) return cachedSheets;
 
-  const creds = loadCredentials();
-  if (!creds) return null;
+  const auth = getGoogleAuth(GOOGLE_SHEETS_SCOPES);
+  if (!auth) return null;
 
-  const auth = new google.auth.JWT({
-    email: creds.email,
-    key: creds.key,
-    scopes: SCOPES,
-  });
   cachedSheets = google.sheets({ version: "v4", auth });
   return cachedSheets;
 }

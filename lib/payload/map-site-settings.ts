@@ -1,3 +1,5 @@
+import { coursesNavChildren } from "@/lib/constants/courses-nav";
+import { workshopsNavChildren } from "@/lib/constants/workshops-nav";
 import type { SocialPlatform } from "@/lib/constants/social";
 import type {
   NavLink,
@@ -6,6 +8,47 @@ import type {
 } from "@/lib/types/site-settings-content";
 import type { SiteSetting } from "@/payload-types";
 import { siteSettingsDefaults } from "@/payload/seed/site-settings-defaults";
+
+function withCoursesNavStructure(items: NavLink[]): NavLink[] {
+  return items.map((item) =>
+    item.href === "/courses"
+      ? { ...item, children: coursesNavChildren }
+      : item,
+  );
+}
+
+function withWorkshopsNavItem(items: NavLink[]): NavLink[] {
+  if (items.some((item) => item.href === "/workshops")) {
+    return items.map((item) =>
+      item.href === "/workshops"
+        ? { ...item, children: workshopsNavChildren }
+        : item,
+    );
+  }
+  const coursesIdx = items.findIndex((item) => item.href === "/courses");
+  const insertAt = coursesIdx >= 0 ? coursesIdx + 1 : items.length;
+  return [
+    ...items.slice(0, insertAt),
+    {
+      label: "Workshops",
+      href: "/workshops",
+      badge: false,
+      children: workshopsNavChildren,
+    },
+    ...items.slice(insertAt),
+  ];
+}
+
+function withOurTeamNavItem(items: NavLink[]): NavLink[] {
+  if (items.some((item) => item.href === "/our-team")) return items;
+  const storyIdx = items.findIndex((item) => item.href === "/our-story");
+  const insertAt = storyIdx >= 0 ? storyIdx + 1 : 1;
+  return [
+    ...items.slice(0, insertAt),
+    { label: "Our Team", href: "/our-team", badge: false },
+    ...items.slice(insertAt),
+  ];
+}
 
 const SOCIAL_PLATFORMS: SocialPlatform[] = ["linkedin", "instagram", "whatsapp"];
 
@@ -35,44 +78,49 @@ export function mapSiteSettingsFromCMS(
   const cms: Partial<SiteSetting> = global ?? {};
 
   const cmsNav = cms.navigation?.items;
-  const nav: NavLink[] =
-    cmsNav && cmsNav.length > 0
-      ? cmsNav.map((item) => {
-          const cmsChildren = item.children;
-          const children =
-            cmsChildren && cmsChildren.length > 0
-              ? cmsChildren.map((child) => ({
-                  label: text(child.label),
-                  href: text(child.href, "#"),
-                }))
-              : undefined;
-          return {
-            label: text(item.label),
-            href: text(item.href, "#"),
-            badge: Boolean(item.badge),
-            ...(children && children.length > 0 ? { children } : {}),
-          };
-        })
-      : d.navigation.items.map((item) => {
-          const fallbackChildren = (
-            "children" in item ? item.children : undefined
-          ) as
-            | ReadonlyArray<{ label: string; href: string }>
-            | undefined;
-          return {
-            label: item.label,
-            href: item.href,
-            badge: item.badge,
-            ...(fallbackChildren && fallbackChildren.length > 0
-              ? {
-                  children: fallbackChildren.map((child) => ({
-                    label: child.label,
-                    href: child.href,
-                  })),
-                }
-              : {}),
-          };
-        });
+  const nav: NavLink[] = withWorkshopsNavItem(
+    withOurTeamNavItem(
+      withCoursesNavStructure(
+        cmsNav && cmsNav.length > 0
+          ? cmsNav.map((item) => {
+              const cmsChildren = item.children;
+              const children =
+                cmsChildren && cmsChildren.length > 0
+                  ? cmsChildren.map((child) => ({
+                      label: text(child.label),
+                      href: text(child.href, "#"),
+                    }))
+                  : undefined;
+              return {
+                label: text(item.label),
+                href: text(item.href, "#"),
+                badge: Boolean(item.badge),
+                ...(children && children.length > 0 ? { children } : {}),
+              };
+            })
+          : d.navigation.items.map((item) => {
+              const fallbackChildren = (
+                "children" in item ? item.children : undefined
+              ) as
+                | ReadonlyArray<{ label: string; href: string }>
+                | undefined;
+              return {
+                label: item.label,
+                href: item.href,
+                badge: item.badge,
+                ...(fallbackChildren && fallbackChildren.length > 0
+                  ? {
+                      children: fallbackChildren.map((child) => ({
+                        label: child.label,
+                        href: child.href,
+                      })),
+                    }
+                  : {}),
+              };
+            }),
+      ),
+    ),
+  );
 
   const phone = text(cms.contact?.phone, d.contact.phone);
   const email = text(cms.contact?.email, d.contact.email);
@@ -115,10 +163,24 @@ export function mapSiteSettingsFromCMS(
       : d.footer.exploreLinks.map((l) => ({ ...l }));
 
   const cmsCourse = cms.footer?.courseLinks;
-  const courseLinks =
+  const courseLinks = (
     cmsCourse && cmsCourse.length > 0
       ? cmsCourse.map((l) => ({ label: text(l.label), href: text(l.href, "#") }))
-      : d.footer.courseLinks.map((l) => ({ ...l }));
+      : d.footer.courseLinks.map((l) => ({ ...l }))
+  ).map((link) => {
+    if (
+      link.href === "/courses/campus-free-training" ||
+      link.href === "/workshops/campus-recruitment-training" ||
+      link.label === "Campus Free Training" ||
+      link.label === "Campus Recruitment Training"
+    ) {
+      return {
+        label: "Campus Recruitment Training",
+        href: "/courses/campus-recruitment-training",
+      };
+    }
+    return link;
+  });
 
   return {
     brand: {
@@ -131,6 +193,8 @@ export function mapSiteSettingsFromCMS(
     header: {
       ctaLabel: text(cms.brand?.header?.ctaLabel, d.brand.header.ctaLabel),
       ctaHref: text(cms.brand?.header?.ctaHref, d.brand.header.ctaHref),
+      secondaryCtaLabel: d.brand.header.secondaryCtaLabel,
+      secondaryCtaHref: d.brand.header.secondaryCtaHref,
     },
     nav,
     contact: {

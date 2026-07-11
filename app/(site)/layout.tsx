@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Serif_Text, Inter } from "next/font/google";
 import { MotionRoot } from "@/components/motion/motion-root";
 import { PageLoader } from "@/components/motion/page-loader";
-import { WhatsAppWidget } from "@/components/layout/whatsapp-widget";
+import { FloatingActions } from "@/components/layout/floating-actions";
 import { SiteSettingsProvider } from "@/components/layout/site-settings-context";
 import { getSiteSettings } from "@/lib/payload/get-site-settings";
 import "../globals.css";
@@ -50,7 +50,7 @@ export default async function SiteLayout({
         <MotionRoot>
           <SiteSettingsProvider value={siteSettings}>
             {children}
-            <WhatsAppWidget />
+            <FloatingActions />
           </SiteSettingsProvider>
         </MotionRoot>
       </body>

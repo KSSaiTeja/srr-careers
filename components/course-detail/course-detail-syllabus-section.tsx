@@ -28,7 +28,7 @@ export function CourseDetailSyllabusSection({
   content,
 }: CourseDetailSyllabusSectionProps) {
   return (
-    <CourseDetailSection id="syllabus" className="scroll-mt-24 py-16 sm:py-20">
+    <CourseDetailSection id="syllabus" className="scroll-mt-24 py-8 sm:py-10">
       <div className="mx-auto mb-12 flex max-w-[781px] flex-col items-center gap-5 text-center sm:mb-14 sm:gap-6">
         <p className="text-sm font-medium uppercase tracking-[3px] text-brand-navy sm:text-base sm:tracking-[5px] lg:text-xl">
           {content.eyebrow}

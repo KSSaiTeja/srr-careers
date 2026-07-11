@@ -51,9 +51,7 @@ function getCourseLabel(value: EnrollmentCourseValue): string {
 }
 
 export function EnrollmentForm({ className }: EnrollmentFormProps) {
-  const [course, setCourse] = useState<EnrollmentCourseValue>(
-    enrollmentCourseOptions[0].value,
-  );
+  const [course, setCourse] = useState<EnrollmentCourseValue | "">("");
   const [submission, setSubmission] = useState<EnrollmentSubmission | null>(
     null,
   );
@@ -63,6 +61,11 @@ export function EnrollmentForm({ className }: EnrollmentFormProps) {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting) return;
+
+    if (!course) {
+      setError("Please select a programme.");
+      return;
+    }
 
     const formData = new FormData(event.currentTarget);
     const lead: EnrollmentSubmission = {
@@ -140,17 +143,17 @@ export function EnrollmentForm({ className }: EnrollmentFormProps) {
 
         <div className="space-y-2">
           <Label className="text-[15px] font-semibold text-gray-900">
-            Course
+            Programme
           </Label>
           <Select
-            value={course}
+            value={course || undefined}
             onValueChange={(value) =>
               setCourse(value as EnrollmentCourseValue)
             }
             required
           >
-            <SelectTrigger aria-label="Select course">
-              <SelectValue placeholder="Choose your course" />
+            <SelectTrigger aria-label="Select programme">
+              <SelectValue placeholder="Choose a programme" />
             </SelectTrigger>
             <SelectContent align="end" sideOffset={6}>
               {enrollmentCourseOptions.map((option) => (
@@ -160,7 +163,7 @@ export function EnrollmentForm({ className }: EnrollmentFormProps) {
               ))}
             </SelectContent>
           </Select>
-          <input type="hidden" name="course" value={course} />
+          <input type="hidden" name="course" value={course} required />
         </div>
 
         {error ? (

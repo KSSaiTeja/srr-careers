@@ -1,6 +1,8 @@
 export const COURSE_DETAIL_SLUGS = [
   "sap-fico-consultant-track",
   "sap-fico-end-user-track",
+  "advanced-excel",
+  "campus-recruitment-training",
 ] as const;
 
 export type CourseDetailSlug = (typeof COURSE_DETAIL_SLUGS)[number];

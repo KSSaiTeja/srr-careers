@@ -3,6 +3,9 @@ import type { SocialPlatform } from "@/lib/constants/social";
 export type NavChildLink = {
   label: string;
   href: string;
+  /** Non-clickable parent that reveals nested links on hover / expand. */
+  isGroup?: boolean;
+  children?: NavChildLink[];
 };
 
 export type NavLink = {
@@ -31,6 +34,8 @@ export type SiteSettingsContent = {
   header: {
     ctaLabel: string;
     ctaHref: string;
+    secondaryCtaLabel: string;
+    secondaryCtaHref: string;
   };
   nav: NavLink[];
   contact: {

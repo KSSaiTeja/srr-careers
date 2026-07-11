@@ -209,11 +209,11 @@ export const homePageDefaults = {
     ],
   },
   preFooter: {
-    badge: "LIMITED SEATS — NEXT BATCH",
-    headingLine1: "Book your free SAP",
-    headingLine2: "S/4 HANA FICO Live Demo",
+    badge: "FREE LIVE DEMO",
+    headingLine1: "Book your free",
+    headingLine2: "live demo class",
     description:
-      "Interact live with SAP industry experts. Get the complete roadmap and syllabus. 100% free — no credit card.",
+      "Pick any programme — SAP FICO, Advanced Excel, or a workshop. Meet our mentors, get a clear roadmap, and find the right fit. 100% free — no credit card.",
     phoneButtonLabel: "+91 92861 23457",
     emailButtonLabel: "Email us",
   },

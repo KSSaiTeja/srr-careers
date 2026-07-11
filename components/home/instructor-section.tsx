@@ -100,7 +100,7 @@ type InstructorSectionProps = {
 
 export function InstructorSection({ content }: InstructorSectionProps) {
   return (
-    <section id="story" className="relative bg-white/50 py-16 sm:py-20 lg:py-24">
+    <section id="story" className="relative bg-white/50 py-8 sm:py-10 lg:py-12">
       <Container>
         <SectionHeading
           eyebrow={content.eyebrow}

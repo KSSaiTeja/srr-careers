@@ -9,7 +9,7 @@ type ProblemSectionProps = {
 
 export function ProblemSection({ content }: ProblemSectionProps) {
   return (
-    <section className="bg-white/50 py-16 sm:py-20 lg:py-24">
+    <section className="bg-white/50 py-8 sm:py-10 lg:py-12">
       <Container>
         <BlurReveal as="div" className="mb-10 text-center sm:mb-12 lg:mb-16">
           <p className="mb-3 text-3xl font-semibold text-gray-500 sm:mb-4 sm:text-4xl lg:text-5xl">

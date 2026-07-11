@@ -11,6 +11,9 @@ export type CoursePrice = {
 export const DEFAULT_COURSE_PRICES: Record<string, CoursePrice> = {
   "sap-fico-consultant-track": { price: 35000, originalPrice: 45000 },
   "sap-fico-end-user-track": { price: 15000, originalPrice: 20000 },
+  "advanced-excel": { price: 15000, originalPrice: 20000 },
+  // Institutional programmes — fee confirmed on enquiry.
+  "campus-recruitment-training": { price: 0 },
 };
 
 const GENERIC_FALLBACK: CoursePrice = { price: 25000 };

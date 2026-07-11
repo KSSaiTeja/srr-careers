@@ -18,7 +18,7 @@ export function BlogListingPage({ content, posts }: BlogListingPageProps) {
     <div className="relative min-h-screen overflow-x-clip bg-white">
       <PageBackground />
       <SiteHeader />
-      <main className="relative z-10 flex flex-col gap-20 pb-24 sm:gap-24 sm:pb-28 lg:gap-28 lg:pb-[136px]">
+      <main className="relative z-10 flex flex-col gap-10 pb-12 sm:gap-12 sm:pb-14 lg:gap-14 lg:pb-[68px]">
         <BlogHero
           eyebrow={content.intro.pageTitle}
           title={content.intro.headline}

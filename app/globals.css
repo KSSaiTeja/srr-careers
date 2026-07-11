@@ -101,6 +101,21 @@ body {
   }
 }
 
+@keyframes internship-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-internship-pop {
+  animation: internship-pop 0.45s ease-out both;
+}
+
 .enrollment-success-circle {
   stroke-dasharray: 151;
   stroke-dashoffset: 151;

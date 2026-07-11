@@ -42,7 +42,7 @@ export function EnrollmentSuccessView({
     { label: "Full name", value: submission.fullName },
     { label: "Email", value: submission.email },
     { label: "Mobile", value: submission.mobile },
-    { label: "Course", value: submission.course },
+    { label: "Programme", value: submission.course },
   ];
 
   return (

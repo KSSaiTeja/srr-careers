@@ -482,23 +482,23 @@ export const HomePage: GlobalConfig = {
               name: "badge",
               type: "text",
               label: "Small label",
-              defaultValue: "LIMITED SEATS — NEXT BATCH",
+              defaultValue: "FREE LIVE DEMO",
             },
             {
               name: "headingLine1",
               type: "text",
-              defaultValue: "Book your free SAP",
+              defaultValue: "Book your free",
             },
             {
               name: "headingLine2",
               type: "text",
-              defaultValue: "S/4 HANA FICO Live Demo",
+              defaultValue: "live demo class",
             },
             {
               name: "description",
               type: "textarea",
               defaultValue:
-                "Interact live with SAP industry experts. Get the complete roadmap and syllabus. 100% free — no credit card.",
+                "Pick any programme — SAP FICO, Advanced Excel, or a workshop. Meet our mentors, get a clear roadmap, and find the right fit. 100% free — no credit card.",
             },
             {
               name: "phoneButtonLabel",

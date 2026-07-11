@@ -2,6 +2,10 @@ import Link from "next/link";
 import { Command, Layers, Trophy } from "lucide-react";
 import { CourseDetailSection } from "@/components/course-detail/course-detail-section";
 import { EnrollButton } from "@/components/checkout/enroll-button";
+import {
+  WORKSHOP_PRICING_LABEL,
+  WORKSHOP_PRICING_NOTE,
+} from "@/lib/constants/workshops";
 import { formatINR } from "@/lib/payment/format";
 import type {
   CourseDetailContent,
@@ -34,21 +38,37 @@ export function CourseDetailOverviewSection({
             {content.description}
           </p>
           <div className="flex flex-col gap-5">
-            <div className="flex flex-wrap items-baseline gap-3">
-              <span className="text-xs uppercase tracking-[2px] text-[#7b7b7b]">
-                One-time fee
-              </span>
-              <span className="text-3xl font-bold tracking-[-1px] text-black sm:text-4xl">
-                {formatINR(content.price)}
-              </span>
+            <div className="flex flex-col gap-1">
+              <div className="flex flex-wrap items-baseline gap-3">
+                <span className="text-xs uppercase tracking-[2px] text-[#7b7b7b]">
+                  {content.price > 0 ? "One-time fee" : "Pricing"}
+                </span>
+                <span className="text-3xl font-bold tracking-[-1px] text-black sm:text-4xl">
+                  {content.price > 0
+                    ? formatINR(content.price)
+                    : WORKSHOP_PRICING_LABEL}
+                </span>
+              </div>
+              {content.price <= 0 ? (
+                <p className="text-sm text-gray-500">{WORKSHOP_PRICING_NOTE}</p>
+              ) : null}
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-              <EnrollButton
-                product={product}
-                label={content.primaryCta}
-                tone="navy"
-                className="w-full text-base sm:w-auto sm:text-lg lg:text-xl"
-              />
+              {content.price > 0 ? (
+                <EnrollButton
+                  product={product}
+                  label={content.primaryCta}
+                  tone="navy"
+                  className="w-full text-base sm:w-auto sm:text-lg lg:text-xl"
+                />
+              ) : (
+                <Link
+                  href="#demo-class"
+                  className="inline-flex w-full items-center justify-center rounded-2xl bg-brand-navy px-5 py-3.5 text-base text-white transition-colors hover:bg-brand-navy-dark sm:w-auto sm:px-6 sm:text-lg lg:text-xl"
+                >
+                  {content.primaryCta}
+                </Link>
+              )}
               <Link
                 href={content.secondaryCtaHref}
                 className="inline-flex w-full items-center justify-center rounded-2xl border border-brand-navy bg-white px-5 py-3.5 text-base text-brand-navy transition-colors hover:bg-brand-navy/5 sm:w-auto sm:px-6 sm:text-lg lg:text-xl"

@@ -1,6 +1,24 @@
 export const enrollmentCourseOptions = [
-  { value: "sap-s4-fico", label: "SAP S/4 HANA FICO" },
-  { value: "end-user-track", label: "End user track" },
+  {
+    value: "sap-fico-consultant-track",
+    label: "SAP FICO S/4 HANA — Consultant Track",
+  },
+  {
+    value: "sap-fico-end-user-track",
+    label: "SAP FICO S/4 HANA — End User Track",
+  },
+  {
+    value: "advanced-excel",
+    label: "Advanced Excel Workshop",
+  },
+  {
+    value: "campus-recruitment-training",
+    label: "Campus Recruitment Training (CRT)",
+  },
+  {
+    value: "not-sure",
+    label: "Not sure yet — help me choose",
+  },
 ] as const;
 
 export type EnrollmentCourseValue =

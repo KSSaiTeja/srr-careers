@@ -24,7 +24,7 @@ export function CoursesPage({ content }: CoursesPageProps) {
     <div className="relative min-h-screen overflow-x-clip bg-white">
       <PageBackground />
       <SiteHeader />
-      <main className="relative z-10 flex flex-col gap-24 pb-24 sm:gap-28 sm:pb-28 md:gap-32 lg:gap-[136px] lg:pb-[136px]">
+      <main className="relative z-10 flex flex-col gap-12 pb-12 sm:gap-14 sm:pb-14 md:gap-16 lg:gap-[68px] lg:pb-[68px]">
         <AnimatedSection variant="fade-up">
           <CoursesIntroSection content={content.intro} />
         </AnimatedSection>

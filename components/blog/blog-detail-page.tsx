@@ -19,7 +19,7 @@ export function BlogDetailPage({ post, related }: BlogDetailPageProps) {
     <div className="relative min-h-screen overflow-x-clip bg-white">
       <PageBackground />
       <SiteHeader />
-      <main className="relative z-10 pb-24 sm:pb-28 lg:pb-[136px]">
+      <main className="relative z-10 pb-12 sm:pb-14 lg:pb-[68px]">
         <Container className="pt-10 sm:pt-12">
           <nav
             className="flex items-center gap-2 text-sm font-medium text-gray-500"
