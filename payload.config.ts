@@ -2,6 +2,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
@@ -135,7 +136,18 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  // Local `public/media` cannot persist on Vercel serverless — use Blob when configured.
+  plugins: [
+    vercelBlobStorage({
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      collections: {
+        media: true,
+      },
+      // Bypass Vercel’s ~4.5MB serverless body limit for admin uploads.
+      clientUploads: true,
+      token: process.env.BLOB_READ_WRITE_TOKEN || "",
+    }),
+  ],
   onInit: async (payload) => {
     await seedSiteSettings(payload);
     await seedHomePage(payload);

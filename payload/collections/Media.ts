@@ -15,8 +15,13 @@ export const Media: CollectionConfig = {
     delete: authenticated,
   },
   upload: {
+    // Used only for local/dev when BLOB_READ_WRITE_TOKEN is unset.
+    // On Vercel, @payloadcms/storage-vercel-blob takes over (disableLocalStorage).
     staticDir: "public/media",
     mimeTypes: ["image/*"],
+    limits: {
+      fileSize: 20 * 1024 * 1024, // 20MB (clientUploads bypasses Vercel body limit)
+    },
   },
   fields: [
     {
