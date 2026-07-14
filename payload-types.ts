@@ -98,6 +98,7 @@ export interface Config {
   globals: {
     'site-settings': SiteSetting;
     'home-page': HomePage;
+    'courses-listing': CoursesListing;
     'courses-page': CoursesPage;
     'workshops-page': WorkshopsPage;
     'our-story-page': OurStoryPage;
@@ -108,6 +109,7 @@ export interface Config {
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'courses-listing': CoursesListingSelect<false> | CoursesListingSelect<true>;
     'courses-page': CoursesPageSelect<false> | CoursesPageSelect<true>;
     'workshops-page': WorkshopsPageSelect<false> | WorkshopsPageSelect<true>;
     'our-story-page': OurStoryPageSelect<false> | OurStoryPageSelect<true>;
@@ -1106,15 +1108,29 @@ export interface SiteSetting {
           href: string;
           badge?: boolean | null;
           /**
-           * Optional. Add sub-links to turn this nav item into a hover dropdown (desktop) or expandable accordion (mobile). Leave empty for a flat link.
+           * Optional. Add sub-links to turn this nav item into a hover dropdown (desktop) or expandable accordion (mobile). Leave empty for a flat link. Courses and Workshops dropdowns are driven by their listing pages (Courses Listing / Workshop Detail Pages) — edits there update the nav automatically. Nested “Parent group” + child links work for any other top-level item you configure here.
            */
           children?:
             | {
                 label: string;
                 /**
-                 * Page path or # anchor or URL
+                 * Page path (e.g. /courses/sap-fico), # anchor, or URL. For a group parent that is also clickable, set the programme page path.
                  */
                 href: string;
+                /**
+                 * Shows nested links on hover (desktop) / expand (mobile).
+                 */
+                isGroup?: boolean | null;
+                /**
+                 * e.g. under SAP FICO → Consultant Track, End User Track.
+                 */
+                nestedChildren?:
+                  | {
+                      label: string;
+                      href: string;
+                      id?: string | null;
+                    }[]
+                  | null;
                 id?: string | null;
               }[]
             | null;
@@ -1363,7 +1379,69 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
- * The Courses page (/courses) — intro, the two track cards (Pick your track), learning approach, track comparison, and FAQ. Changes go live after you click Save.
+ * The Courses catalogue (/courses) — intro and programme cards. Each card links to a programme page (e.g. SAP FICO) or a course detail. Also drives the Courses nav dropdown. SAP FICO track copy lives on Courses Page; individual course pages under Course Detail Pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses-listing".
+ */
+export interface CoursesListing {
+  id: number;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  intro?: {
+    pageTitle?: string | null;
+    headline?: string | null;
+    subtext?: string | null;
+  };
+  cards?: {
+    durationPrefix?: string | null;
+    pricePrefix?: string | null;
+  };
+  programs?:
+    | {
+        /**
+         * Stable id (e.g. sap-fico).
+         */
+        slug: string;
+        sortOrder?: number | null;
+        published?: boolean | null;
+        /**
+         * Courses dropdown label.
+         */
+        navLabel?: string | null;
+        eyebrow: string;
+        title: string;
+        /**
+         * e.g. /courses/sap-fico or /courses/advanced-excel
+         */
+        href: string;
+        summary: string;
+        durationLabel?: string | null;
+        priceLabel?: string | null;
+        /**
+         * When on, this programme appears as a parent in the Courses dropdown with the nested links below (e.g. SAP FICO → Consultant / End User).
+         */
+        isNavGroup?: boolean | null;
+        /**
+         * Shown under this programme in the Courses dropdown when “Nav group” is on.
+         */
+        navChildren?:
+          | {
+              label: string;
+              href: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The SAP FICO programme page (/courses/sap-fico) — intro, the two track cards (Pick your track), learning approach, track comparison, and FAQ. The Courses catalogue lives on Courses Listing. Changes go live after you click Save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "courses-page".
@@ -1791,6 +1869,14 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                 | {
                     label?: T;
                     href?: T;
+                    isGroup?: T;
+                    nestedChildren?:
+                      | T
+                      | {
+                          label?: T;
+                          href?: T;
+                          id?: T;
+                        };
                     id?: T;
                   };
               id?: T;
@@ -2017,6 +2103,57 @@ export interface HomePageSelect<T extends boolean = true> {
         description?: T;
         phoneButtonLabel?: T;
         emailButtonLabel?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses-listing_select".
+ */
+export interface CoursesListingSelect<T extends boolean = true> {
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+        headline?: T;
+        subtext?: T;
+      };
+  cards?:
+    | T
+    | {
+        durationPrefix?: T;
+        pricePrefix?: T;
+      };
+  programs?:
+    | T
+    | {
+        slug?: T;
+        sortOrder?: T;
+        published?: T;
+        navLabel?: T;
+        eyebrow?: T;
+        title?: T;
+        href?: T;
+        summary?: T;
+        durationLabel?: T;
+        priceLabel?: T;
+        isNavGroup?: T;
+        navChildren?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

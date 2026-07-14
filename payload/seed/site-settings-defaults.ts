@@ -30,16 +30,23 @@ export const siteSettingsDefaults = {
         label: "Courses",
         href: "/courses",
         badge: false,
-        // Nested SAP group is applied in mapSiteSettingsFromCMS via
-        // `coursesNavChildren` (Payload children stay flat label/href pairs).
+        // Dropdown children come from Courses Listing via getCoursesNavChildren.
+        // Nested group shape (SAP FICO → tracks) is documented here as fallback.
         children: [
           {
-            label: "Consultant Track",
-            href: "/courses/sap-fico-consultant-track",
-          },
-          {
-            label: "End User Track",
-            href: "/courses/sap-fico-end-user-track",
+            label: "SAP FICO S/4HANA",
+            href: "/courses/sap-fico",
+            isGroup: true,
+            children: [
+              {
+                label: "Consultant Track",
+                href: "/courses/sap-fico-consultant-track",
+              },
+              {
+                label: "End User Track",
+                href: "/courses/sap-fico-end-user-track",
+              },
+            ],
           },
           {
             label: "Advanced Excel",

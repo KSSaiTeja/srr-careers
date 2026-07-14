@@ -15,6 +15,7 @@ import { Media } from "./payload/collections/Media";
 import { Users } from "./payload/collections/Users";
 import { WorkshopDetails } from "./payload/collections/WorkshopDetails";
 import { BlogPage } from "./payload/globals/BlogPage";
+import { CoursesListing } from "./payload/globals/CoursesListing";
 import { CoursesPage } from "./payload/globals/CoursesPage";
 import { HomePage } from "./payload/globals/HomePage";
 import { OurStoryPage } from "./payload/globals/OurStoryPage";
@@ -25,6 +26,7 @@ import { WorkshopsPage } from "./payload/globals/WorkshopsPage";
 import { seedBlogPage } from "./payload/seed/seed-blog-page";
 import { seedBlogPosts } from "./payload/seed/seed-blog-posts";
 import { seedCourseDetails } from "./payload/seed/seed-course-details";
+import { seedCoursesListing } from "./payload/seed/seed-courses-listing";
 import { seedCoursesPage } from "./payload/seed/seed-courses-page";
 import { seedHomePage } from "./payload/seed/seed-home-page";
 import { seedOurStoryPage } from "./payload/seed/seed-our-story-page";
@@ -120,6 +122,7 @@ export default buildConfig({
   globals: [
     SiteSettings,
     HomePage,
+    CoursesListing,
     CoursesPage,
     WorkshopsPage,
     OurStoryPage,
@@ -161,6 +164,7 @@ export default buildConfig({
   onInit: async (payload) => {
     await seedSiteSettings(payload);
     await seedHomePage(payload);
+    await seedCoursesListing(payload);
     await seedCoursesPage(payload);
     await seedOurStoryPage(payload);
     await seedOurTeamPage(payload);

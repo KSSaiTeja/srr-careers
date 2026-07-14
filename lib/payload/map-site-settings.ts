@@ -1,4 +1,4 @@
-import { coursesNavChildren } from "@/lib/constants/courses-nav";
+import { coursesNavChildren as defaultCoursesNavChildren } from "@/lib/constants/courses-nav";
 import { workshopsNavChildren as defaultWorkshopsNavChildren } from "@/lib/constants/workshops-nav";
 import type { SocialPlatform } from "@/lib/constants/social";
 import type {
@@ -10,10 +10,53 @@ import type {
 import type { SiteSetting } from "@/payload-types";
 import { siteSettingsDefaults } from "@/payload/seed/site-settings-defaults";
 
-function withCoursesNavStructure(items: NavLink[]): NavLink[] {
+function mapNavChild(child: {
+  label?: string | null;
+  href?: string | null;
+  isGroup?: boolean | null;
+  nestedChildren?:
+    | {
+        label?: string | null;
+        href?: string | null;
+      }[]
+    | null;
+  children?:
+    | {
+        label?: string | null;
+        href?: string | null;
+      }[]
+    | null;
+}): NavChildLink {
+  const label = text(child.label);
+  const href = text(child.href, "#");
+  const rawNested = child.nestedChildren ?? child.children;
+  const nested =
+    rawNested && rawNested.length > 0
+      ? rawNested
+          .map((sub) => ({
+            label: text(sub.label),
+            href: text(sub.href, "#"),
+          }))
+          .filter((sub) => sub.label)
+      : undefined;
+
+  const isGroup = Boolean(child.isGroup && nested && nested.length > 0);
+
+  return {
+    label,
+    href,
+    ...(isGroup ? { isGroup: true, children: nested } : {}),
+    ...(!isGroup && nested && nested.length > 0 ? { children: nested } : {}),
+  };
+}
+
+function withCoursesNavItem(
+  items: NavLink[],
+  coursesChildren: NavChildLink[],
+): NavLink[] {
   return items.map((item) =>
     item.href === "/courses"
-      ? { ...item, children: coursesNavChildren }
+      ? { ...item, children: coursesChildren }
       : item,
   );
 }
@@ -77,7 +120,10 @@ export function buildWhatsAppHref(
 
 export function mapSiteSettingsFromCMS(
   global: SiteSetting | null | undefined,
-  options?: { workshopsNavChildren?: NavChildLink[] },
+  options?: {
+    workshopsNavChildren?: NavChildLink[];
+    coursesNavChildren?: NavChildLink[];
+  },
 ): SiteSettingsContent {
   const d = siteSettingsDefaults;
   const cms: Partial<SiteSetting> = global ?? {};
@@ -85,20 +131,21 @@ export function mapSiteSettingsFromCMS(
     options?.workshopsNavChildren && options.workshopsNavChildren.length > 0
       ? options.workshopsNavChildren
       : defaultWorkshopsNavChildren;
+  const coursesChildren =
+    options?.coursesNavChildren && options.coursesNavChildren.length > 0
+      ? options.coursesNavChildren
+      : defaultCoursesNavChildren;
 
   const cmsNav = cms.navigation?.items;
   const nav: NavLink[] = withWorkshopsNavItem(
     withOurTeamNavItem(
-      withCoursesNavStructure(
+      withCoursesNavItem(
         cmsNav && cmsNav.length > 0
           ? cmsNav.map((item) => {
               const cmsChildren = item.children;
               const children =
                 cmsChildren && cmsChildren.length > 0
-                  ? cmsChildren.map((child) => ({
-                      label: text(child.label),
-                      href: text(child.href, "#"),
-                    }))
+                  ? cmsChildren.map((child) => mapNavChild(child))
                   : undefined;
               return {
                 label: text(item.label),
@@ -110,23 +157,21 @@ export function mapSiteSettingsFromCMS(
           : d.navigation.items.map((item) => {
               const fallbackChildren = (
                 "children" in item ? item.children : undefined
-              ) as
-                | ReadonlyArray<{ label: string; href: string }>
-                | undefined;
+              ) as ReadonlyArray<NavChildLink> | undefined;
               return {
                 label: item.label,
                 href: item.href,
                 badge: item.badge,
                 ...(fallbackChildren && fallbackChildren.length > 0
                   ? {
-                      children: fallbackChildren.map((child) => ({
-                        label: child.label,
-                        href: child.href,
-                      })),
+                      children: fallbackChildren.map((child) =>
+                        mapNavChild(child),
+                      ),
                     }
                   : {}),
               };
             }),
+        coursesChildren,
       ),
     ),
     workshopsChildren,

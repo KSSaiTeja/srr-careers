@@ -23,19 +23,47 @@ gsap.registerPlugin(ScrollTrigger);
 function NavChildItem({ child }: { child: NavChildLink }) {
   const pathname = usePathname();
   const isGroup = Boolean(child.isGroup && child.children?.length);
+  const groupHref =
+    child.href && child.href !== "#" ? child.href : undefined;
 
   if (isGroup) {
     return (
       <li role="none" className="group/flyout relative">
-        <button
-          type="button"
-          role="menuitem"
-          aria-haspopup="true"
-          className="flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-left text-sm font-medium leading-snug text-gray-700 transition-colors hover:bg-brand-lavender/40 hover:text-brand-navy"
-        >
-          {child.label}
-          <ChevronRight className="size-3.5 shrink-0 opacity-60" aria-hidden />
-        </button>
+        {groupHref ? (
+          <Link
+            href={groupHref}
+            role="menuitem"
+            aria-haspopup="true"
+            aria-current={
+              isNavActive(groupHref, pathname) ? "page" : undefined
+            }
+            className={cn(
+              "flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-left text-sm font-medium leading-snug transition-colors hover:bg-brand-lavender/40 hover:text-brand-navy",
+              isNavActive(groupHref, pathname)
+                ? "bg-brand-lavender/60 text-brand-navy"
+                : "text-gray-700",
+            )}
+          >
+            {child.label}
+            <ChevronRight
+              className="size-3.5 shrink-0 opacity-60"
+              aria-hidden
+            />
+          </Link>
+        ) : (
+          <button
+            type="button"
+            role="menuitem"
+            aria-haspopup="true"
+            className="flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-left text-sm font-medium leading-snug text-gray-700 transition-colors hover:bg-brand-lavender/40 hover:text-brand-navy"
+          >
+            {child.label}
+            <ChevronRight
+              className="size-3.5 shrink-0 opacity-60"
+              aria-hidden
+            />
+          </button>
+        )}
         <div
           className="invisible absolute left-full top-0 z-50 ml-1 w-56 opacity-0 transition-all duration-150 group-hover/flyout:visible group-hover/flyout:opacity-100 group-focus-within/flyout:visible group-focus-within/flyout:opacity-100 max-xl:left-auto max-xl:right-0 max-xl:top-full max-xl:ml-0 max-xl:mt-1"
           role="menu"

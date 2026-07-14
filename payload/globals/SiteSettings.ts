@@ -154,7 +154,7 @@ export const SiteSettings: GlobalConfig = {
                   admin: {
                     initCollapsed: true,
                     description:
-                      "Optional. Add sub-links to turn this nav item into a hover dropdown (desktop) or expandable accordion (mobile). Leave empty for a flat link.",
+                      "Optional. Add sub-links to turn this nav item into a hover dropdown (desktop) or expandable accordion (mobile). Leave empty for a flat link. Courses and Workshops dropdowns are driven by their listing pages (Courses Listing / Workshop Detail Pages) — edits there update the nav automatically. Nested “Parent group” + child links work for any other top-level item you configure here.",
                   },
                   fields: [
                     {
@@ -164,16 +164,59 @@ export const SiteSettings: GlobalConfig = {
                           name: "label",
                           type: "text",
                           required: true,
-                          admin: { width: "45%" },
+                          admin: { width: "40%" },
                         },
                         {
                           name: "href",
                           type: "text",
                           required: true,
                           admin: {
-                            width: "55%",
-                            description: "Page path or # anchor or URL",
+                            width: "40%",
+                            description:
+                              "Page path (e.g. /courses/sap-fico), # anchor, or URL. For a group parent that is also clickable, set the programme page path.",
                           },
+                        },
+                        {
+                          name: "isGroup",
+                          type: "checkbox",
+                          label: "Parent group",
+                          defaultValue: false,
+                          admin: {
+                            width: "20%",
+                            description:
+                              "Shows nested links on hover (desktop) / expand (mobile).",
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      name: "nestedChildren",
+                      type: "array",
+                      label: "Nested links (child of this sub-link)",
+                      admin: {
+                        condition: (_, siblingData) =>
+                          Boolean(siblingData?.isGroup),
+                        initCollapsed: true,
+                        description:
+                          "e.g. under SAP FICO → Consultant Track, End User Track.",
+                      },
+                      fields: [
+                        {
+                          type: "row",
+                          fields: [
+                            {
+                              name: "label",
+                              type: "text",
+                              required: true,
+                              admin: { width: "45%" },
+                            },
+                            {
+                              name: "href",
+                              type: "text",
+                              required: true,
+                              admin: { width: "55%" },
+                            },
+                          ],
                         },
                       ],
                     },

@@ -60,23 +60,48 @@ export function MobileNav() {
     const groupOpen = expandedGroup === groupKey;
 
     if (isGroup) {
+      const groupHref =
+        child.href && child.href !== "#" ? child.href : undefined;
       return (
         <li key={groupKey}>
-          <button
-            type="button"
-            onClick={() => toggleGroup(groupKey)}
-            aria-expanded={groupOpen}
-            className="flex w-full items-center justify-between rounded-lg py-2.5 pl-4 pr-2 text-left text-sm font-medium text-gray-700 transition-colors hover:bg-brand-lavender/40 hover:text-brand-navy"
-          >
-            {child.label}
-            <ChevronDown
-              className={cn(
-                "size-4 transition-transform duration-200",
-                groupOpen && "rotate-180",
-              )}
-              aria-hidden
-            />
-          </button>
+          <div className="flex items-center gap-1">
+            {groupHref ? (
+              <Link
+                href={groupHref}
+                onClick={close}
+                aria-current={
+                  isNavActive(groupHref, pathname) ? "page" : undefined
+                }
+                className={cn(
+                  "flex-1 rounded-lg py-2.5 pl-4 pr-2 text-left text-sm font-medium transition-colors",
+                  isNavActive(groupHref, pathname)
+                    ? "bg-brand-lavender/50 text-brand-navy"
+                    : "text-gray-700 hover:bg-brand-lavender/40 hover:text-brand-navy",
+                )}
+              >
+                {child.label}
+              </Link>
+            ) : (
+              <span className="flex-1 py-2.5 pl-4 pr-2 text-left text-sm font-medium text-gray-700">
+                {child.label}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => toggleGroup(groupKey)}
+              aria-expanded={groupOpen}
+              aria-label={`${groupOpen ? "Collapse" : "Expand"} ${child.label}`}
+              className="rounded-lg p-2 text-gray-700 transition-colors hover:bg-brand-lavender/40 hover:text-brand-navy"
+            >
+              <ChevronDown
+                className={cn(
+                  "size-4 transition-transform duration-200",
+                  groupOpen && "rotate-180",
+                )}
+                aria-hidden
+              />
+            </button>
+          </div>
           <ul
             className={cn(
               "mb-1 flex flex-col gap-1 overflow-hidden pl-3 transition-all",

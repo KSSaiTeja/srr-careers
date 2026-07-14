@@ -4,7 +4,7 @@ import { authenticated } from "../access/authenticated";
 
 export const CoursesPage: GlobalConfig = {
   slug: "courses-page",
-  label: "Courses Page",
+  label: "SAP FICO Page",
   access: {
     read: () => true,
     update: authenticated,
@@ -12,7 +12,7 @@ export const CoursesPage: GlobalConfig = {
   admin: {
     group: "Website Pages",
     description:
-      "The Courses page (/courses) — intro, the two track cards (Pick your track), learning approach, track comparison, and FAQ. Changes go live after you click Save.",
+      "The SAP FICO programme page (/courses/sap-fico) — intro, the two track cards (Pick your track), learning approach, track comparison, and FAQ. The Courses catalogue lives on Courses Listing. Changes go live after you click Save.",
   },
   fields: [
     {

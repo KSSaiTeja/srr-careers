@@ -1,33 +1,27 @@
 import type { NavChildLink } from "@/lib/types/site-settings-content";
+import { coursesListingDefaults } from "@/payload/seed/courses-listing-defaults";
 
 /**
- * Canonical Courses dropdown structure.
- * Injected for the `/courses` nav item so the IA stays correct even if CMS
- * still has the older flat Consultant / End User list.
+ * Fallback Courses dropdown when the Courses Listing CMS is unavailable.
+ * Live nav prefers `getCoursesNavChildren()` from the listing global.
  *
- * SAP FICO S/4HANA is a non-clickable group — hover (desktop) or expand
- * (mobile) reveals its tracks.
- *
- * Workshops (including Campus Recruitment Training) live under `/workshops`.
+ * SAP FICO is a clickable parent (/courses/sap-fico) with nested tracks;
+ * Advanced Excel links straight to its detail page.
  */
-export const coursesNavChildren: NavChildLink[] = [
-  {
-    label: "SAP FICO S/4HANA",
-    href: "#",
-    isGroup: true,
-    children: [
-      {
-        label: "Consultant Track",
-        href: "/courses/sap-fico-consultant-track",
-      },
-      {
-        label: "End User Track",
-        href: "/courses/sap-fico-end-user-track",
-      },
-    ],
-  },
-  {
-    label: "Advanced Excel",
-    href: "/courses/advanced-excel",
-  },
-];
+export const coursesNavChildren: NavChildLink[] =
+  coursesListingDefaults.programs
+    .filter((p) => p.published)
+    .map((program) => {
+      if (program.isNavGroup && program.navChildren.length > 0) {
+        return {
+          label: program.navLabel,
+          href: program.href,
+          isGroup: true,
+          children: program.navChildren.map((child) => ({ ...child })),
+        };
+      }
+      return {
+        label: program.navLabel,
+        href: program.href,
+      };
+    });

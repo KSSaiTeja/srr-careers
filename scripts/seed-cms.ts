@@ -3,6 +3,7 @@ import { getPayload } from "payload";
 import { seedBlogPage } from "@/payload/seed/seed-blog-page";
 import { seedBlogPosts } from "@/payload/seed/seed-blog-posts";
 import { seedCourseDetails } from "@/payload/seed/seed-course-details";
+import { seedCoursesListing } from "@/payload/seed/seed-courses-listing";
 import { seedCoursesPage } from "@/payload/seed/seed-courses-page";
 import { seedHomePage } from "@/payload/seed/seed-home-page";
 import { seedOurStoryPage } from "@/payload/seed/seed-our-story-page";
@@ -16,6 +17,7 @@ const payload = await getPayload({ config });
 
 await seedSiteSettings(payload);
 await seedHomePage(payload);
+await seedCoursesListing(payload);
 await seedCoursesPage(payload);
 await seedOurStoryPage(payload);
 await seedOurTeamPage(payload);
