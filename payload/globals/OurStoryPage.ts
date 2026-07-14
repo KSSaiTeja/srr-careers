@@ -59,7 +59,7 @@ export const OurStoryPage: GlobalConfig = {
                   name: "headlineSuffix",
                   type: "text",
                   label: "Headline suffix",
-                  defaultValue: " Consultants",
+                  defaultValue: "Consultants",
                   admin: { width: "50%" },
                 },
               ],

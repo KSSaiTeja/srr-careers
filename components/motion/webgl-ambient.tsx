@@ -25,16 +25,16 @@ const fragment = /* glsl */ `
     float d1 = length(uv - center);
     float d2 = length(uv - center2);
 
-    vec3 lavender = vec3(0.957, 0.953, 1.0);
-    vec3 cream = vec3(0.996, 0.961, 0.886);
-    vec3 softPurple = vec3(0.933, 0.929, 0.992);
+    vec3 lightPurple = vec3(0.957, 0.953, 1.0);
+    vec3 midPurple = vec3(0.851, 0.827, 0.992);
+    vec3 deepPurple = vec3(0.816, 0.784, 0.980);
 
     float blob1 = smoothstep(0.65, 0.0, d1 + sin(uTime * 0.35) * 0.02);
     float blob2 = smoothstep(0.55, 0.0, d2 + cos(uTime * 0.28) * 0.015);
 
-    vec3 color = mix(vec3(1.0), lavender, blob1 * 0.55);
-    color = mix(color, cream, blob2 * 0.45);
-    color = mix(color, softPurple, blob1 * blob2 * 0.35);
+    vec3 color = mix(vec3(1.0), lightPurple, blob1 * 0.55);
+    color = mix(color, midPurple, blob2 * 0.45);
+    color = mix(color, deepPurple, blob1 * blob2 * 0.35);
 
     gl_FragColor = vec4(color, 0.42);
   }

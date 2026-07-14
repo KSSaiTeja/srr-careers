@@ -1,7 +1,8 @@
 import { coursesNavChildren } from "@/lib/constants/courses-nav";
-import { workshopsNavChildren } from "@/lib/constants/workshops-nav";
+import { workshopsNavChildren as defaultWorkshopsNavChildren } from "@/lib/constants/workshops-nav";
 import type { SocialPlatform } from "@/lib/constants/social";
 import type {
+  NavChildLink,
   NavLink,
   SiteSettingsContent,
   SocialLink,
@@ -17,11 +18,14 @@ function withCoursesNavStructure(items: NavLink[]): NavLink[] {
   );
 }
 
-function withWorkshopsNavItem(items: NavLink[]): NavLink[] {
+function withWorkshopsNavItem(
+  items: NavLink[],
+  workshopsChildren: NavChildLink[],
+): NavLink[] {
   if (items.some((item) => item.href === "/workshops")) {
     return items.map((item) =>
       item.href === "/workshops"
-        ? { ...item, children: workshopsNavChildren }
+        ? { ...item, children: workshopsChildren }
         : item,
     );
   }
@@ -33,7 +37,7 @@ function withWorkshopsNavItem(items: NavLink[]): NavLink[] {
       label: "Workshops",
       href: "/workshops",
       badge: false,
-      children: workshopsNavChildren,
+      children: workshopsChildren,
     },
     ...items.slice(insertAt),
   ];
@@ -73,9 +77,14 @@ export function buildWhatsAppHref(
 
 export function mapSiteSettingsFromCMS(
   global: SiteSetting | null | undefined,
+  options?: { workshopsNavChildren?: NavChildLink[] },
 ): SiteSettingsContent {
   const d = siteSettingsDefaults;
   const cms: Partial<SiteSetting> = global ?? {};
+  const workshopsChildren =
+    options?.workshopsNavChildren && options.workshopsNavChildren.length > 0
+      ? options.workshopsNavChildren
+      : defaultWorkshopsNavChildren;
 
   const cmsNav = cms.navigation?.items;
   const nav: NavLink[] = withWorkshopsNavItem(
@@ -120,6 +129,7 @@ export function mapSiteSettingsFromCMS(
             }),
       ),
     ),
+    workshopsChildren,
   );
 
   const phone = text(cms.contact?.phone, d.contact.phone);
@@ -157,10 +167,13 @@ export function mapSiteSettingsFromCMS(
   );
 
   const cmsExplore = cms.footer?.exploreLinks;
-  const exploreLinks =
+  const exploreLinks = (
     cmsExplore && cmsExplore.length > 0
       ? cmsExplore.map((l) => ({ label: text(l.label), href: text(l.href, "#") }))
-      : d.footer.exploreLinks.map((l) => ({ ...l }));
+      : d.footer.exploreLinks.map((l) => ({ ...l }))
+  ).map((link) =>
+    link.href === "#demo-class" ? { ...link, href: "/#demo-class" } : link,
+  );
 
   const cmsCourse = cms.footer?.courseLinks;
   const courseLinks = (
@@ -179,6 +192,9 @@ export function mapSiteSettingsFromCMS(
         href: "/courses/campus-recruitment-training",
       };
     }
+    if (link.href === "#demo-class") {
+      return { ...link, href: "/#demo-class" };
+    }
     return link;
   });
 
@@ -192,9 +208,17 @@ export function mapSiteSettingsFromCMS(
     },
     header: {
       ctaLabel: text(cms.brand?.header?.ctaLabel, d.brand.header.ctaLabel),
-      ctaHref: text(cms.brand?.header?.ctaHref, d.brand.header.ctaHref),
+      ctaHref: (() => {
+        const href = text(cms.brand?.header?.ctaHref, d.brand.header.ctaHref);
+        // Always send the primary "Book a Demo" CTA to the home demo section.
+        return href === "#demo-class" ? "/#demo-class" : href;
+      })(),
       secondaryCtaLabel: d.brand.header.secondaryCtaLabel,
       secondaryCtaHref: d.brand.header.secondaryCtaHref,
+    },
+    topStrip: {
+      enabled: cms.brand?.topStrip?.enabled ?? d.brand.topStrip.enabled,
+      label: text(cms.brand?.topStrip?.label, d.brand.topStrip.label),
     },
     nav,
     contact: {
@@ -216,6 +240,11 @@ export function mapSiteSettingsFromCMS(
       contactTitle: text(cms.footer?.contactTitle, d.footer.contactTitle),
       copyright: text(cms.footer?.copyright, d.footer.copyright),
       craftedText: text(cms.footer?.craftedText, d.footer.craftedText),
+      showMsmeLogo: cms.footer?.showMsmeLogo ?? d.footer.showMsmeLogo,
+      msmeBadgeLabel: text(
+        cms.footer?.msmeBadgeLabel,
+        d.footer.msmeBadgeLabel,
+      ),
     },
   };
 }

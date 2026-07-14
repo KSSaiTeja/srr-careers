@@ -7,6 +7,13 @@ export const COURSE_DETAIL_SLUGS = [
 
 export type CourseDetailSlug = (typeof COURSE_DETAIL_SLUGS)[number];
 
+/** Courses presented as workshops — no on-page demo form; CTAs go home. */
+export const WORKSHOP_STYLE_COURSE_SLUGS = ["advanced-excel"] as const;
+
+export function isWorkshopStyleCourse(slug: string): boolean {
+  return (WORKSHOP_STYLE_COURSE_SLUGS as readonly string[]).includes(slug);
+}
+
 export type CourseDetailMetaCard = {
   icon: "duration" | "modules" | "format" | "outcome";
   label: string;

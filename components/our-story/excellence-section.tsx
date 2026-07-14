@@ -25,12 +25,12 @@ function ExcellenceCard({
     <article
       data-reveal-item
       className={cn(
-        "flex h-full flex-col gap-8 rounded-3xl border border-[#eaeaea] bg-gradient-to-b from-brand-navy/0 to-brand-navy/10 p-6 transition-transform duration-300 hover:-translate-y-1 sm:gap-10 sm:p-7 xl:gap-12",
+        "flex h-full flex-col gap-8 rounded-3xl border border-[#eaeaea] bg-gradient-to-b from-brand-purple/0 to-brand-purple/10 p-6 transition-transform duration-300 hover:-translate-y-1 sm:gap-10 sm:p-7 xl:gap-12",
         className,
       )}
     >
       <p
-        className="bg-gradient-to-b from-[#e7edf4] to-transparent bg-clip-text text-6xl font-bold leading-none text-transparent sm:text-7xl xl:text-8xl 2xl:text-[120px]"
+        className="bg-gradient-to-b from-brand-lavender via-[#ddd6fe] to-transparent bg-clip-text text-6xl font-bold leading-none text-transparent sm:text-7xl xl:text-8xl 2xl:text-[120px]"
         aria-hidden
       >
         {num}.

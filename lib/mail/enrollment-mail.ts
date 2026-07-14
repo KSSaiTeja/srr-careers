@@ -84,6 +84,7 @@ export async function sendDemoLeadMails(input: {
   email: string;
   mobile: string;
   course?: string;
+  description?: string;
 }): Promise<void> {
   if (!isMailConfigured() || !input.email) return;
   await sendMail({ to: input.email, ...templates.demoLeadCandidate(input) });

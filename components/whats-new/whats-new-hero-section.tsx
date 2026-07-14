@@ -13,7 +13,7 @@ export function WhatsNewHeroSection({ pageTitle }: WhatsNewHeroSectionProps) {
     >
       <h1
         id="whats-new-page-title"
-        className="text-center font-serif text-3xl italic leading-[1.2] tracking-[-1px] text-transparent bg-gradient-to-b from-brand-navy to-brand-navy/0 bg-clip-text sm:text-4xl sm:tracking-[-1.5px] md:text-[48px] md:leading-[63px]"
+        className="text-center font-serif text-3xl italic leading-[1.2] tracking-[-1px] text-transparent bg-gradient-to-b from-brand-purple to-brand-purple/0 bg-clip-text sm:text-4xl sm:tracking-[-1.5px] md:text-[48px] md:leading-[63px]"
       >
         {pageTitle}
       </h1>

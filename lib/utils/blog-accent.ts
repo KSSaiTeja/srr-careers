@@ -1,9 +1,9 @@
 /** Deterministic on-brand gradient for blog cover banners without an image. */
 const ACCENTS = [
-  "from-brand-navy to-brand-purple",
-  "from-brand-purple to-brand-purple-light",
-  "from-brand-navy-deep to-brand-navy",
-  "from-[#371ECB] to-[#6D5BE0]",
+  "from-brand-lavender to-brand-purple-light",
+  "from-brand-purple-light to-brand-purple",
+  "from-brand-purple to-brand-purple-deep",
+  "from-[#6D49F4] to-[#1A0A4D]",
 ] as const;
 
 export function blogAccent(seed: string): string {

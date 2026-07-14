@@ -1,5 +1,6 @@
 export const images = {
   logo: "/images/logo.png",
+  msmeLogo: "/images/msme-logo.png",
   hero: "/images/home/hero.png",
   instructor: "/images/home/instructor.png",
   instructorSignature: "/images/home/instructor-signature.png",

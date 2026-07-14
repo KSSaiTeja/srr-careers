@@ -1,4 +1,5 @@
-import type { CollectionConfig } from "payload";
+import type { CollectionConfig, TextField } from "payload";
+import { slugField } from "payload";
 
 import { authenticated } from "../access/authenticated";
 
@@ -23,28 +24,30 @@ export const BlogPosts: CollectionConfig = {
   },
   fields: [
     {
-      type: "row",
-      fields: [
-        {
-          name: "name",
-          type: "text",
-          label: "Internal name",
-          required: true,
-          admin: { width: "50%", description: "Shown in the admin list only." },
-        },
-        {
-          name: "slug",
-          type: "text",
-          required: true,
-          unique: true,
-          index: true,
-          admin: {
-            width: "50%",
-            description: "URL path under /blog/ — e.g. sap-fico-career-roadmap.",
-          },
-        },
-      ],
+      name: "name",
+      type: "text",
+      label: "Internal name",
+      required: true,
+      admin: {
+        description:
+          "Shown in the admin list only. Also used to auto-generate the URL slug.",
+      },
     },
+    slugField({
+      useAsSlug: "name",
+      overrides: (field) => {
+        // Keep slug in the main column (next to the form), not the sidebar.
+        field.admin = { width: "100%" };
+        const slug = field.fields.find(
+          (f): f is TextField => "name" in f && f.name === "slug",
+        );
+        if (slug?.admin) {
+          slug.admin.description =
+            "URL path under /blog/ — auto-generated from Internal name. Unlock to edit manually.";
+        }
+        return field;
+      },
+    }),
     {
       type: "tabs",
       tabs: [

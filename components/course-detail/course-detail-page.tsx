@@ -11,7 +11,10 @@ import { CourseDetailWhoSection } from "@/components/course-detail/course-detail
 import { CourseDetailSyllabusSection } from "@/components/course-detail/course-detail-syllabus-section";
 import { CourseDetailAlsoOfferedSection } from "@/components/course-detail/course-detail-also-offered-section";
 import { CourseDetailLimitedSeatsSection } from "@/components/course-detail/course-detail-limited-seats-section";
-import type { CourseDetailContent } from "@/lib/constants/course-detail-content";
+import {
+  isWorkshopStyleCourse,
+  type CourseDetailContent,
+} from "@/lib/constants/course-detail-content";
 import type { CheckoutProduct } from "@/lib/payment/types";
 
 type CourseDetailPageProps = {
@@ -26,6 +29,11 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
     currency: "INR",
     originalAmount: course.overview.originalPrice,
   };
+  const hideDemoForm = isWorkshopStyleCourse(course.slug);
+  const demoHref = hideDemoForm ? "/#demo-class" : "#demo-class";
+  const faq = hideDemoForm
+    ? { ...course.faq, askLinkHref: "/#demo-class" }
+    : course.faq;
 
   return (
     <div className="relative min-h-screen overflow-x-clip bg-white">
@@ -35,10 +43,11 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
         <AnimatedSection variant="fade-up">
           <div className="relative flex flex-col gap-6 sm:gap-8 md:gap-10">
             <CourseDetailIntroSection content={course.intro} />
-            <div className="relative z-10 bg-gradient-to-b from-transparent via-white/80 to-white pt-2 sm:pt-4">
+            <div className="relative z-10 bg-gradient-to-b from-transparent via-brand-lavender/80 to-white pt-2 sm:pt-4">
               <CourseDetailOverviewSection
                 content={course.overview}
                 product={product}
+                demoHref={demoHref}
               />
             </div>
           </div>
@@ -54,8 +63,14 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
         </AnimatedSection>
         <AnimatedSection variant="fade-up">
           <CourseDetailLimitedSeatsSection
-            content={course.limitedSeatsCta}
+            content={{
+              ...course.limitedSeatsCta,
+              ctaHref: hideDemoForm
+                ? "/#demo-class"
+                : course.limitedSeatsCta.ctaHref,
+            }}
             product={product}
+            fallbackHref={demoHref}
           />
         </AnimatedSection>
         <AnimatedSection variant="fade-in" staggerChildren>
@@ -66,11 +81,13 @@ export function CourseDetailPage({ course }: CourseDetailPageProps) {
           />
         </AnimatedSection>
         <AnimatedSection variant="fade-up" staggerChildren>
-          <FaqSection content={course.faq} />
+          <FaqSection content={faq} />
         </AnimatedSection>
-        <AnimatedSection variant="fade-up">
-          <PreFooterSection className="py-0" />
-        </AnimatedSection>
+        {hideDemoForm ? null : (
+          <AnimatedSection variant="fade-up">
+            <PreFooterSection className="py-0" />
+          </AnimatedSection>
+        )}
       </main>
       <SiteFooter />
     </div>

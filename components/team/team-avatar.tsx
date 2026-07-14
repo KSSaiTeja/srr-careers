@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import {
-  TEAM_HEADSHOTS_READY,
   TEAM_HEADSHOT_SIZE,
   type TeamMember,
 } from "@/lib/constants/team-members";
@@ -15,8 +14,8 @@ type TeamAvatarProps = {
 };
 
 /**
- * Shows the headshot when `TEAM_HEADSHOTS_READY` is true and files exist.
- * Otherwise uses a branded gradient + initials placeholder.
+ * Shows the headshot when `imageSrc` is set. Otherwise uses a branded
+ * gradient + initials placeholder.
  */
 export function TeamAvatar({
   member,
@@ -30,6 +29,8 @@ export function TeamAvatar({
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
 
+  const hasImage = Boolean(member.imageSrc?.trim());
+
   return (
     <div
       className={cn(
@@ -37,7 +38,7 @@ export function TeamAvatar({
         className,
       )}
     >
-      {TEAM_HEADSHOTS_READY ? (
+      {hasImage ? (
         <Image
           src={member.imageSrc}
           alt={member.name}

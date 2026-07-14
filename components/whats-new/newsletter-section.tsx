@@ -10,7 +10,7 @@ export function NewsletterSection({ content }: NewsletterSectionProps) {
   return (
     <section
       aria-labelledby="newsletter-heading"
-      className="w-full bg-gradient-to-br from-brand-navy to-black py-11 sm:py-14"
+      className="w-full bg-gradient-to-br from-brand-purple to-brand-purple-deep py-11 sm:py-14"
     >
       <div className="mx-auto flex max-w-[982px] flex-col items-center gap-10 px-6 text-center sm:gap-14">
         <div className="flex flex-col gap-6 sm:gap-8">

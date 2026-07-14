@@ -4,14 +4,19 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { TeamAvatar } from "@/components/team/team-avatar";
-import type { TeamMember } from "@/lib/constants/team-members";
+import type { TeamMember } from "@/lib/types/our-team-page-content";
 
 type TeamMemberDialogProps = {
   member: TeamMember | null;
+  workshopsHeading?: string;
   onClose: () => void;
 };
 
-export function TeamMemberDialog({ member, onClose }: TeamMemberDialogProps) {
+export function TeamMemberDialog({
+  member,
+  workshopsHeading = "Workshops",
+  onClose,
+}: TeamMemberDialogProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -44,7 +49,7 @@ export function TeamMemberDialog({ member, onClose }: TeamMemberDialogProps) {
         className="relative max-h-[min(90vh,720px)] w-full max-w-xl overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="h-1.5 w-full bg-gradient-to-r from-brand-navy via-brand-purple to-brand-gold" />
+        <div className="h-1.5 w-full bg-gradient-to-r from-brand-lavender via-brand-purple-light to-brand-purple-deep" />
 
         <button
           type="button"
@@ -84,7 +89,7 @@ export function TeamMemberDialog({ member, onClose }: TeamMemberDialogProps) {
           {member.workshops.length > 0 && (
             <div className="mt-7 rounded-2xl bg-brand-lavender/50 px-5 py-5">
               <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-navy">
-                Workshops
+                {workshopsHeading}
               </h3>
               <ul className="mt-3 flex flex-col gap-2.5">
                 {member.workshops.map((workshop) => (

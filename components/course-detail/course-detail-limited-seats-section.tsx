@@ -8,17 +8,19 @@ import type { CheckoutProduct } from "@/lib/payment/types";
 type CourseDetailLimitedSeatsSectionProps = {
   content: CourseDetailContent["limitedSeatsCta"];
   product: CheckoutProduct;
+  fallbackHref?: string;
 };
 
 export function CourseDetailLimitedSeatsSection({
   content,
   product,
+  fallbackHref = "#demo-class",
 }: CourseDetailLimitedSeatsSectionProps) {
   const enquireOnly = product.amount <= 0;
 
   return (
     <CourseDetailSection className="py-6 sm:py-8">
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-navy to-black px-5 py-12 sm:rounded-[40px] sm:px-10 sm:py-16 md:px-12 md:py-20">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-purple to-brand-purple-deep px-5 py-12 sm:rounded-[40px] sm:px-10 sm:py-16 md:px-12 md:py-20">
         <div className="relative mx-auto flex max-w-[800px] flex-col items-center text-center">
           <p className="mb-8 break-words text-center text-sm font-semibold uppercase tracking-[2px] text-white sm:text-base sm:tracking-[4px]">
             {content.eyebrow}
@@ -46,6 +48,7 @@ export function CourseDetailLimitedSeatsSection({
               product={product}
               label={`${content.ctaLabel} · ${formatINR(product.amount)}`}
               tone="gold"
+              fallbackHref={fallbackHref}
             />
           )}
         </div>

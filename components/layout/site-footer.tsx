@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { FooterSocialLinks } from "@/components/layout/footer-social-links";
+import { MsmeBadge } from "@/components/layout/msme-badge";
 import { useSiteSettings } from "@/components/layout/site-settings-context";
 import type { FooterLink } from "@/lib/types/site-settings-content";
 import { images } from "@/lib/constants/images";
@@ -56,6 +57,13 @@ export function SiteFooter() {
             <p className="text-sm leading-5 text-[#5a637b]">
               {brand.footerDescription}
             </p>
+            {footer.showMsmeLogo ? (
+              <MsmeBadge
+                label={footer.msmeBadgeLabel}
+                size="footer"
+                className="mt-5"
+              />
+            ) : null}
             <FooterSocialLinks className="mt-6" />
           </div>
 

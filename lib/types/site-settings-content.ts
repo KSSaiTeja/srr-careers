@@ -37,6 +37,10 @@ export type SiteSettingsContent = {
     secondaryCtaLabel: string;
     secondaryCtaHref: string;
   };
+  topStrip: {
+    enabled: boolean;
+    label: string;
+  };
   nav: NavLink[];
   contact: {
     phone: string;
@@ -57,5 +61,7 @@ export type SiteSettingsContent = {
     contactTitle: string;
     copyright: string;
     craftedText: string;
+    showMsmeLogo: boolean;
+    msmeBadgeLabel: string;
   };
 };

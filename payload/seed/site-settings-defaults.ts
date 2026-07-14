@@ -10,9 +10,13 @@ export const siteSettingsDefaults = {
     siteName: "SRR Careers",
     footerDescription:
       "A dedicated finishing school for SAP S/4 HANA FICO consultants. Live mentors, real client scenarios, lifetime career support.",
+    topStrip: {
+      enabled: true,
+      label: "Registered with MSME",
+    },
     header: {
       ctaLabel: "Book a Free Demo",
-      ctaHref: "#demo-class",
+      ctaHref: "/#demo-class",
       secondaryCtaLabel: "Join our team",
       secondaryCtaHref: "/join-our-team",
     },
@@ -98,7 +102,7 @@ export const siteSettingsDefaults = {
       { label: "Blog", href: "/blog" },
       { label: "Internships", href: "/internships" },
       { label: "Join our team", href: "/join-our-team" },
-      { label: "Contact", href: "#demo-class" },
+      { label: "Contact", href: "/#demo-class" },
     ],
     courseTitle: "SAP FI-CO with S/4 HANA",
     courseLinks: [
@@ -110,11 +114,14 @@ export const siteSettingsDefaults = {
         href: "/courses/campus-recruitment-training",
       },
       { label: "All Workshops", href: "/workshops" },
-      { label: "Book a Free Demo", href: "#demo-class" },
+      { label: "Book a Free Demo", href: "/#demo-class" },
     ],
     contactTitle: "Contact",
     copyright: "© 2026 SRR Careers. All rights reserved.",
-    craftedText: "Crafted with care for future SAP consultants.",
+    craftedText:
+      "MSME-registered institute · Udyam No. UDYAM-TS-02-0353884",
+    showMsmeLogo: true,
+    msmeBadgeLabel: "Registered with MSME",
   },
 } as const;
 

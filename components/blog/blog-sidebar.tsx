@@ -124,7 +124,7 @@ export function BlogSidebar({
                       style={{ backgroundImage: `url(${post.coverImage})` }}
                     />
                   ) : (
-                    <span className="block size-full bg-gradient-to-br from-brand-navy to-brand-purple" />
+                    <span className="block size-full bg-gradient-to-br from-brand-purple-light to-brand-purple-deep" />
                   )}
                 </Link>
                 <div className="min-w-0">

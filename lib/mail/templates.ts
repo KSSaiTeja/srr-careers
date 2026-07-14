@@ -359,12 +359,16 @@ export function demoLeadCandidate(input: {
   email: string;
   mobile: string;
   course?: string;
+  description?: string;
 }): MailContent {
   const rows = detailRows([
     { label: "Name", value: input.name },
     { label: "Email", value: input.email },
     { label: "Mobile", value: input.mobile },
     { label: "Course", value: input.course ?? "" },
+    ...(input.description
+      ? [{ label: "Description", value: input.description }]
+      : []),
   ]);
   const body = `
     ${statusBanner("Demo request received", "info")}
@@ -388,6 +392,7 @@ export function demoLeadCandidate(input: {
       `Email: ${input.email}`,
       `Mobile: ${input.mobile}`,
       input.course ? `Course: ${input.course}` : "",
+      input.description ? `Description: ${input.description}` : "",
       "",
       "Our team will reach out shortly to schedule your demo.",
     ]
@@ -401,12 +406,16 @@ export function demoLeadInternal(input: {
   email: string;
   mobile: string;
   course?: string;
+  description?: string;
 }): MailContent {
   const rows = detailRows([
     { label: "Name", value: input.name },
     { label: "Email", value: input.email },
     { label: "Mobile", value: input.mobile },
     { label: "Course", value: input.course ?? "—" },
+    ...(input.description
+      ? [{ label: "Description", value: input.description }]
+      : []),
     { label: "Source", value: "Demo Form" },
   ]);
   return {
@@ -418,7 +427,7 @@ export function demoLeadInternal(input: {
         ${statusBanner("Action needed — follow up", "warn")}
         ${card(rows, { title: "Lead details" })}`,
     }),
-    text: `New demo enquiry\nName: ${input.name}\nEmail: ${input.email}\nMobile: ${input.mobile}\nCourse: ${input.course ?? "—"}`,
+    text: `New demo enquiry\nName: ${input.name}\nEmail: ${input.email}\nMobile: ${input.mobile}\nCourse: ${input.course ?? "—"}${input.description ? `\nDescription: ${input.description}` : ""}`,
   };
 }
 

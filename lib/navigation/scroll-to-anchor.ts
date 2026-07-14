@@ -1,7 +1,7 @@
 import type Lenis from "lenis";
 
 /** Offset for the sticky site header when scrolling to in-page anchors. */
-export const ANCHOR_SCROLL_OFFSET = 96;
+export const ANCHOR_SCROLL_OFFSET = 132;
 
 export function getAnchorElement(hash: string): HTMLElement | null {
   if (!hash || hash === "#") return null;

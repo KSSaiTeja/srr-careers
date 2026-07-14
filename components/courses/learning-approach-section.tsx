@@ -63,7 +63,7 @@ export function LearningApproachSection({
               "lg:flex-1 lg:justify-between",
             )}
           >
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#0b1023] p-3">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-purple-deep p-3">
               <UsersRound
                 className="size-6 text-white"
                 strokeWidth={2}
@@ -115,7 +115,7 @@ export function LearningApproachSection({
             <article
               data-reveal-item
               className={cn(
-                "flex flex-col justify-between gap-4 rounded-2xl bg-[#0b1023] p-6 transition-transform duration-300 hover:-translate-y-1 sm:p-7",
+                "flex flex-col justify-between gap-4 rounded-2xl bg-gradient-to-br from-brand-purple-light via-brand-purple to-brand-purple-deep p-6 transition-transform duration-300 hover:-translate-y-1 sm:p-7",
                 "lg:flex-1",
               )}
             >

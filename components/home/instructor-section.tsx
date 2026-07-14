@@ -65,7 +65,7 @@ function InstructorCard({
   content: HomePageContent["instructor"];
 }) {
   return (
-    <article className="relative z-10 w-full max-w-md shrink-0 rounded-3xl border-2 border-white bg-gradient-to-b from-gray-100 to-white p-6 shadow-lg sm:p-7">
+    <article className="relative z-10 w-full max-w-md shrink-0 rounded-3xl border-2 border-white bg-gradient-to-b from-brand-lavender to-white p-6 shadow-lg sm:p-7">
       <Image
         src={content.photoUrl}
         alt="SAP FICO instructor"

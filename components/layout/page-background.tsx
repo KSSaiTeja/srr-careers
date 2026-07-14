@@ -16,7 +16,7 @@ export function PageBackground() {
           <path d={homeIcons.p29ec0500} fill="#F3EFFB" />
         </g>
         <g filter="url(#filter1_f)">
-          <path d={homeIcons.p38390500} fill="#FEF5E2" />
+          <path d={homeIcons.p38390500} fill="#DDD6FE" />
         </g>
         <defs>
           <filter

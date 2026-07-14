@@ -3,19 +3,14 @@ import { AnimatedSection } from "@/components/motion/animated-section";
 import { PageBackground } from "@/components/layout/page-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { PreFooterSection } from "@/components/home/pre-footer-section";
 import { WorkshopFormatTabs } from "@/components/workshops/workshop-format-tabs";
-import {
-  WORKSHOP_DURATION_LABEL,
-  WORKSHOP_DURATION_NOTE,
-  WORKSHOP_PRICING_LABEL,
-  WORKSHOP_PRICING_NOTE,
-  type WorkshopDefinition,
-  type WorkshopModule,
-} from "@/lib/constants/workshops";
+import type {
+  WorkshopDetailPageContent,
+  WorkshopModule,
+} from "@/lib/types/workshops-content";
 
 type WorkshopDetailPageProps = {
-  workshop: WorkshopDefinition;
+  content: WorkshopDetailPageContent;
 };
 
 function MetaItem({ label, value }: { label: string; value: string }) {
@@ -56,19 +51,43 @@ function ModuleList({ modules }: { modules: WorkshopModule[] }) {
   );
 }
 
-export function WorkshopDetailPage({ workshop }: WorkshopDetailPageProps) {
-  const hasFormats = Boolean(workshop.formats?.length);
-  const hasSessions = Boolean(workshop.sessions?.length);
-  const hasModules = Boolean(workshop.modules?.length);
+export function WorkshopDetailPage({ content }: WorkshopDetailPageProps) {
+  const { workshop, shared } = content;
+  const labels = shared.detail;
+
+  const hasFormats =
+    workshop.agendaLayout === "formats" && Boolean(workshop.formats?.length);
+  const hasSessions =
+    workshop.agendaLayout === "sessions" && Boolean(workshop.sessions?.length);
+  const hasModules =
+    workshop.agendaLayout === "modules" && Boolean(workshop.modules?.length);
   const hasAgenda = hasFormats || hasSessions || hasModules;
 
   const metaItems = [
-    { label: "Duration", value: WORKSHOP_DURATION_LABEL },
-    { label: "Price", value: WORKSHOP_PRICING_LABEL },
-    workshop.mode ? { label: "Mode", value: workshop.mode } : null,
-    workshop.audience ? { label: "Audience", value: workshop.audience } : null,
-    workshop.speaker ? { label: "Speaker", value: workshop.speaker } : null,
+    {
+      label: labels.metaDurationLabel,
+      value: shared.durationLabel,
+    },
+    {
+      label: labels.metaPriceLabel,
+      value: shared.pricingLabel,
+    },
+    workshop.mode
+      ? { label: labels.metaModeLabel, value: workshop.mode }
+      : null,
+    workshop.audience
+      ? { label: labels.metaAudienceLabel, value: workshop.audience }
+      : null,
+    workshop.speaker
+      ? { label: labels.metaSpeakerLabel, value: workshop.speaker }
+      : null,
   ].filter(Boolean) as { label: string; value: string }[];
+
+  const agendaTitle = hasFormats
+    ? labels.agendaTitleFormats
+    : hasSessions
+      ? labels.agendaTitleSessions
+      : labels.agendaTitleModules;
 
   return (
     <div className="min-h-screen overflow-x-clip bg-white">
@@ -90,7 +109,11 @@ export function WorkshopDetailPage({ workshop }: WorkshopDetailPageProps) {
             {metaItems.length > 0 ? (
               <div className="mt-8 grid gap-5 rounded-2xl border border-[#eaeaea] bg-white/80 px-5 py-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 sm:px-6 lg:grid-cols-3 xl:grid-cols-5">
                 {metaItems.map((item) => (
-                  <MetaItem key={item.label} label={item.label} value={item.value} />
+                  <MetaItem
+                    key={item.label}
+                    label={item.label}
+                    value={item.value}
+                  />
                 ))}
               </div>
             ) : null}
@@ -98,30 +121,24 @@ export function WorkshopDetailPage({ workshop }: WorkshopDetailPageProps) {
             <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
               <div>
                 <p className="text-xs uppercase tracking-[2px] text-[#7b7b7b]">
-                  Duration & pricing
+                  {labels.pricingEyebrow}
                 </p>
                 <p className="mt-1 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                  Both customisable
+                  {labels.pricingHeadline}
                 </p>
                 <p className="mt-1 max-w-md text-sm text-gray-500">
-                  {WORKSHOP_DURATION_NOTE} {WORKSHOP_PRICING_NOTE}
+                  {shared.durationNote} {shared.pricingNote}
                   {workshop.durationBaseline
-                    ? ` Sample agenda: ${workshop.durationBaseline}.`
+                    ? ` ${labels.sampleAgendaPrefix} ${workshop.durationBaseline}.`
                     : null}
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href="#demo-class"
+                  href={labels.backCtaHref}
                   className="inline-flex rounded-full bg-brand-navy px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-navy-dark sm:text-base"
                 >
-                  Book a Free Demo
-                </Link>
-                <Link
-                  href="/workshops"
-                  className="inline-flex rounded-full border border-brand-navy/25 bg-white px-6 py-3 text-sm font-semibold text-brand-navy transition-colors hover:border-brand-navy/50 sm:text-base"
-                >
-                  All workshops
+                  {labels.backCtaLabel}
                 </Link>
               </div>
             </div>
@@ -131,7 +148,7 @@ export function WorkshopDetailPage({ workshop }: WorkshopDetailPageProps) {
         <AnimatedSection variant="fade-up" staggerChildren>
           <section className="mx-auto w-full max-w-7xl px-5 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28">
             <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
-              What you&apos;ll take away
+              {labels.highlightsHeading}
             </h2>
             <ul className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-3 sm:gap-4">
               {workshop.highlights.map((item) => (
@@ -152,20 +169,19 @@ export function WorkshopDetailPage({ workshop }: WorkshopDetailPageProps) {
               <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <p className="text-sm font-medium uppercase tracking-[0.2em] text-brand-navy">
-                    Agenda
+                    {labels.agendaEyebrow}
                   </p>
                   <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
-                    {hasFormats
-                      ? "Choose a format"
-                      : hasSessions
-                        ? "One-day programme flow"
-                        : "Session modules"}
+                    {agendaTitle}
                   </h2>
                 </div>
               </div>
 
               {hasFormats && workshop.formats ? (
-                <WorkshopFormatTabs formats={workshop.formats} />
+                <WorkshopFormatTabs
+                  formats={workshop.formats}
+                  audienceLabel={labels.formatAudienceLabel}
+                />
               ) : null}
 
               {hasSessions && workshop.sessions ? (
@@ -201,10 +217,6 @@ export function WorkshopDetailPage({ workshop }: WorkshopDetailPageProps) {
             </section>
           </AnimatedSection>
         ) : null}
-
-        <AnimatedSection variant="fade-up">
-          <PreFooterSection />
-        </AnimatedSection>
       </main>
       <SiteFooter />
     </div>

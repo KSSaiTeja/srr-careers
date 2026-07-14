@@ -12,7 +12,7 @@ type PinnedUpdateCardProps = {
 export function PinnedUpdateCard({ update, headingId }: PinnedUpdateCardProps) {
   return (
     <article
-      className="relative flex flex-col gap-8 rounded-3xl bg-gradient-to-br from-[#00275a] to-[#002c67] p-6 sm:gap-10 sm:p-8"
+      className="relative flex flex-col gap-8 rounded-3xl bg-gradient-to-br from-brand-purple-deep to-brand-purple p-6 sm:gap-10 sm:p-8"
       aria-labelledby={headingId}
     >
       <UpdateBadge

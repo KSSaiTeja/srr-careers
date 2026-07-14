@@ -40,7 +40,7 @@ export function CourseDetailWhoSection({ content }: CourseDetailWhoSectionProps)
           </ul>
         </div>
 
-        <div className="flex w-full min-w-0 flex-col gap-5 rounded-2xl bg-[#0b1023] px-6 py-7 sm:px-8 sm:py-8 xl:max-w-[461px] xl:shrink-0">
+        <div className="flex w-full min-w-0 flex-col gap-5 rounded-2xl bg-gradient-to-br from-brand-purple-light via-brand-purple to-brand-purple-deep px-6 py-7 sm:px-8 sm:py-8 xl:max-w-[461px] xl:shrink-0">
           <div className="flex min-w-0 flex-col gap-2.5">
             <h3 className="text-2xl font-semibold leading-tight tracking-[-1px] text-white sm:text-[32px]">
               {content.handsOnTitle}

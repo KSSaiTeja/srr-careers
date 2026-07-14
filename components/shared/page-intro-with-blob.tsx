@@ -65,7 +65,7 @@ function HeroBackgroundBlob() {
       </svg>
 
       {/* Bottom blend into page white */}
-      <div className="absolute inset-x-0 bottom-0 h-[min(280px,40%)] bg-gradient-to-b from-transparent via-white/60 to-white" />
+      <div className="absolute inset-x-0 bottom-0 h-[min(280px,40%)] bg-gradient-to-b from-transparent via-brand-lavender/70 to-white" />
     </ParallaxLayer>
   );
 }
@@ -90,7 +90,7 @@ export function PageIntroWithBlob({
         <HeroEntranceItem>
           <p
             id={titleId}
-            className="mb-6 break-words text-center font-serif text-3xl italic leading-[1.2] tracking-[-1px] text-transparent bg-gradient-to-b from-brand-navy to-brand-navy/0 bg-clip-text sm:mb-8 sm:text-4xl sm:tracking-[-1.5px] md:mb-10 md:text-[48px] md:leading-[63px] lg:mb-14"
+            className="mb-6 break-words text-center font-serif text-3xl italic leading-[1.2] tracking-[-1px] text-transparent bg-gradient-to-b from-brand-purple to-brand-purple/0 bg-clip-text sm:mb-8 sm:text-4xl sm:tracking-[-1.5px] md:mb-10 md:text-[48px] md:leading-[63px] lg:mb-14"
           >
             {content.pageTitle}
           </p>

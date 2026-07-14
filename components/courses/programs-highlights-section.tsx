@@ -93,7 +93,7 @@ export function ProgramsHighlightsSection() {
           </p>
         </div>
 
-        <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-[#eaeaea] bg-[#0b1023] p-4">
+        <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-[#eaeaea] bg-gradient-to-br from-brand-purple-light via-brand-purple to-brand-purple-deep p-4">
           <div className="flex items-end">
             <span className="text-5xl font-bold leading-none text-white sm:text-6xl lg:text-[82px]">
               {careerAcceleration.value}

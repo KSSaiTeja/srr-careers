@@ -40,7 +40,7 @@ export function FloatingActions() {
               className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-brand-navy/10 bg-white py-3 pl-3.5 pr-11 shadow-xl shadow-brand-navy/15 ring-1 ring-brand-gold/40 transition-colors hover:bg-brand-lavender/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-navy/20"
             >
               <span
-                className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-brand-gold via-brand-gold-dark to-brand-navy"
+                className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-brand-purple-light via-brand-purple to-brand-purple-deep"
                 aria-hidden
               />
               <span className="relative flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-navy text-white">

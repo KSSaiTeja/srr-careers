@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     'course-details': CourseDetail;
+    'workshop-details': WorkshopDetail;
     'blog-posts': BlogPost;
     enrollments: Enrollment;
     'payload-kv': PayloadKv;
@@ -82,6 +83,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'course-details': CourseDetailsSelect<false> | CourseDetailsSelect<true>;
+    'workshop-details': WorkshopDetailsSelect<false> | WorkshopDetailsSelect<true>;
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
     enrollments: EnrollmentsSelect<false> | EnrollmentsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -97,7 +99,9 @@ export interface Config {
     'site-settings': SiteSetting;
     'home-page': HomePage;
     'courses-page': CoursesPage;
+    'workshops-page': WorkshopsPage;
     'our-story-page': OurStoryPage;
+    'our-team-page': OurTeamPage;
     'whats-new-page': WhatsNewPage;
     'blog-page': BlogPage;
   };
@@ -105,7 +109,9 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'courses-page': CoursesPageSelect<false> | CoursesPageSelect<true>;
+    'workshops-page': WorkshopsPageSelect<false> | WorkshopsPageSelect<true>;
     'our-story-page': OurStoryPageSelect<false> | OurStoryPageSelect<true>;
+    'our-team-page': OurTeamPageSelect<false> | OurTeamPageSelect<true>;
     'whats-new-page': WhatsNewPageSelect<false> | WhatsNewPageSelect<true>;
     'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
   };
@@ -308,6 +314,134 @@ export interface CourseDetail {
   createdAt: string;
 }
 /**
+ * Individual workshop pages at /workshops/<slug>. Listing intro and shared labels live on the Workshops Page global. Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshop-details".
+ */
+export interface WorkshopDetail {
+  id: number;
+  /**
+   * Shown in the admin list only.
+   */
+  name: string;
+  /**
+   * URL path under /workshops/ — e.g. career-pathways-and-success-strategies.
+   */
+  slug: string;
+  /**
+   * Lower numbers appear first on the listing.
+   */
+  sortOrder?: number | null;
+  published?: boolean | null;
+  /**
+   * Short label for the Workshops nav dropdown. Falls back to eyebrow/title if empty.
+   */
+  navLabel?: string | null;
+  meta?: {
+    /**
+     * Browser tab title. Leave empty to use “{workshop title} | SRR Careers”.
+     */
+    title?: string | null;
+    /**
+     * Leave empty to use the card summary.
+     */
+    description?: string | null;
+  };
+  card: {
+    eyebrow: string;
+    title: string;
+    /**
+     * Short blurb on the /workshops card grid.
+     */
+    summary: string;
+    /**
+     * Optional, e.g. "3 hours (including Q&A)". Shown as the sample on cards and detail.
+     */
+    durationBaseline?: string | null;
+  };
+  detail: {
+    /**
+     * Longer intro under the title on the detail page.
+     */
+    description: string;
+    mode?: string | null;
+    speaker?: string | null;
+    audience?: string | null;
+    highlights?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * If set to an existing Course Detail slug, /workshops/{this-slug} renders that course page instead of the workshop template.
+     */
+    courseDetailSlug?: string | null;
+  };
+  agenda: {
+    /**
+     * Pick one layout. Only the matching fields below are used on the site.
+     */
+    layout: 'modules' | 'sessions' | 'formats' | 'none';
+    modules?:
+      | {
+          title: string;
+          /**
+           * e.g. "20 mins"
+           */
+          duration?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    sessions?:
+      | {
+          label: string;
+          /**
+           * e.g. "10:00 AM – 1:00 PM"
+           */
+          time?: string | null;
+          modules?:
+            | {
+                title: string;
+                /**
+                 * e.g. "20 mins"
+                 */
+                duration?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    formats?:
+      | {
+          /**
+           * Stable id, e.g. "3hr"
+           */
+          formatId: string;
+          title: string;
+          duration: string;
+          audience?: string | null;
+          note?: string | null;
+          modules?:
+            | {
+                title: string;
+                /**
+                 * e.g. "20 mins"
+                 */
+                duration?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Articles shown on /blog and /blog/<slug>. Changes go live after you click Save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -316,11 +450,15 @@ export interface CourseDetail {
 export interface BlogPost {
   id: number;
   /**
-   * Shown in the admin list only.
+   * Shown in the admin list only. Also used to auto-generate the URL slug.
    */
   name: string;
   /**
-   * URL path under /blog/ — e.g. sap-fico-career-roadmap.
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  /**
+   * URL path under /blog/ — auto-generated from Internal name. Unlock to edit manually.
    */
   slug: string;
   meta: {
@@ -486,6 +624,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'course-details';
         value: number | CourseDetail;
+      } | null)
+    | ({
+        relationTo: 'workshop-details';
+        value: number | WorkshopDetail;
       } | null)
     | ({
         relationTo: 'blog-posts';
@@ -697,10 +839,96 @@ export interface CourseDetailsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshop-details_select".
+ */
+export interface WorkshopDetailsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  sortOrder?: T;
+  published?: T;
+  navLabel?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  card?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        summary?: T;
+        durationBaseline?: T;
+      };
+  detail?:
+    | T
+    | {
+        description?: T;
+        mode?: T;
+        speaker?: T;
+        audience?: T;
+        highlights?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        courseDetailSlug?: T;
+      };
+  agenda?:
+    | T
+    | {
+        layout?: T;
+        modules?:
+          | T
+          | {
+              title?: T;
+              duration?: T;
+              id?: T;
+            };
+        sessions?:
+          | T
+          | {
+              label?: T;
+              time?: T;
+              modules?:
+                | T
+                | {
+                    title?: T;
+                    duration?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        formats?:
+          | T
+          | {
+              formatId?: T;
+              title?: T;
+              duration?: T;
+              audience?: T;
+              note?: T;
+              modules?:
+                | T
+                | {
+                    title?: T;
+                    duration?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blog-posts_select".
  */
 export interface BlogPostsSelect<T extends boolean = true> {
   name?: T;
+  generateSlug?: T;
   slug?: T;
   meta?:
     | T
@@ -856,6 +1084,16 @@ export interface SiteSetting {
      */
     siteName?: string | null;
     footerDescription?: string | null;
+    /**
+     * Thin bar above the navbar. Phone & email on the right come from the Contact tab.
+     */
+    topStrip?: {
+      enabled?: boolean | null;
+      /**
+       * Shown on the left of the header top strip (e.g. Registered with MSME).
+       */
+      label?: string | null;
+    };
     header?: {
       ctaLabel?: string | null;
       ctaHref?: string | null;
@@ -934,7 +1172,15 @@ export interface SiteSetting {
       | null;
     contactTitle?: string | null;
     copyright?: string | null;
+    /**
+     * Short trust line in the footer (e.g. MSME / Udyam registration).
+     */
     craftedText?: string | null;
+    showMsmeLogo?: boolean | null;
+    /**
+     * Caption under the MSME logo in the footer brand column.
+     */
+    msmeBadgeLabel?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1230,6 +1476,64 @@ export interface CoursesPage {
   createdAt?: string | null;
 }
 /**
+ * The Workshops listing (/workshops) — intro, shared duration/pricing labels, card labels, and chrome for every workshop detail page. Individual workshops are edited under Workshop Detail Pages. Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshops-page".
+ */
+export interface WorkshopsPage {
+  id: number;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  intro?: {
+    pageTitle?: string | null;
+    headline?: string | null;
+    /**
+     * Use {{duration}} where the duration label should appear (lowercased). Example: …are both {{duration}} for your institution…
+     */
+    subtext?: string | null;
+  };
+  shared?: {
+    durationLabel?: string | null;
+    pricingLabel?: string | null;
+    durationNote?: string | null;
+    pricingNote?: string | null;
+  };
+  cards?: {
+    durationPrefix?: string | null;
+    pricePrefix?: string | null;
+    /**
+     * Shown after the duration value when a workshop has a sample baseline, e.g. “Customisable · sample 3 hours”.
+     */
+    samplePrefix?: string | null;
+  };
+  detail?: {
+    metaDurationLabel?: string | null;
+    metaPriceLabel?: string | null;
+    metaModeLabel?: string | null;
+    metaAudienceLabel?: string | null;
+    metaSpeakerLabel?: string | null;
+    pricingEyebrow?: string | null;
+    pricingHeadline?: string | null;
+    /**
+     * Appended before the workshop’s duration baseline on the detail page.
+     */
+    sampleAgendaPrefix?: string | null;
+    highlightsHeading?: string | null;
+    agendaEyebrow?: string | null;
+    agendaTitleModules?: string | null;
+    agendaTitleSessions?: string | null;
+    agendaTitleFormats?: string | null;
+    formatAudienceLabel?: string | null;
+    backCtaLabel?: string | null;
+    backCtaHref?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The Our Story page (/our-story) — intro + metrics, values, the “We've orchestrated Excellence” pillars, and FAQ. The Mission and Testimonials blocks come from the Home Page global. Changes go live after you click Save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1297,6 +1601,74 @@ export interface OurStoryPage {
       | {
           question: string;
           answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The Our Team page (/our-team) — intro copy and faculty profiles. Click a member to edit card + profile popup (bio, workshops, photo). Changes go live after you click Save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "our-team-page".
+ */
+export interface OurTeamPage {
+  id: number;
+  intro?: {
+    pageTitle?: string | null;
+    headline?: string | null;
+    subtext?: string | null;
+  };
+  membersSection?: {
+    viewProfileLabel?: string | null;
+    workshopsHeading?: string | null;
+    /**
+     * Drag to reorder. Each row is a card on the page; Bio + Workshops appear in the profile popup when someone clicks the card. Upload a square headshot (≈480×480), or leave empty to use the fallback image path.
+     */
+    members?:
+      | {
+          /**
+           * e.g. "kumar-arun"
+           */
+          slug: string;
+          name: string;
+          /**
+           * Shown on the card and as the badge in the profile popup (e.g. "SAP FICO Expert", "CA").
+           */
+          credential: string;
+          /**
+           * Used on the card and in the popup. Square JPEG/PNG, ideally 480×480. Leave empty to keep the fallback path below.
+           */
+          photo?: (number | null) | Media;
+          /**
+           * Public path used when no CMS photo is uploaded, e.g. /images/team/kumar-arun.jpg
+           */
+          fallbackImagePath?: string | null;
+          placeholderGradient:
+            | 'from-brand-lavender via-brand-purple-light to-brand-purple'
+            | 'from-brand-purple-light via-brand-purple to-brand-purple-deep'
+            | 'from-brand-lavender via-brand-purple to-brand-purple-light'
+            | 'from-brand-purple-deep via-brand-purple to-brand-purple-light';
+          /**
+           * Main body copy inside the profile popup. Add one row per paragraph.
+           */
+          bio?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          /**
+           * Optional list at the bottom of the popup. Leave empty to hide that block.
+           */
+          workshops?:
+            | {
+                title: string;
+                id?: string | null;
+              }[]
+            | null;
           id?: string | null;
         }[]
       | null;
@@ -1392,6 +1764,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         siteName?: T;
         footerDescription?: T;
+        topStrip?:
+          | T
+          | {
+              enabled?: T;
+              label?: T;
+            };
         header?:
           | T
           | {
@@ -1463,6 +1841,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         contactTitle?: T;
         copyright?: T;
         craftedText?: T;
+        showMsmeLogo?: T;
+        msmeBadgeLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1758,6 +2138,63 @@ export interface CoursesPageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshops-page_select".
+ */
+export interface WorkshopsPageSelect<T extends boolean = true> {
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+        headline?: T;
+        subtext?: T;
+      };
+  shared?:
+    | T
+    | {
+        durationLabel?: T;
+        pricingLabel?: T;
+        durationNote?: T;
+        pricingNote?: T;
+      };
+  cards?:
+    | T
+    | {
+        durationPrefix?: T;
+        pricePrefix?: T;
+        samplePrefix?: T;
+      };
+  detail?:
+    | T
+    | {
+        metaDurationLabel?: T;
+        metaPriceLabel?: T;
+        metaModeLabel?: T;
+        metaAudienceLabel?: T;
+        metaSpeakerLabel?: T;
+        pricingEyebrow?: T;
+        pricingHeadline?: T;
+        sampleAgendaPrefix?: T;
+        highlightsHeading?: T;
+        agendaEyebrow?: T;
+        agendaTitleModules?: T;
+        agendaTitleSessions?: T;
+        agendaTitleFormats?: T;
+        formatAudienceLabel?: T;
+        backCtaLabel?: T;
+        backCtaHref?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "our-story-page_select".
  */
 export interface OurStoryPageSelect<T extends boolean = true> {
@@ -1821,6 +2258,51 @@ export interface OurStoryPageSelect<T extends boolean = true> {
           | {
               question?: T;
               answer?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "our-team-page_select".
+ */
+export interface OurTeamPageSelect<T extends boolean = true> {
+  intro?:
+    | T
+    | {
+        pageTitle?: T;
+        headline?: T;
+        subtext?: T;
+      };
+  membersSection?:
+    | T
+    | {
+        viewProfileLabel?: T;
+        workshopsHeading?: T;
+        members?:
+          | T
+          | {
+              slug?: T;
+              name?: T;
+              credential?: T;
+              photo?: T;
+              fallbackImagePath?: T;
+              placeholderGradient?: T;
+              bio?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              workshops?:
+                | T
+                | {
+                    title?: T;
+                    id?: T;
+                  };
               id?: T;
             };
       };

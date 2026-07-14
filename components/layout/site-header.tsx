@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { HeaderTopStrip } from "@/components/layout/header-top-strip";
 import { useSiteSettings } from "@/components/layout/site-settings-context";
 import { images } from "@/lib/constants/images";
 import { useScrollMotionReady } from "@/components/motion/lenis-context";
@@ -125,6 +126,7 @@ export function SiteHeader() {
       ref={headerRef}
       className="sticky top-0 z-50 overflow-x-clip border-b border-white/30 bg-white/20 pt-[env(safe-area-inset-top)] backdrop-blur-md"
     >
+      <HeaderTopStrip />
       <div className="mx-auto flex w-full min-w-0 max-w-7xl items-center justify-between gap-6 px-5 py-3 sm:gap-8 sm:px-6 sm:py-4 md:px-10 lg:px-14 xl:gap-10 xl:px-16 2xl:gap-12 2xl:px-20">
         <Link href="/" className="shrink-0">
           <Image

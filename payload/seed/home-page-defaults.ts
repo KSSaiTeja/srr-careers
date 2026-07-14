@@ -5,7 +5,7 @@ export const homePageDefaults = {
     titleLine1: "Master SAP FICO on",
     titleAccent: "S/4 HANA",
     primaryCta: { label: "View Courses & Fees", href: "/courses" },
-    secondaryCta: { label: "Book a Free Demo", href: "#demo-class" },
+    secondaryCta: { label: "Book a Free Demo", href: "/#demo-class" },
     imageAlt:
       "Students learning SAP FICO — two students working on laptops",
   },

@@ -13,20 +13,26 @@ import { CourseDetails } from "./payload/collections/CourseDetails";
 import { Enrollments } from "./payload/collections/Enrollments";
 import { Media } from "./payload/collections/Media";
 import { Users } from "./payload/collections/Users";
+import { WorkshopDetails } from "./payload/collections/WorkshopDetails";
 import { BlogPage } from "./payload/globals/BlogPage";
 import { CoursesPage } from "./payload/globals/CoursesPage";
 import { HomePage } from "./payload/globals/HomePage";
 import { OurStoryPage } from "./payload/globals/OurStoryPage";
+import { OurTeamPage } from "./payload/globals/OurTeamPage";
 import { SiteSettings } from "./payload/globals/SiteSettings";
 import { WhatsNewPage } from "./payload/globals/WhatsNewPage";
+import { WorkshopsPage } from "./payload/globals/WorkshopsPage";
 import { seedBlogPage } from "./payload/seed/seed-blog-page";
 import { seedBlogPosts } from "./payload/seed/seed-blog-posts";
 import { seedCourseDetails } from "./payload/seed/seed-course-details";
 import { seedCoursesPage } from "./payload/seed/seed-courses-page";
 import { seedHomePage } from "./payload/seed/seed-home-page";
 import { seedOurStoryPage } from "./payload/seed/seed-our-story-page";
+import { seedOurTeamPage } from "./payload/seed/seed-our-team-page";
 import { seedSiteSettings } from "./payload/seed/seed-site-settings";
 import { seedWhatsNewPage } from "./payload/seed/seed-whats-new-page";
+import { seedWorkshopDetails } from "./payload/seed/seed-workshop-details";
+import { seedWorkshopsPage } from "./payload/seed/seed-workshops-page";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -110,12 +116,14 @@ export default buildConfig({
       description: "Manage SRR Careers website content",
     },
   },
-  collections: [Users, Media, CourseDetails, BlogPosts, Enrollments],
+  collections: [Users, Media, CourseDetails, WorkshopDetails, BlogPosts, Enrollments],
   globals: [
     SiteSettings,
     HomePage,
     CoursesPage,
+    WorkshopsPage,
     OurStoryPage,
+    OurTeamPage,
     WhatsNewPage,
     BlogPage,
   ],
@@ -153,6 +161,9 @@ export default buildConfig({
     await seedHomePage(payload);
     await seedCoursesPage(payload);
     await seedOurStoryPage(payload);
+    await seedOurTeamPage(payload);
+    await seedWorkshopsPage(payload);
+    await seedWorkshopDetails(payload);
     await seedCourseDetails(payload);
     await seedWhatsNewPage(payload);
     await seedBlogPage(payload);

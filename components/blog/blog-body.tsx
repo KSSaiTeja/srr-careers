@@ -23,7 +23,7 @@ export function BlogBody({ blocks }: BlogBodyProps) {
             return (
               <blockquote
                 key={index}
-                className="my-2 rounded-3xl bg-gradient-to-br from-brand-navy to-brand-navy-deep p-8 text-xl font-medium leading-relaxed text-white sm:p-10 sm:text-2xl"
+                className="my-2 rounded-3xl bg-gradient-to-br from-brand-purple to-brand-purple-deep p-8 text-xl font-medium leading-relaxed text-white sm:p-10 sm:text-2xl"
               >
                 {block.text}
               </blockquote>
@@ -54,7 +54,7 @@ export function BlogBody({ blocks }: BlogBodyProps) {
                     style={{ backgroundImage: `url(${block.url})` }}
                   />
                 ) : (
-                  <span className="block aspect-[16/9] w-full rounded-3xl bg-gradient-to-br from-brand-navy to-brand-purple" />
+                  <span className="block aspect-[16/9] w-full rounded-3xl bg-gradient-to-br from-brand-purple-light to-brand-purple-deep" />
                 )}
                 {block.caption ? (
                   <figcaption className="mt-3 text-center text-sm text-gray-500">

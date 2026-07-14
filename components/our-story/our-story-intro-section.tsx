@@ -55,7 +55,7 @@ function HeroBackgroundBlob() {
 function MetricDivider() {
   return (
     <div
-      className="h-14 w-px shrink-0 bg-gradient-to-b from-transparent via-gray-300 to-transparent"
+      className="h-14 w-px shrink-0 bg-gradient-to-b from-transparent via-brand-purple-light/40 to-transparent"
       aria-hidden
     />
   );
@@ -121,7 +121,7 @@ export function OurStoryIntroSection({
       <OurStorySection className="relative z-10 bg-transparent pb-0 pt-12 sm:pt-14 md:pt-16 lg:pt-20">
         <p
           id="our-story-page-title"
-          className="mb-6 text-center font-serif text-3xl italic leading-[1.2] tracking-[-1px] text-transparent bg-gradient-to-b from-brand-navy to-brand-navy/0 bg-clip-text sm:mb-8 sm:text-4xl sm:tracking-[-1.5px] md:mb-10 md:text-[48px] md:leading-[63px] lg:mb-14"
+          className="mb-6 text-center font-serif text-3xl italic leading-[1.2] tracking-[-1px] text-transparent bg-gradient-to-b from-brand-purple to-brand-purple/0 bg-clip-text sm:mb-8 sm:text-4xl sm:tracking-[-1.5px] md:mb-10 md:text-[48px] md:leading-[63px] lg:mb-14"
         >
           {pageIntro.pageTitle}
         </p>
@@ -132,10 +132,9 @@ export function OurStoryIntroSection({
               <span className="block">{pageIntro.headline}</span>
               <span className="mt-2 block text-brand-navy">
                 <span className="relative inline-block italic">
-                  {pageIntro.headlineHighlight}
-                  <SapFicoUnderline />
+                  {pageIntro.headlineHighlight}<SapFicoUnderline />
                 </span>
-                {pageIntro.headlineSuffix}
+                {` ${pageIntro.headlineSuffix.trimStart()}`}
               </span>
             </h1>
 

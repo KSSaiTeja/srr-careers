@@ -25,9 +25,9 @@ export function InstructorBackgroundBlob({
           viewBox="0 0 866.671 953.318"
         >
           <g filter="url(#instructor-blob-blur)">
-            <path d={homeIcons.p2f56db0} fill="#F5F7FB" />
-            <path d={homeIcons.p26bfab70} fill="#083F88" />
-            <path d={homeIcons.p21542e80} fill="#083F88" />
+            <path d={homeIcons.p2f56db0} fill="#F3EFFB" />
+            <path d={homeIcons.p26bfab70} fill="#6D49F4" />
+            <path d={homeIcons.p21542e80} fill="#371ECB" />
           </g>
           <defs>
             <filter

@@ -43,6 +43,9 @@ export function EnrollmentSuccessView({
     { label: "Email", value: submission.email },
     { label: "Mobile", value: submission.mobile },
     { label: "Programme", value: submission.course },
+    ...(submission.description
+      ? [{ label: "Description", value: submission.description }]
+      : []),
   ];
 
   return (

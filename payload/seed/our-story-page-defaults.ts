@@ -10,7 +10,7 @@ export const ourStoryPageDefaults = {
     pageTitle: "Our Story",
     headline: "A finishing school for the next gen",
     headlineHighlight: "SAP FICO",
-    headlineSuffix: " Consultants",
+    headlineSuffix: "Consultants",
     subtext:
       "We are not a marketplace of 200 courses. We do one thing, and we do it better than anyone — turn ambitious finance professionals into world-class SAP S/4HANA FICO consultants through live mentorship and real implementation work.",
     metrics: [

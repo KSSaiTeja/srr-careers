@@ -16,7 +16,7 @@ function PrincipleCard({
       className={cn(
         "relative flex h-full min-h-0 w-full flex-col gap-4 rounded-2xl p-4 transition-transform duration-300 hover:-translate-y-1",
         featured
-          ? "bg-[#0b1023] text-white"
+          ? "bg-gradient-to-br from-brand-purple-light via-brand-purple to-brand-purple-deep text-white"
           : "bg-white text-[#121212]",
       )}
     >
@@ -29,7 +29,7 @@ function PrincipleCard({
       <div
         className={cn(
           "relative flex size-9 shrink-0 items-center justify-center rounded-lg p-2",
-          featured ? "bg-[#404658]" : "bg-brand-navy/15",
+          featured ? "bg-white/15" : "bg-brand-navy/15",
         )}
       >
         <IconComponent

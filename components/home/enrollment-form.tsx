@@ -6,6 +6,7 @@ import { EnrollmentSuccessView } from "@/components/home/enrollment-success-view
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -27,16 +28,21 @@ type EnrollmentFormProps = {
 function FormField({
   id,
   label,
+  optional,
   children,
 }: {
   id: string;
   label: string;
+  optional?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-2">
       <Label htmlFor={id} className="text-[15px] font-semibold text-gray-900">
         {label}
+        {optional ? (
+          <span className="ml-1.5 font-medium text-gray-400">(optional)</span>
+        ) : null}
       </Label>
       {children}
     </div>
@@ -68,11 +74,13 @@ export function EnrollmentForm({ className }: EnrollmentFormProps) {
     }
 
     const formData = new FormData(event.currentTarget);
+    const description = String(formData.get("description") ?? "").trim();
     const lead: EnrollmentSubmission = {
       fullName: String(formData.get("fullName") ?? ""),
       email: String(formData.get("email") ?? ""),
       mobile: String(formData.get("mobile") ?? ""),
       course: getCourseLabel(course),
+      ...(description ? { description } : {}),
     };
 
     setSubmitting(true);
@@ -165,6 +173,19 @@ export function EnrollmentForm({ className }: EnrollmentFormProps) {
           </Select>
           <input type="hidden" name="course" value={course} required />
         </div>
+
+        <FormField
+          id="enrollment-description"
+          label="Description"
+          optional
+        >
+          <Textarea
+            id="enrollment-description"
+            name="description"
+            rows={3}
+            placeholder="Anything you'd like us to know before the demo"
+          />
+        </FormField>
 
         {error ? (
           <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">

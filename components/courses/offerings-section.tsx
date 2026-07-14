@@ -64,7 +64,7 @@ function OfferingCard({ course }: { course: CourseOffering }) {
       className={cn(
         "@container/offering-card scroll-mt-28 flex h-full flex-col justify-between gap-8 rounded-2xl px-6 py-7 sm:gap-10 sm:px-8 sm:py-8",
         isConsultant
-          ? "bg-[#0b1023] text-white"
+          ? "bg-gradient-to-br from-brand-purple-light via-brand-purple to-brand-purple-deep text-white"
           : "border border-[#eaeaea] bg-white text-black",
       )}
     >

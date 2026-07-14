@@ -24,11 +24,14 @@ const metaIcons = {
 type CourseDetailOverviewSectionProps = {
   content: CourseDetailContent["overview"];
   product: CheckoutProduct;
+  /** Demo-form anchor; use `/#demo-class` when this page has no form. */
+  demoHref?: string;
 };
 
 export function CourseDetailOverviewSection({
   content,
   product,
+  demoHref = "#demo-class",
 }: CourseDetailOverviewSectionProps) {
   return (
     <CourseDetailSection className="py-0 sm:py-4">
@@ -59,11 +62,12 @@ export function CourseDetailOverviewSection({
                   product={product}
                   label={content.primaryCta}
                   tone="navy"
+                  fallbackHref={demoHref}
                   className="w-full text-base sm:w-auto sm:text-lg lg:text-xl"
                 />
               ) : (
                 <Link
-                  href="#demo-class"
+                  href={demoHref}
                   className="inline-flex w-full items-center justify-center rounded-2xl bg-brand-navy px-5 py-3.5 text-base text-white transition-colors hover:bg-brand-navy-dark sm:w-auto sm:px-6 sm:text-lg lg:text-xl"
                 >
                   {content.primaryCta}
@@ -79,7 +83,7 @@ export function CourseDetailOverviewSection({
           </div>
         </div>
 
-        <div className="flex w-full min-w-0 flex-col gap-2.5 rounded-2xl border border-[#eaeaea] bg-gradient-to-br from-brand-navy to-brand-navy-deep p-6 sm:p-7 xl:max-w-[392px] xl:shrink-0">
+        <div className="flex w-full min-w-0 flex-col gap-2.5 rounded-2xl border border-[#eaeaea] bg-gradient-to-br from-brand-purple to-brand-purple-deep p-6 sm:p-7 xl:max-w-[392px] xl:shrink-0">
           <div className="flex flex-wrap items-baseline gap-2">
             <span className="text-5xl font-bold leading-none text-brand-gold sm:text-6xl xl:text-[82px]">
               {content.moduleCount}

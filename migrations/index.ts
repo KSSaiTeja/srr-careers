@@ -15,6 +15,10 @@ import * as migration_20260626_130000_enrollment_installment_dates from './20260
 import * as migration_20260626_140000_enrollment_mail_flags from './20260626_140000_enrollment_mail_flags';
 import * as migration_20260626_150000_drop_unused_mail_flags from './20260626_150000_drop_unused_mail_flags';
 import * as migration_20260701_120000_enrollment_address_lead from './20260701_120000_enrollment_address_lead';
+import * as migration_20260714_120000_msme_top_strip from './20260714_120000_msme_top_strip';
+import * as migration_20260714_124638_our_team_page from './20260714_124638_our_team_page';
+import * as migration_20260714_130648_workshops_cms from './20260714_130648_workshops_cms';
+import * as migration_20260714_183000_blog_generate_slug from './20260714_183000_blog_generate_slug';
 
 export const migrations = [
   {
@@ -80,26 +84,46 @@ export const migrations = [
   {
     up: migration_20260626_123840_payment_enrollments.up,
     down: migration_20260626_123840_payment_enrollments.down,
-    name: '20260626_123840_payment_enrollments'
+    name: '20260626_123840_payment_enrollments',
   },
   {
     up: migration_20260626_130000_enrollment_installment_dates.up,
     down: migration_20260626_130000_enrollment_installment_dates.down,
-    name: '20260626_130000_enrollment_installment_dates'
+    name: '20260626_130000_enrollment_installment_dates',
   },
   {
     up: migration_20260626_140000_enrollment_mail_flags.up,
     down: migration_20260626_140000_enrollment_mail_flags.down,
-    name: '20260626_140000_enrollment_mail_flags'
+    name: '20260626_140000_enrollment_mail_flags',
   },
   {
     up: migration_20260626_150000_drop_unused_mail_flags.up,
     down: migration_20260626_150000_drop_unused_mail_flags.down,
-    name: '20260626_150000_drop_unused_mail_flags'
+    name: '20260626_150000_drop_unused_mail_flags',
   },
   {
     up: migration_20260701_120000_enrollment_address_lead.up,
     down: migration_20260701_120000_enrollment_address_lead.down,
-    name: '20260701_120000_enrollment_address_lead'
+    name: '20260701_120000_enrollment_address_lead',
+  },
+  {
+    up: migration_20260714_120000_msme_top_strip.up,
+    down: migration_20260714_120000_msme_top_strip.down,
+    name: '20260714_120000_msme_top_strip',
+  },
+  {
+    up: migration_20260714_124638_our_team_page.up,
+    down: migration_20260714_124638_our_team_page.down,
+    name: '20260714_124638_our_team_page',
+  },
+  {
+    up: migration_20260714_130648_workshops_cms.up,
+    down: migration_20260714_130648_workshops_cms.down,
+    name: '20260714_130648_workshops_cms',
+  },
+  {
+    up: migration_20260714_183000_blog_generate_slug.up,
+    down: migration_20260714_183000_blog_generate_slug.down,
+    name: '20260714_183000_blog_generate_slug'
   },
 ];

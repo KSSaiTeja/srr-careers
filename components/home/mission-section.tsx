@@ -165,7 +165,7 @@ function AlumniHighlightCard({
   const trustedLines = content.trustedBy.split("\n");
 
   return (
-    <article className="flex h-full min-h-0 flex-col overflow-clip rounded-2xl bg-[#0b1023] p-6 text-white sm:p-7 xl:h-full">
+    <article className="flex h-full min-h-0 flex-col overflow-clip rounded-2xl bg-gradient-to-br from-brand-purple-light via-brand-purple to-brand-purple-deep p-6 text-white sm:p-7 xl:h-full">
       <p className="shrink-0 text-xl leading-relaxed sm:text-2xl">
         {content.body}
       </p>

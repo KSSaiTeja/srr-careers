@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { WorkshopFormat, WorkshopModule } from "@/lib/constants/workshops";
+import type { WorkshopFormat, WorkshopModule } from "@/lib/types/workshops-content";
 
 function ModuleList({ modules }: { modules: WorkshopModule[] }) {
   return (
@@ -32,9 +32,13 @@ function ModuleList({ modules }: { modules: WorkshopModule[] }) {
 
 type WorkshopFormatTabsProps = {
   formats: WorkshopFormat[];
+  audienceLabel?: string;
 };
 
-export function WorkshopFormatTabs({ formats }: WorkshopFormatTabsProps) {
+export function WorkshopFormatTabs({
+  formats,
+  audienceLabel = "Audience:",
+}: WorkshopFormatTabsProps) {
   const [activeFormatId, setActiveFormatId] = useState(formats[0]?.id ?? "");
   const activeFormat =
     formats.find((format) => format.id === activeFormatId) ?? formats[0];
@@ -87,7 +91,7 @@ export function WorkshopFormatTabs({ formats }: WorkshopFormatTabsProps) {
         </div>
         {activeFormat.audience ? (
           <p className="mt-4 text-sm text-gray-600">
-            <span className="font-medium text-gray-900">Audience: </span>
+            <span className="font-medium text-gray-900">{audienceLabel} </span>
             {activeFormat.audience}
           </p>
         ) : null}

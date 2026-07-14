@@ -21,6 +21,7 @@ const LEADS_HEADERS = [
   "Email",
   "Mobile",
   "Course",
+  "Description",
 ];
 
 const SUBSCRIPTIONS_TAB = "Subscriptions";
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
   const email = (body.email ?? "").trim();
   const mobile = (body.mobile ?? "").trim();
   const course = (body.course ?? "").trim();
+  const description = (body.description ?? "").trim();
   const source = body.source === "newsletter" ? "newsletter" : "enrollment-form";
 
   if (!email || (source === "enrollment-form" && (!fullName || !mobile))) {
@@ -80,14 +82,19 @@ export async function POST(request: Request) {
         email,
         mobile,
         course,
+        description,
       ]);
 
       // Confirmation to the candidate + internal copy, after the response so
       // the slow mail round-trip never blocks the form submission.
       after(() =>
-        sendDemoLeadMails({ name: fullName, email, mobile, course }).catch(
-          (error) => console.error("[lead] demo mail failed", error),
-        ),
+        sendDemoLeadMails({
+          name: fullName,
+          email,
+          mobile,
+          course,
+          description,
+        }).catch((error) => console.error("[lead] demo mail failed", error)),
       );
     }
 

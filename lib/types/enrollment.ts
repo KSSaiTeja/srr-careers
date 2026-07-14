@@ -3,4 +3,5 @@ export type EnrollmentSubmission = {
   email: string;
   mobile: string;
   course: string;
+  description?: string;
 };

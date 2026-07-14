@@ -9,6 +9,7 @@ import { InstructorSection } from "@/components/home/instructor-section";
 import { MissionSection } from "@/components/home/mission-section";
 import { ProblemSection } from "@/components/home/problem-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
+import { FaqSection } from "@/components/our-story/faq-section";
 import type { HomePageContent } from "@/lib/types/home-page-content";
 
 type HomePageProps = {
@@ -36,6 +37,9 @@ export function HomePage({ content }: HomePageProps) {
         </AnimatedSection>
         <AnimatedSection variant="fade-in" staggerChildren>
           <TestimonialsSection content={content.testimonials} />
+        </AnimatedSection>
+        <AnimatedSection variant="fade-up" staggerChildren>
+          <FaqSection />
         </AnimatedSection>
         <AnimatedSection variant="fade-up">
           <PreFooterSection content={content.preFooter} />

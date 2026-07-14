@@ -3,14 +3,15 @@ import { AnimatedSection } from "@/components/motion/animated-section";
 import { PageBackground } from "@/components/layout/page-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { PreFooterSection } from "@/components/home/pre-footer-section";
-import {
-  WORKSHOP_DURATION_LABEL,
-  WORKSHOP_PRICING_LABEL,
-  workshops,
-} from "@/lib/constants/workshops";
+import type { WorkshopsPageContent } from "@/lib/types/workshops-content";
 
-export function WorkshopsPage() {
+type WorkshopsPageProps = {
+  content: WorkshopsPageContent;
+};
+
+export function WorkshopsPage({ content }: WorkshopsPageProps) {
+  const { intro, shared, workshops } = content;
+
   return (
     <div className="min-h-screen overflow-x-clip bg-white">
       <PageBackground />
@@ -19,16 +20,13 @@ export function WorkshopsPage() {
         <AnimatedSection variant="fade-up">
           <section className="relative mx-auto w-full max-w-7xl px-5 pt-10 sm:px-6 sm:pt-12 md:px-10 lg:px-14 xl:px-20 2xl:px-28">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-brand-navy">
-              Workshops
+              {intro.pageTitle}
             </p>
             <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-              Practical programmes for campuses and teams
+              {intro.headline}
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
-              Careers, skills, placements, GST, and personal finance — delivered
-              by practitioners. Duration and pricing are both{" "}
-              {WORKSHOP_DURATION_LABEL.toLowerCase()} for your institution or
-              batch.
+              {intro.subtext}
             </p>
           </section>
         </AnimatedSection>
@@ -54,18 +52,19 @@ export function WorkshopsPage() {
                     <div className="mt-4 space-y-1 border-t border-[#f0f0f0] pt-3">
                       <p className="text-sm text-gray-700">
                         <span className="font-semibold text-gray-900">
-                          Duration:
+                          {shared.cards.durationPrefix}
                         </span>{" "}
-                        {WORKSHOP_DURATION_LABEL}
+                        {shared.durationLabel}
                         {workshop.durationBaseline ? (
                           <span className="text-gray-500">
                             {" "}
-                            · sample {workshop.durationBaseline}
+                            {shared.cards.samplePrefix}{" "}
+                            {workshop.durationBaseline}
                           </span>
                         ) : null}
                       </p>
                       <p className="text-sm font-semibold text-brand-navy">
-                        Price: {WORKSHOP_PRICING_LABEL}
+                        {shared.cards.pricePrefix} {shared.pricingLabel}
                       </p>
                     </div>
                   </Link>
@@ -73,10 +72,6 @@ export function WorkshopsPage() {
               ))}
             </ul>
           </section>
-        </AnimatedSection>
-
-        <AnimatedSection variant="fade-up">
-          <PreFooterSection />
         </AnimatedSection>
       </main>
       <SiteFooter />

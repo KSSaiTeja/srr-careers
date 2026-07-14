@@ -5,6 +5,7 @@ export type LeadSubmission = {
   email: string;
   mobile: string;
   course?: string;
+  description?: string;
   source: LeadSource;
 };
 

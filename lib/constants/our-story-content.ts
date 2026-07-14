@@ -13,7 +13,7 @@ export const pageIntro = {
   pageTitle: "Our Story",
   headline: "A finishing school for the next gen",
   headlineHighlight: "SAP FICO",
-  headlineSuffix: " Consultants",
+  headlineSuffix: "Consultants",
   subtext:
     "We are not a marketplace of 200 courses.  Turning ambitious finance professionals into world-class SAP S/4 HANA FICO consultants.",
   metrics: [

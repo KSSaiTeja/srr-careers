@@ -58,6 +58,33 @@ export const SiteSettings: GlobalConfig = {
                 "A dedicated finishing school for SAP S/4 HANA FICO consultants. Live mentors, real client scenarios, lifetime career support.",
             },
             {
+              name: "topStrip",
+              type: "group",
+              label: "Header top strip",
+              admin: {
+                description:
+                  "Thin bar above the navbar. Phone & email on the right come from the Contact tab.",
+              },
+              fields: [
+                {
+                  name: "enabled",
+                  type: "checkbox",
+                  label: "Show top strip",
+                  defaultValue: true,
+                },
+                {
+                  name: "label",
+                  type: "text",
+                  label: "MSME label",
+                  defaultValue: "Registered with MSME",
+                  admin: {
+                    description:
+                      "Shown on the left of the header top strip (e.g. Registered with MSME).",
+                  },
+                },
+              ],
+            },
+            {
               name: "header",
               type: "group",
               label: "Header button",
@@ -76,7 +103,7 @@ export const SiteSettings: GlobalConfig = {
                       name: "ctaHref",
                       type: "text",
                       label: "Button link",
-                      defaultValue: "#demo-class",
+                      defaultValue: "/#demo-class",
                       admin: { width: "50%" },
                     },
                   ],
@@ -160,7 +187,7 @@ export const SiteSettings: GlobalConfig = {
           label: "Contact",
           name: "contact",
           description:
-            "Used in the footer, the pre-footer buttons, and the WhatsApp button.",
+            "Used in the header top strip, footer, pre-footer buttons, and WhatsApp button.",
           fields: [
             {
               type: "row",
@@ -312,7 +339,28 @@ export const SiteSettings: GlobalConfig = {
             {
               name: "craftedText",
               type: "text",
-              defaultValue: "Crafted with care for future SAP consultants.",
+              defaultValue:
+                "MSME-registered institute · Udyam No. UDYAM-TS-02-0353884",
+              admin: {
+                description:
+                  "Short trust line in the footer (e.g. MSME / Udyam registration).",
+              },
+            },
+            {
+              name: "showMsmeLogo",
+              type: "checkbox",
+              label: "Show MSME logo in footer",
+              defaultValue: true,
+            },
+            {
+              name: "msmeBadgeLabel",
+              type: "text",
+              label: "MSME badge label",
+              defaultValue: "Registered with MSME",
+              admin: {
+                description:
+                  "Caption under the MSME logo in the footer brand column.",
+              },
             },
           ],
         },

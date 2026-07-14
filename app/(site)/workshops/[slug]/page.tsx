@@ -2,29 +2,34 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CourseDetailPage } from "@/components/course-detail/course-detail-page";
 import { WorkshopDetailPage } from "@/components/workshops/workshop-detail-page";
-import {
-  getWorkshopBySlug,
-  getWorkshopSlugs,
-} from "@/lib/constants/workshops";
 import { getCourseDetailContent } from "@/lib/payload/get-course-detail";
+import {
+  getWorkshopDetailPageContent,
+  getWorkshopSlugs,
+} from "@/lib/payload/get-workshops";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return getWorkshopSlugs().map((slug) => ({ slug }));
+export const revalidate = 0;
+
+export async function generateStaticParams() {
+  const slugs = await getWorkshopSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const workshop = getWorkshopBySlug(slug);
+  const content = await getWorkshopDetailPageContent(slug);
 
-  if (!workshop) {
+  if (!content) {
     return { title: "Workshop Not Found | SRR Careers" };
   }
+
+  const { workshop } = content;
 
   if (workshop.courseDetailSlug) {
     const course = await getCourseDetailContent(workshop.courseDetailSlug);
@@ -37,18 +42,20 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${workshop.title} | SRR Careers`,
-    description: workshop.summary,
+    title: workshop.meta.title,
+    description: workshop.meta.description,
   };
 }
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
-  const workshop = getWorkshopBySlug(slug);
+  const content = await getWorkshopDetailPageContent(slug);
 
-  if (!workshop) {
+  if (!content) {
     notFound();
   }
+
+  const { workshop } = content;
 
   if (workshop.courseDetailSlug) {
     const course = await getCourseDetailContent(workshop.courseDetailSlug);
@@ -58,5 +65,5 @@ export default async function Page({ params }: PageProps) {
     return <CourseDetailPage course={course} />;
   }
 
-  return <WorkshopDetailPage workshop={workshop} />;
+  return <WorkshopDetailPage content={content} />;
 }

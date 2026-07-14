@@ -40,7 +40,7 @@ function TrackCard({ track }: { track: TrackCardProps }) {
       className={cn(
         "@container/track-card scroll-mt-28 flex flex-col gap-8 rounded-3xl border p-6 sm:gap-10 sm:p-8",
         isConsultant
-          ? "border-brand-navy/30 bg-gradient-to-br from-brand-navy/10 to-white"
+          ? "border-brand-purple/30 bg-gradient-to-br from-brand-purple/10 to-brand-lavender"
           : "border-brand-gold/40 bg-gradient-to-br from-brand-gold/10 to-white",
       )}
     >

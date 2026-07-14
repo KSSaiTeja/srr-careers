@@ -3,15 +3,25 @@
 import { useState } from "react";
 import { TeamAvatar } from "@/components/team/team-avatar";
 import { TeamMemberDialog } from "@/components/team/team-member-dialog";
-import { teamMembers, type TeamMember } from "@/lib/constants/team-members";
+import type { TeamMember } from "@/lib/types/our-team-page-content";
 
-export function TeamGrid() {
+type TeamGridProps = {
+  members: TeamMember[];
+  viewProfileLabel: string;
+  workshopsHeading: string;
+};
+
+export function TeamGrid({
+  members,
+  viewProfileLabel,
+  workshopsHeading,
+}: TeamGridProps) {
   const [selected, setSelected] = useState<TeamMember | null>(null);
 
   return (
     <>
       <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-3 lg:gap-8 xl:grid-cols-5">
-        {teamMembers.map((member) => (
+        {members.map((member) => (
           <li key={member.id} className="min-w-0">
             <button
               type="button"
@@ -31,7 +41,7 @@ export function TeamGrid() {
                   {member.credential}
                 </p>
                 <p className="mt-auto pt-2 text-sm text-gray-500">
-                  View profile →
+                  {viewProfileLabel}
                 </p>
               </div>
             </button>
@@ -39,7 +49,11 @@ export function TeamGrid() {
         ))}
       </ul>
 
-      <TeamMemberDialog member={selected} onClose={() => setSelected(null)} />
+      <TeamMemberDialog
+        member={selected}
+        workshopsHeading={workshopsHeading}
+        onClose={() => setSelected(null)}
+      />
     </>
   );
 }
