@@ -153,6 +153,8 @@ export default buildConfig({
       },
       // Bypass Vercel’s ~4.5MB serverless body limit for admin uploads.
       clientUploads: true,
+      // Replacing e.g. sai-rani.jpg fails without this — Blob rejects duplicate pathnames.
+      addRandomSuffix: true,
       token: process.env.BLOB_READ_WRITE_TOKEN || "",
     }),
   ],
