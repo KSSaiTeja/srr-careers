@@ -19,9 +19,6 @@ export const Media: CollectionConfig = {
     // On Vercel, @payloadcms/storage-vercel-blob takes over (disableLocalStorage).
     staticDir: "public/media",
     mimeTypes: ["image/*"],
-    limits: {
-      fileSize: 20 * 1024 * 1024, // 20MB (clientUploads bypasses Vercel body limit)
-    },
   },
   fields: [
     {
