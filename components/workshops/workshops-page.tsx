@@ -37,7 +37,7 @@ export function WorkshopsPage({ content }: WorkshopsPageProps) {
               {workshops.map((workshop) => (
                 <li key={workshop.slug}>
                   <Link
-                    href={`/workshops/${workshop.slug}`}
+                    href={workshop.href}
                     className="flex h-full flex-col rounded-2xl border border-[#eaeaea] bg-white p-5 transition-colors hover:border-brand-navy/30 hover:bg-brand-lavender/20 sm:p-6"
                   >
                     <p className="text-xs font-medium uppercase tracking-[0.15em] text-brand-navy">
@@ -49,24 +49,30 @@ export function WorkshopsPage({ content }: WorkshopsPageProps) {
                     <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600">
                       {workshop.summary}
                     </p>
-                    <div className="mt-4 space-y-1 border-t border-[#f0f0f0] pt-3">
-                      <p className="text-sm text-gray-700">
-                        <span className="font-semibold text-gray-900">
-                          {shared.cards.durationPrefix}
-                        </span>{" "}
-                        {shared.durationLabel}
-                        {workshop.durationBaseline ? (
-                          <span className="text-gray-500">
-                            {" "}
-                            {shared.cards.samplePrefix}{" "}
-                            {workshop.durationBaseline}
-                          </span>
+                    {(workshop.durationLabel || workshop.priceLabel) && (
+                      <div className="mt-4 space-y-1 border-t border-[#f0f0f0] pt-3">
+                        {workshop.durationLabel ? (
+                          <p className="text-sm text-gray-700">
+                            <span className="font-semibold text-gray-900">
+                              {shared.cards.durationPrefix}
+                            </span>{" "}
+                            {workshop.durationLabel}
+                            {workshop.durationBaseline ? (
+                              <span className="text-gray-500">
+                                {" "}
+                                {shared.cards.samplePrefix}{" "}
+                                {workshop.durationBaseline}
+                              </span>
+                            ) : null}
+                          </p>
                         ) : null}
-                      </p>
-                      <p className="text-sm font-semibold text-brand-navy">
-                        {shared.cards.pricePrefix} {shared.pricingLabel}
-                      </p>
-                    </div>
+                        {workshop.priceLabel ? (
+                          <p className="text-sm font-semibold text-brand-navy">
+                            {shared.cards.pricePrefix} {workshop.priceLabel}
+                          </p>
+                        ) : null}
+                      </div>
+                    )}
                   </Link>
                 </li>
               ))}

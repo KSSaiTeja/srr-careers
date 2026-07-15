@@ -316,7 +316,7 @@ export interface CourseDetail {
   createdAt: string;
 }
 /**
- * Individual workshop pages at /workshops/<slug>. Listing intro and shared labels live on the Workshops Page global. Changes go live after you click Save.
+ * Individual workshop pages at /workshops/<slug> — intro, takeaways, and agenda. Catalogue cards, order, and the Workshops nav dropdown live on Workshops Listing. Changes go live after you click Save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "workshop-details".
@@ -337,7 +337,7 @@ export interface WorkshopDetail {
   sortOrder?: number | null;
   published?: boolean | null;
   /**
-   * Short label for the Workshops nav dropdown. Falls back to eyebrow/title if empty.
+   * Fallback only. Prefer Nav label on Workshops Listing.
    */
   navLabel?: string | null;
   meta?: {
@@ -354,11 +354,11 @@ export interface WorkshopDetail {
     eyebrow: string;
     title: string;
     /**
-     * Short blurb on the /workshops card grid.
+     * Used for the detail page title/summary fallback and meta when empty.
      */
     summary: string;
     /**
-     * Optional, e.g. "3 hours (including Q&A)". Shown as the sample on cards and detail.
+     * Optional, e.g. "3 hours (including Q&A)". Prefer the matching field on Workshops Listing.
      */
     durationBaseline?: string | null;
   };
@@ -1554,7 +1554,7 @@ export interface CoursesPage {
   createdAt?: string | null;
 }
 /**
- * The Workshops listing (/workshops) — intro, shared duration/pricing labels, card labels, and chrome for every workshop detail page. Individual workshops are edited under Workshop Detail Pages. Changes go live after you click Save.
+ * The Workshops catalogue (/workshops) — intro and workshop cards. Each card links to a workshop detail page. Also drives the Workshops nav dropdown. Detail-page copy and agendas live under Workshop Detail Pages.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "workshops-page".
@@ -1569,15 +1569,9 @@ export interface WorkshopsPage {
     pageTitle?: string | null;
     headline?: string | null;
     /**
-     * Use {{duration}} where the duration label should appear (lowercased). Example: …are both {{duration}} for your institution…
+     * Use {{duration}} where the shared duration label should appear (lowercased). Example: …are both {{duration}} for your institution…
      */
     subtext?: string | null;
-  };
-  shared?: {
-    durationLabel?: string | null;
-    pricingLabel?: string | null;
-    durationNote?: string | null;
-    pricingNote?: string | null;
   };
   cards?: {
     durationPrefix?: string | null;
@@ -1586,6 +1580,40 @@ export interface WorkshopsPage {
      * Shown after the duration value when a workshop has a sample baseline, e.g. “Customisable · sample 3 hours”.
      */
     samplePrefix?: string | null;
+  };
+  workshops?:
+    | {
+        /**
+         * Stable id (e.g. career-pathways-and-success-strategies).
+         */
+        slug: string;
+        sortOrder?: number | null;
+        published?: boolean | null;
+        /**
+         * Workshops dropdown label.
+         */
+        navLabel?: string | null;
+        eyebrow: string;
+        title: string;
+        /**
+         * e.g. /workshops/career-pathways-and-success-strategies
+         */
+        href: string;
+        summary: string;
+        durationLabel?: string | null;
+        priceLabel?: string | null;
+        /**
+         * Optional, e.g. "3 hours (including Q&A)". Shown after Duration with the sample prefix.
+         */
+        durationBaseline?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  shared?: {
+    durationLabel?: string | null;
+    pricingLabel?: string | null;
+    durationNote?: string | null;
+    pricingNote?: string | null;
   };
   detail?: {
     metaDurationLabel?: string | null;
@@ -2291,6 +2319,29 @@ export interface WorkshopsPageSelect<T extends boolean = true> {
         headline?: T;
         subtext?: T;
       };
+  cards?:
+    | T
+    | {
+        durationPrefix?: T;
+        pricePrefix?: T;
+        samplePrefix?: T;
+      };
+  workshops?:
+    | T
+    | {
+        slug?: T;
+        sortOrder?: T;
+        published?: T;
+        navLabel?: T;
+        eyebrow?: T;
+        title?: T;
+        href?: T;
+        summary?: T;
+        durationLabel?: T;
+        priceLabel?: T;
+        durationBaseline?: T;
+        id?: T;
+      };
   shared?:
     | T
     | {
@@ -2298,13 +2349,6 @@ export interface WorkshopsPageSelect<T extends boolean = true> {
         pricingLabel?: T;
         durationNote?: T;
         pricingNote?: T;
-      };
-  cards?:
-    | T
-    | {
-        durationPrefix?: T;
-        pricePrefix?: T;
-        samplePrefix?: T;
       };
   detail?:
     | T

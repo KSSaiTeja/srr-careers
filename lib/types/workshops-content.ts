@@ -20,6 +20,20 @@ export type WorkshopFormat = {
 
 export type WorkshopAgendaLayout = "modules" | "sessions" | "formats" | "none";
 
+/** Catalogue card on /workshops (and nav) — mirrors CourseProgramCard. */
+export type WorkshopListingCard = {
+  slug: string;
+  title: string;
+  eyebrow: string;
+  summary: string;
+  href: string;
+  durationLabel?: string;
+  priceLabel?: string;
+  /** Sample / baseline length — shown after duration with the sample prefix. */
+  durationBaseline?: string;
+  navLabel: string;
+};
+
 /** Card + detail content for one workshop programme. */
 export type WorkshopDefinition = {
   slug: string;
@@ -87,7 +101,7 @@ export type WorkshopsPageContent = {
     subtext: string;
   };
   shared: WorkshopsSharedChrome;
-  workshops: WorkshopDefinition[];
+  workshops: WorkshopListingCard[];
 };
 
 export type WorkshopDetailPageContent = {

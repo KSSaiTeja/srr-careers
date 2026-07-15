@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SRR Careers — CMS &amp; Landing Page Guide</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #101928;
+        --muted: #5c6675;
+        --line: #e3e8ef;
+        --wash: #f7f8fa;
+        --navy: #083f88;
+        --navy-dark: #062f6a;
+        --navy-deep: #00193b;
+        --gold: #ffd549;
+        --gold-text: #7c5f00;
+        --cream: #fff3da;
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-5: 1.5rem;
+        --space-6: 2rem;
+        --space-7: 2.5rem;
+        --space-8: 3rem;
+        --radius: 4px;
+        --font: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        --serif: "Georgia", "Times New Roman", serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        margin: 0;
+        background: var(--wash);
+        color: var(--fg);
+        font-family: var(--font);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .shell {
+        max-width: 800px;
+        margin: var(--space-6) auto;
+        padding: 0 var(--space-4);
+      }
+
+      .doc {
+        background: var(--bg);
+        border: 1px solid var(--line);
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--space-2);
+        margin-bottom: var(--space-3);
+      }
+
+      .toolbar button {
+        appearance: none;
+        border: 1px solid var(--navy);
+        background: var(--navy);
+        color: #fff;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 0.55rem 0.9rem;
+        border-radius: var(--radius);
+        cursor: pointer;
+      }
+
+      .toolbar button:hover,
+      .toolbar button:focus-visible {
+        background: var(--navy-dark);
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+
+      .masthead {
+        border-bottom: 1px solid var(--line);
+        padding: var(--space-7) var(--space-7) var(--space-6);
+      }
+
+      .brand-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        margin-bottom: var(--space-5);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+      }
+
+      .brand-mark {
+        width: 10px;
+        height: 28px;
+        background: var(--navy);
+        border-right: 3px solid var(--gold);
+      }
+
+      .brand-name {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--navy);
+      }
+
+      .doc-type {
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        padding: 0.25rem 0.55rem;
+        border-radius: var(--radius);
+        white-space: nowrap;
+      }
+
+      .masthead h1 {
+        margin: 0 0 var(--space-3);
+        font-family: var(--serif);
+        font-size: 2rem;
+        font-weight: 400;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: var(--navy-deep);
+      }
+
+      .masthead .summary {
+        margin: 0;
+        max-width: 38rem;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-4);
+        margin-top: var(--space-6);
+        padding-top: var(--space-5);
+        border-top: 1px solid var(--line);
+      }
+
+      .meta dt {
+        margin: 0 0 var(--space-1);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .meta dd {
+        margin: 0;
+        font-size: 14px;
+        color: var(--fg);
+        font-weight: 600;
+      }
+
+      .body {
+        padding: var(--space-6) var(--space-7) var(--space-8);
+      }
+
+      .toc {
+        background: var(--wash);
+        border: 1px solid var(--line);
+        padding: var(--space-4) var(--space-5);
+        margin-bottom: var(--space-7);
+      }
+
+      .toc h2 {
+        margin: 0 0 var(--space-3);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .toc ol {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+
+      .toc li {
+        margin: 0 0 0.35rem;
+      }
+
+      .toc a {
+        color: var(--navy);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .toc a:hover,
+      .toc a:focus-visible {
+        text-decoration: underline;
+        outline: none;
+      }
+
+      section {
+        margin: 0 0 var(--space-7);
+        padding-top: var(--space-2);
+      }
+
+      section:last-of-type {
+        margin-bottom: var(--space-5);
+      }
+
+      h2 {
+        margin: 0 0 var(--space-4);
+        padding-bottom: var(--space-2);
+        border-bottom: 2px solid var(--navy);
+        font-size: 1.15rem;
+        color: var(--navy-deep);
+        letter-spacing: -0.01em;
+      }
+
+      h3 {
+        margin: var(--space-5) 0 var(--space-3);
+        font-size: 0.95rem;
+        color: var(--navy-dark);
+      }
+
+      p {
+        margin: 0 0 var(--space-3);
+      }
+
+      ul,
+      ol {
+        margin: 0 0 var(--space-3);
+        padding-left: 1.2rem;
+      }
+
+      li {
+        margin: 0 0 0.4rem;
+      }
+
+      li strong {
+        color: var(--navy-deep);
+      }
+
+      code {
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.86em;
+        background: var(--wash);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 0.05rem 0.35rem;
+      }
+
+      a.link {
+        color: var(--navy);
+        font-weight: 600;
+        word-break: break-all;
+      }
+
+      a.link:hover,
+      a.link:focus-visible {
+        color: var(--navy-dark);
+      }
+
+      .note {
+        margin: var(--space-4) 0 0;
+        padding: var(--space-3) var(--space-4);
+        background: var(--cream);
+        border-left: 3px solid var(--gold);
+        font-size: 14px;
+        color: var(--fg);
+      }
+
+      .note strong {
+        color: var(--gold-text);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: var(--space-3) 0 0;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 0.7rem 0.75rem;
+        border: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--navy);
+        color: #fff;
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      td:first-child {
+        font-weight: 600;
+        color: var(--navy-deep);
+        width: 34%;
+        background: var(--wash);
+      }
+
+      .sheet-box {
+        margin-top: var(--space-4);
+        border: 1px solid var(--line);
+        padding: var(--space-4) var(--space-5);
+      }
+
+      .sheet-box .label {
+        margin: 0 0 var(--space-2);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .sheet-box .url {
+        margin: 0 0 var(--space-3);
+        font-size: 14px;
+      }
+
+      .sheet-box .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .sheet-box .actions a {
+        display: inline-block;
+        padding: 0.45rem 0.8rem;
+        background: var(--navy);
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: var(--radius);
+      }
+
+      .sheet-box .actions a:hover,
+      .sheet-box .actions a:focus-visible {
+        background: var(--navy-dark);
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+
+      .doc-foot {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-4);
+        flex-wrap: wrap;
+        padding-top: var(--space-5);
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      @media (max-width: 640px) {
+        .masthead,
+        .body {
+          padding-left: var(--space-5);
+          padding-right: var(--space-5);
+        }
+
+        .meta {
+          grid-template-columns: 1fr;
+        }
+
+        td:first-child {
+          width: auto;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        .shell {
+          margin: 0;
+          max-width: none;
+          padding: 0;
+        }
+
+        .toolbar {
+          display: none !important;
+        }
+
+        .doc {
+          border: none;
+        }
+
+        .masthead,
+        .body {
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        section,
+        table,
+        .sheet-box,
+        .note {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        a.link,
+        .sheet-box .actions a {
+          color: var(--navy);
+        }
+
+        .sheet-box .actions a::after {
+          content: " — " attr(href);
+          font-weight: 400;
+          font-size: 11px;
+          color: var(--muted);
+        }
+      }
+
+      @page {
+        margin: 16mm;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="toolbar">
+        <button type="button" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+
+      <article class="doc">
+        <header class="masthead">
+          <div class="brand-row">
+            <div class="brand">
+              <span class="brand-mark" aria-hidden="true"></span>
+              <span class="brand-name">SRR Careers</span>
+            </div>
+            <span class="doc-type">Content operations guide</span>
+          </div>
+
+          <h1>CMS &amp; Landing Page Guide</h1>
+          <p class="summary">
+            Update website copy, images, and page content from the admin panel —
+            no code required. Edits go live after you click <strong>Save</strong>.
+          </p>
+
+          <dl class="meta">
+            <div>
+              <dt>Live site</dt>
+              <dd>
+                <a class="link" href="https://srrcareers.in" target="_blank" rel="noopener noreferrer"
+                  >srrcareers.in</a
+                >
+              </dd>
+            </div>
+            <div>
+              <dt>Admin</dt>
+              <dd>
+                <a
+                  class="link"
+                  href="https://srrcareers.in/admin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >srrcareers.in/admin</a
+                >
+              </dd>
+            </div>
+            <div>
+              <dt>Form responses</dt>
+              <dd>Google Sheets</dd>
+            </div>
+          </dl>
+        </header>
+
+        <div class="body">
+          <nav class="toc" aria-label="Contents">
+            <h2>Contents</h2>
+            <ol>
+              <li><a href="#cms">Opening the CMS</a></li>
+              <li><a href="#landing">Landing page (Home)</a></li>
+              <li><a href="#images">Images</a></li>
+              <li><a href="#site-settings">Header, footer &amp; contact</a></li>
+              <li><a href="#sheets">Google Sheets (leads &amp; enrollments)</a></li>
+              <li><a href="#other-pages">Other website pages</a></li>
+            </ol>
+          </nav>
+
+          <section id="cms">
+            <h2>1. Opening the CMS</h2>
+            <ol>
+              <li>
+                Open
+                <a
+                  class="link"
+                  href="https://srrcareers.in/admin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >https://srrcareers.in/admin</a
+                >.
+              </li>
+              <li>Sign in with your admin account.</li>
+              <li>Use the left sidebar:</li>
+            </ol>
+            <table>
+              <thead>
+                <tr>
+                  <th>Sidebar group</th>
+                  <th>What you edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Global</td>
+                  <td>Header, footer, contact, social — shared on every page</td>
+                </tr>
+                <tr>
+                  <td>Website Pages</td>
+                  <td>Landing page and other page layouts</td>
+                </tr>
+                <tr>
+                  <td>Collections</td>
+                  <td>Images, course pages, workshop pages, blog posts</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="landing">
+            <h2>2. Landing page (Home)</h2>
+            <p>
+              The homepage at
+              <a class="link" href="https://srrcareers.in" target="_blank" rel="noopener noreferrer"
+                >https://srrcareers.in</a
+              >
+              is edited under <strong>Globals → Home Page</strong>. Tabs follow
+              the page from top to bottom.
+            </p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Tab</th>
+                  <th>Section on srrcareers.in</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1 · Hero</td>
+                  <td>Top banner: label, headline, two buttons, large photo</td>
+                </tr>
+                <tr>
+                  <td>2 · Problem</td>
+                  <td>“Does this relate…” heading and six pain-point boxes</td>
+                </tr>
+                <tr>
+                  <td>3 · Mission</td>
+                  <td>“Our Mission” heading and stats / alumni cards</td>
+                </tr>
+                <tr>
+                  <td>4 · Instructor</td>
+                  <td>Instructor photo, bio, and feature bullets</td>
+                </tr>
+                <tr>
+                  <td>5 · Curriculum</td>
+                  <td>Module list and syllabus button</td>
+                </tr>
+                <tr>
+                  <td>6 · Testimonials</td>
+                  <td>Student quotes</td>
+                </tr>
+                <tr>
+                  <td>7 · Book a demo</td>
+                  <td>Bottom blue “book a demo” band</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Hero tips</h3>
+            <ul>
+              <li>
+                <strong>Main headline</strong> and
+                <strong>Highlighted headline</strong> are the two title lines.
+              </li>
+              <li>
+                <strong>Primary</strong> (gold) and <strong>Secondary</strong>
+                (outline) buttons each need text + a link
+                (e.g. <code>/courses</code> or <code>#book-demo</code>).
+              </li>
+              <li>
+                <strong>Hero photo</strong> — choose from Media, or leave empty
+                for the default.
+              </li>
+              <li>
+                <strong>Hero photo description</strong> — short alt text for
+                accessibility.
+              </li>
+            </ul>
+
+            <p class="note">
+              <strong>After editing:</strong> Click <strong>Save</strong> (top
+              right), then refresh
+              <a class="link" href="https://srrcareers.in" target="_blank" rel="noopener noreferrer"
+                >srrcareers.in</a
+              >
+              to confirm the change.
+            </p>
+          </section>
+
+          <section id="images">
+            <h2>3. Images</h2>
+            <ol>
+              <li>Go to <strong>Collections → Media</strong>.</li>
+              <li>Upload a file and fill in <strong>Image description</strong>.</li>
+              <li>
+                Return to the page global and select that file in the photo field
+                (Hero photo, Instructor photo, etc.).
+              </li>
+            </ol>
+          </section>
+
+          <section id="site-settings">
+            <h2>4. Header, footer &amp; contact</h2>
+            <p>
+              <strong>Globals → Site Settings</strong> controls chrome shared
+              across the site:
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Tab</th>
+                  <th>Use for</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Brand &amp; Header</td>
+                  <td>Site name, tagline, top strip, header button</td>
+                </tr>
+                <tr>
+                  <td>Navigation</td>
+                  <td>Main menu links and dropdowns</td>
+                </tr>
+                <tr>
+                  <td>Contact</td>
+                  <td>Phone, email, WhatsApp</td>
+                </tr>
+                <tr>
+                  <td>Social</td>
+                  <td>Social profile links</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="sheets">
+            <h2>5. Google Sheets (leads &amp; enrollments)</h2>
+            <p>
+              Website forms write into one Google Spreadsheet. Use this sheet to
+              review demo leads, newsletter sign-ups, paid enrollments, internship
+              applications, and Join Our Team requests.
+            </p>
+
+            <div class="sheet-box">
+              <p class="label">Spreadsheet link</p>
+              <p class="url">
+                <a
+                  class="link"
+                  href="https://docs.google.com/spreadsheets/d/1rp-biPAIoNCmfcV_JaFMKbFdPeUvozkzFphIenaPb4Q/edit"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://docs.google.com/spreadsheets/d/1rp-biPAIoNCmfcV_JaFMKbFdPeUvozkzFphIenaPb4Q/edit
+                </a>
+              </p>
+              <div class="actions">
+                <a
+                  href="https://docs.google.com/spreadsheets/d/1rp-biPAIoNCmfcV_JaFMKbFdPeUvozkzFphIenaPb4Q/edit"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open Google Sheet
+                </a>
+              </div>
+            </div>
+
+            <h3>Tabs inside the sheet</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Tab name</th>
+                  <th>What lands there</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Leads</td>
+                  <td>Demo / enquiry form submissions</td>
+                </tr>
+                <tr>
+                  <td>Subscriptions</td>
+                  <td>Newsletter email sign-ups</td>
+                </tr>
+                <tr>
+                  <td>Enrollments</td>
+                  <td>Course checkout &amp; payment records</td>
+                </tr>
+                <tr>
+                  <td>Internships</td>
+                  <td>Internship applications</td>
+                </tr>
+                <tr>
+                  <td>Join Our Team</td>
+                  <td>Faculty / team interest applications</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p class="note">
+              <strong>Tip:</strong> Open the matching tab after testing a form on
+              the site. New rows appear at the bottom. Enrollment status colours
+              help spot Success / Pending / Failed quickly.
+            </p>
+          </section>
+
+          <section id="other-pages">
+            <h2>6. Other website pages</h2>
+            <p>
+              Same workflow as the landing page — open the global, edit tabs,
+              Save:
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>In CMS (Website Pages)</th>
+                  <th>On the website</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Courses Listing</td>
+                  <td>
+                    <a class="link" href="https://srrcareers.in/courses" target="_blank" rel="noopener noreferrer"
+                      >srrcareers.in/courses</a
+                    >
+                    — programme cards
+                  </td>
+                </tr>
+                <tr>
+                  <td>SAP FICO Page</td>
+                  <td>
+                    <a class="link" href="https://srrcareers.in/courses" target="_blank" rel="noopener noreferrer"
+                      >srrcareers.in/courses</a
+                    >
+                    — SAP FICO track content
+                  </td>
+                </tr>
+                <tr>
+                  <td>Workshops Listing</td>
+                  <td>
+                    <a class="link" href="https://srrcareers.in/workshops" target="_blank" rel="noopener noreferrer"
+                      >srrcareers.in/workshops</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Our Story Page</td>
+                  <td>
+                    <a class="link" href="https://srrcareers.in/our-story" target="_blank" rel="noopener noreferrer"
+                      >srrcareers.in/our-story</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Our Team Page</td>
+                  <td>
+                    <a class="link" href="https://srrcareers.in/our-team" target="_blank" rel="noopener noreferrer"
+                      >srrcareers.in/our-team</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>What’s New Page</td>
+                  <td>
+                    <a class="link" href="https://srrcareers.in/whats-new" target="_blank" rel="noopener noreferrer"
+                      >srrcareers.in/whats-new</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>Blog Page</td>
+                  <td>
+                    <a class="link" href="https://srrcareers.in/blog" target="_blank" rel="noopener noreferrer"
+                      >srrcareers.in/blog</a
+                    >
+                    — intro / sidebar
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="margin-top: 1rem; color: var(--muted); font-size: 14px">
+              Individual courses, workshops, and blog articles are under
+              <strong>Collections</strong> (Course Detail Pages, Workshop Detail
+              Pages, Blog Posts).
+            </p>
+          </section>
+
+          <footer class="doc-foot">
+            <span>SRR Careers · CMS &amp; Landing Page Guide</span>
+            <span>Browser → Print → Save as PDF</span>
+          </footer>
+        </div>
+      </article>
+    </div>
+  </body>
+</html>

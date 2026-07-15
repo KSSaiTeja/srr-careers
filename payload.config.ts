@@ -112,10 +112,40 @@ export default buildConfig({
     theme: "light",
     importMap: {
       baseDir: path.resolve(dirname),
+      importMapFile: path.resolve(
+        dirname,
+        "app/(payload)/admin/importMap.js",
+      ),
     },
     meta: {
       titleSuffix: "— SRR Careers CMS",
       description: "Manage SRR Careers website content",
+      defaultOGImageType: "static",
+      icons: {
+        icon: [
+          { url: "/favicon/favicon.ico", sizes: "any" },
+          { url: "/favicon/favicon.svg", type: "image/svg+xml" },
+          {
+            url: "/favicon/favicon-96x96.png",
+            type: "image/png",
+            sizes: "96x96",
+          },
+        ],
+        apple: [
+          { url: "/favicon/apple-touch-icon.png", sizes: "180x180" },
+        ],
+      },
+      openGraph: {
+        title: "SRR Careers CMS",
+        description: "Manage SRR Careers website content",
+        images: [{ url: "/images/logo.png" }],
+      },
+    },
+    components: {
+      graphics: {
+        Logo: "/components/payload/Logo#Logo",
+        Icon: "/components/payload/Icon#Icon",
+      },
     },
   },
   collections: [Users, Media, CourseDetails, WorkshopDetails, BlogPosts, Enrollments],
@@ -168,8 +198,8 @@ export default buildConfig({
     await seedCoursesPage(payload);
     await seedOurStoryPage(payload);
     await seedOurTeamPage(payload);
-    await seedWorkshopsPage(payload);
     await seedWorkshopDetails(payload);
+    await seedWorkshopsPage(payload);
     await seedCourseDetails(payload);
     await seedWhatsNewPage(payload);
     await seedBlogPage(payload);

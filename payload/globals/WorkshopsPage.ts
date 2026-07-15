@@ -4,7 +4,7 @@ import { authenticated } from "../access/authenticated";
 
 export const WorkshopsPage: GlobalConfig = {
   slug: "workshops-page",
-  label: "Workshops Page",
+  label: "Workshops Listing",
   access: {
     read: () => true,
     update: authenticated,
@@ -12,14 +12,14 @@ export const WorkshopsPage: GlobalConfig = {
   admin: {
     group: "Website Pages",
     description:
-      "The Workshops listing (/workshops) — intro, shared duration/pricing labels, card labels, and chrome for every workshop detail page. Individual workshops are edited under Workshop Detail Pages. Changes go live after you click Save.",
+      "The Workshops catalogue (/workshops) — intro and workshop cards. Each card links to a workshop detail page. Also drives the Workshops nav dropdown. Detail-page copy and agendas live under Workshop Detail Pages.",
   },
   fields: [
     {
       type: "tabs",
       tabs: [
         {
-          label: "1 · SEO (listing)",
+          label: "1 · SEO",
           name: "meta",
           fields: [
             {
@@ -55,7 +55,7 @@ export const WorkshopsPage: GlobalConfig = {
               type: "textarea",
               admin: {
                 description:
-                  "Use {{duration}} where the duration label should appear (lowercased). Example: …are both {{duration}} for your institution…",
+                  "Use {{duration}} where the shared duration label should appear (lowercased). Example: …are both {{duration}} for your institution…",
               },
               defaultValue:
                 "Careers, skills, placements, GST, and personal finance — delivered by practitioners. Duration and pricing are both {{duration}} for your institution or batch.",
@@ -63,47 +63,7 @@ export const WorkshopsPage: GlobalConfig = {
           ],
         },
         {
-          label: "3 · Duration & pricing",
-          name: "shared",
-          description:
-            "Shared across listing cards and every workshop detail page.",
-          fields: [
-            {
-              type: "row",
-              fields: [
-                {
-                  name: "durationLabel",
-                  type: "text",
-                  label: "Duration value",
-                  defaultValue: "Customisable",
-                  admin: { width: "50%" },
-                },
-                {
-                  name: "pricingLabel",
-                  type: "text",
-                  label: "Price value",
-                  defaultValue: "Customisable",
-                  admin: { width: "50%" },
-                },
-              ],
-            },
-            {
-              name: "durationNote",
-              type: "textarea",
-              label: "Duration note (detail page)",
-              defaultValue:
-                "Sample agenda below — length can be tailored to your institution or batch.",
-            },
-            {
-              name: "pricingNote",
-              type: "textarea",
-              label: "Pricing note (detail page)",
-              defaultValue: "Fees tailored to campus or corporate batch size.",
-            },
-          ],
-        },
-        {
-          label: "4 · Listing cards",
+          label: "3 · Card labels",
           name: "cards",
           fields: [
             {
@@ -112,14 +72,14 @@ export const WorkshopsPage: GlobalConfig = {
                 {
                   name: "durationPrefix",
                   type: "text",
-                  label: "Duration label prefix",
+                  label: "Duration prefix",
                   defaultValue: "Duration:",
                   admin: { width: "50%" },
                 },
                 {
                   name: "pricePrefix",
                   type: "text",
-                  label: "Price label prefix",
+                  label: "Price prefix",
                   defaultValue: "Price:",
                   admin: { width: "50%" },
                 },
@@ -138,30 +98,51 @@ export const WorkshopsPage: GlobalConfig = {
           ],
         },
         {
-          label: "5 · Detail page chrome",
-          name: "detail",
+          label: "4 · Workshops",
           description:
-            "Labels shared by every workshop detail page. Per-workshop copy lives in Workshop Detail Pages.",
+            "Cards on /workshops and entries in the Workshops nav dropdown. Order = listing order.",
           fields: [
             {
-              type: "collapsible",
-              label: "Meta field labels",
+              name: "workshops",
+              type: "array",
+              label: "Workshop cards",
+              labels: { singular: "Workshop", plural: "Workshops" },
               admin: { initCollapsed: false },
               fields: [
                 {
                   type: "row",
                   fields: [
                     {
-                      name: "metaDurationLabel",
+                      name: "slug",
                       type: "text",
-                      defaultValue: "Duration",
-                      admin: { width: "50%" },
+                      required: true,
+                      admin: {
+                        width: "35%",
+                        description:
+                          "Stable id (e.g. career-pathways-and-success-strategies).",
+                      },
                     },
                     {
-                      name: "metaPriceLabel",
+                      name: "sortOrder",
+                      type: "number",
+                      defaultValue: 0,
+                      admin: { width: "20%" },
+                    },
+                    {
+                      name: "published",
+                      type: "checkbox",
+                      defaultValue: true,
+                      label: "Published",
+                      admin: { width: "20%" },
+                    },
+                    {
+                      name: "navLabel",
                       type: "text",
-                      defaultValue: "Price",
-                      admin: { width: "50%" },
+                      label: "Nav label",
+                      admin: {
+                        width: "25%",
+                        description: "Workshops dropdown label.",
+                      },
                     },
                   ],
                 },
@@ -169,113 +150,252 @@ export const WorkshopsPage: GlobalConfig = {
                   type: "row",
                   fields: [
                     {
-                      name: "metaModeLabel",
+                      name: "eyebrow",
                       type: "text",
-                      defaultValue: "Mode",
+                      required: true,
+                      defaultValue: "Workshop",
+                      admin: { width: "30%" },
+                    },
+                    {
+                      name: "title",
+                      type: "text",
+                      required: true,
+                      admin: { width: "35%" },
+                    },
+                    {
+                      name: "href",
+                      type: "text",
+                      required: true,
+                      admin: {
+                        width: "35%",
+                        description:
+                          "e.g. /workshops/career-pathways-and-success-strategies",
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: "summary",
+                  type: "textarea",
+                  required: true,
+                },
+                {
+                  type: "row",
+                  fields: [
+                    {
+                      name: "durationLabel",
+                      type: "text",
+                      label: "Duration value",
+                      defaultValue: "Customisable",
                       admin: { width: "50%" },
                     },
                     {
-                      name: "metaAudienceLabel",
+                      name: "priceLabel",
                       type: "text",
-                      defaultValue: "Audience",
+                      label: "Price value",
+                      defaultValue: "Customisable",
                       admin: { width: "50%" },
                     },
                   ],
                 },
                 {
-                  name: "metaSpeakerLabel",
+                  name: "durationBaseline",
                   type: "text",
-                  defaultValue: "Speaker",
-                },
-              ],
-            },
-            {
-              type: "collapsible",
-              label: "Duration & pricing block",
-              admin: { initCollapsed: false },
-              fields: [
-                {
-                  name: "pricingEyebrow",
-                  type: "text",
-                  defaultValue: "Duration & pricing",
-                },
-                {
-                  name: "pricingHeadline",
-                  type: "text",
-                  defaultValue: "Both customisable",
-                },
-                {
-                  name: "sampleAgendaPrefix",
-                  type: "text",
-                  label: "Sample agenda sentence prefix",
-                  defaultValue: "Sample agenda:",
+                  label: "Sample agenda length",
                   admin: {
                     description:
-                      "Appended before the workshop’s duration baseline on the detail page.",
+                      'Optional, e.g. "3 hours (including Q&A)". Shown after Duration with the sample prefix.',
                   },
                 },
               ],
             },
+          ],
+        },
+        {
+          label: "5 · Detail page chrome",
+          description:
+            "Detail-page chrome only — shared duration/pricing notes and labels used on every /workshops/<slug> page. Per-workshop copy and agendas live under Workshop Detail Pages.",
+          fields: [
             {
-              type: "collapsible",
-              label: "Highlights & agenda",
-              admin: { initCollapsed: false },
-              fields: [
-                {
-                  name: "highlightsHeading",
-                  type: "text",
-                  defaultValue: "What you'll take away",
-                },
-                {
-                  name: "agendaEyebrow",
-                  type: "text",
-                  defaultValue: "Agenda",
-                },
-                {
-                  name: "agendaTitleModules",
-                  type: "text",
-                  label: "Agenda title — module list",
-                  defaultValue: "Session modules",
-                },
-                {
-                  name: "agendaTitleSessions",
-                  type: "text",
-                  label: "Agenda title — sessions",
-                  defaultValue: "One-day programme flow",
-                },
-                {
-                  name: "agendaTitleFormats",
-                  type: "text",
-                  label: "Agenda title — format tabs",
-                  defaultValue: "Choose a format",
-                },
-                {
-                  name: "formatAudienceLabel",
-                  type: "text",
-                  label: "Format “Audience” label",
-                  defaultValue: "Audience:",
-                },
-              ],
-            },
-            {
-              type: "collapsible",
-              label: "Back CTA",
-              admin: { initCollapsed: false },
+              name: "shared",
+              type: "group",
+              label: "Shared duration & pricing",
               fields: [
                 {
                   type: "row",
                   fields: [
                     {
-                      name: "backCtaLabel",
+                      name: "durationLabel",
                       type: "text",
-                      defaultValue: "All workshops",
+                      label: "Duration value (detail)",
+                      defaultValue: "Customisable",
                       admin: { width: "50%" },
                     },
                     {
-                      name: "backCtaHref",
+                      name: "pricingLabel",
                       type: "text",
-                      defaultValue: "/workshops",
+                      label: "Price value (detail)",
+                      defaultValue: "Customisable",
                       admin: { width: "50%" },
+                    },
+                  ],
+                },
+                {
+                  name: "durationNote",
+                  type: "textarea",
+                  label: "Duration note (detail page)",
+                  defaultValue:
+                    "Sample agenda below — length can be tailored to your institution or batch.",
+                },
+                {
+                  name: "pricingNote",
+                  type: "textarea",
+                  label: "Pricing note (detail page)",
+                  defaultValue:
+                    "Fees tailored to campus or corporate batch size.",
+                },
+              ],
+            },
+            {
+              name: "detail",
+              type: "group",
+              label: "Detail labels",
+              fields: [
+                {
+                  type: "collapsible",
+                  label: "Meta field labels",
+                  admin: { initCollapsed: false },
+                  fields: [
+                    {
+                      type: "row",
+                      fields: [
+                        {
+                          name: "metaDurationLabel",
+                          type: "text",
+                          defaultValue: "Duration",
+                          admin: { width: "50%" },
+                        },
+                        {
+                          name: "metaPriceLabel",
+                          type: "text",
+                          defaultValue: "Price",
+                          admin: { width: "50%" },
+                        },
+                      ],
+                    },
+                    {
+                      type: "row",
+                      fields: [
+                        {
+                          name: "metaModeLabel",
+                          type: "text",
+                          defaultValue: "Mode",
+                          admin: { width: "50%" },
+                        },
+                        {
+                          name: "metaAudienceLabel",
+                          type: "text",
+                          defaultValue: "Audience",
+                          admin: { width: "50%" },
+                        },
+                      ],
+                    },
+                    {
+                      name: "metaSpeakerLabel",
+                      type: "text",
+                      defaultValue: "Speaker",
+                    },
+                  ],
+                },
+                {
+                  type: "collapsible",
+                  label: "Duration & pricing block",
+                  admin: { initCollapsed: false },
+                  fields: [
+                    {
+                      name: "pricingEyebrow",
+                      type: "text",
+                      defaultValue: "Duration & pricing",
+                    },
+                    {
+                      name: "pricingHeadline",
+                      type: "text",
+                      defaultValue: "Both customisable",
+                    },
+                    {
+                      name: "sampleAgendaPrefix",
+                      type: "text",
+                      label: "Sample agenda sentence prefix",
+                      defaultValue: "Sample agenda:",
+                      admin: {
+                        description:
+                          "Appended before the workshop’s duration baseline on the detail page.",
+                      },
+                    },
+                  ],
+                },
+                {
+                  type: "collapsible",
+                  label: "Highlights & agenda",
+                  admin: { initCollapsed: false },
+                  fields: [
+                    {
+                      name: "highlightsHeading",
+                      type: "text",
+                      defaultValue: "What you'll take away",
+                    },
+                    {
+                      name: "agendaEyebrow",
+                      type: "text",
+                      defaultValue: "Agenda",
+                    },
+                    {
+                      name: "agendaTitleModules",
+                      type: "text",
+                      label: "Agenda title — module list",
+                      defaultValue: "Session modules",
+                    },
+                    {
+                      name: "agendaTitleSessions",
+                      type: "text",
+                      label: "Agenda title — sessions",
+                      defaultValue: "One-day programme flow",
+                    },
+                    {
+                      name: "agendaTitleFormats",
+                      type: "text",
+                      label: "Agenda title — format tabs",
+                      defaultValue: "Choose a format",
+                    },
+                    {
+                      name: "formatAudienceLabel",
+                      type: "text",
+                      label: "Format “Audience” label",
+                      defaultValue: "Audience:",
+                    },
+                  ],
+                },
+                {
+                  type: "collapsible",
+                  label: "Back CTA",
+                  admin: { initCollapsed: false },
+                  fields: [
+                    {
+                      type: "row",
+                      fields: [
+                        {
+                          name: "backCtaLabel",
+                          type: "text",
+                          defaultValue: "All workshops",
+                          admin: { width: "50%" },
+                        },
+                        {
+                          name: "backCtaHref",
+                          type: "text",
+                          defaultValue: "/workshops",
+                          admin: { width: "50%" },
+                        },
+                      ],
                     },
                   ],
                 },

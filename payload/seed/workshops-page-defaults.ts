@@ -1,7 +1,10 @@
+import { workshopDetailsDefaults } from "./workshop-details-defaults";
+
 /**
- * Default content for the Workshops listing global. Seeds on first run and
+ * Default content for the Workshops Listing global. Seeds on first run and
  * acts as fallback when CMS values are empty. Also supplies shared chrome for
- * every workshop detail page.
+ * every workshop detail page. Catalogue cards are edited here (like Courses
+ * Listing programmes).
  */
 export const workshopsPageDefaults = {
   meta: {
@@ -27,6 +30,21 @@ export const workshopsPageDefaults = {
     pricePrefix: "Price:",
     samplePrefix: "· sample",
   },
+  workshops: workshopDetailsDefaults.map((entry) => ({
+    slug: entry.slug,
+    sortOrder: entry.sortOrder,
+    published: entry.published,
+    navLabel: entry.navLabel,
+    eyebrow: entry.card.eyebrow,
+    title: entry.card.title,
+    href: `/workshops/${entry.slug}`,
+    summary: entry.card.summary,
+    durationLabel: "Customisable",
+    priceLabel: "Customisable",
+    ...(entry.card.durationBaseline
+      ? { durationBaseline: entry.card.durationBaseline }
+      : {}),
+  })),
   detail: {
     metaDurationLabel: "Duration",
     metaPriceLabel: "Price",

@@ -2,6 +2,7 @@ import type {
   WorkshopAgendaLayout,
   WorkshopDefinition,
   WorkshopFormat,
+  WorkshopListingCard,
   WorkshopModule,
   WorkshopSession,
   WorkshopsPageContent,
@@ -14,6 +15,38 @@ import { workshopsPageDefaults } from "@/payload/seed/workshops-page-defaults";
 function text(value: string | null | undefined, fallback: string): string {
   const trimmed = value?.trim();
   return trimmed && trimmed.length > 0 ? trimmed : fallback;
+}
+
+function mapListingCard(
+  item: NonNullable<WorkshopsPage["workshops"]>[number],
+  fallback?: (typeof workshopsPageDefaults.workshops)[number],
+): WorkshopListingCard | null {
+  const slug = text(item.slug, fallback?.slug ?? "");
+  const title = text(item.title, fallback?.title ?? "");
+  const href = text(
+    item.href,
+    fallback?.href ?? (slug ? `/workshops/${slug}` : ""),
+  );
+  if (!slug || !title || !href) return null;
+
+  const durationBaseline = text(
+    item.durationBaseline,
+    (fallback as { durationBaseline?: string } | undefined)?.durationBaseline ??
+      "",
+  );
+
+  return {
+    slug,
+    title,
+    eyebrow: text(item.eyebrow, fallback?.eyebrow ?? "Workshop"),
+    summary: text(item.summary, fallback?.summary ?? ""),
+    href,
+    durationLabel:
+      text(item.durationLabel, "") || fallback?.durationLabel || undefined,
+    priceLabel: text(item.priceLabel, "") || fallback?.priceLabel || undefined,
+    navLabel: text(item.navLabel, fallback?.navLabel ?? title),
+    ...(durationBaseline ? { durationBaseline } : {}),
+  };
 }
 
 function mapModules(
@@ -108,6 +141,44 @@ function asLayout(value: string | null | undefined): WorkshopAgendaLayout {
   return "modules";
 }
 
+function mapListingCardFromDefaults(
+  entry: (typeof workshopsPageDefaults.workshops)[number],
+): WorkshopListingCard {
+  return {
+    slug: entry.slug,
+    title: entry.title,
+    eyebrow: entry.eyebrow,
+    summary: entry.summary,
+    href: entry.href,
+    durationLabel: entry.durationLabel,
+    priceLabel: entry.priceLabel,
+    navLabel: entry.navLabel,
+    ...("durationBaseline" in entry && entry.durationBaseline
+      ? { durationBaseline: entry.durationBaseline }
+      : {}),
+  };
+}
+
+function listingCardFromDetailDoc(
+  doc: WorkshopDetail,
+): WorkshopListingCard | null {
+  const workshop = mapWorkshopDetailFromCMS(doc);
+  if (!workshop) return null;
+  return {
+    slug: workshop.slug,
+    title: workshop.title,
+    eyebrow: workshop.eyebrow,
+    summary: workshop.summary,
+    href: `/workshops/${workshop.slug}`,
+    durationLabel: workshopsPageDefaults.shared.durationLabel,
+    priceLabel: workshopsPageDefaults.shared.pricingLabel,
+    navLabel: workshop.navLabel,
+    ...(workshop.durationBaseline
+      ? { durationBaseline: workshop.durationBaseline }
+      : {}),
+  };
+}
+
 export function mapWorkshopsSharedFromCMS(
   global: WorkshopsPage | null | undefined,
 ): WorkshopsSharedChrome {
@@ -175,21 +246,61 @@ export function mapWorkshopsSharedFromCMS(
   };
 }
 
+export function mapListingCardsFromCMS(
+  global: WorkshopsPage | null | undefined,
+): WorkshopListingCard[] {
+  const fromListing = listingCardsFromGlobal(global);
+  if (fromListing.length > 0) return fromListing;
+
+  return workshopsPageDefaults.workshops
+    .filter((entry) => entry.published)
+    .map(mapListingCardFromDefaults);
+}
+
+export function listingCardsFromGlobal(
+  global: WorkshopsPage | null | undefined,
+): WorkshopListingCard[] {
+  const rows = global?.workshops;
+  if (!Array.isArray(rows) || rows.length === 0) return [];
+
+  return rows
+    .filter((item) => item.published !== false)
+    .slice()
+    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+    .map((item) => {
+      const fallback = workshopsPageDefaults.workshops.find(
+        (entry) => entry.slug === item.slug,
+      );
+      return mapListingCard(item, fallback);
+    })
+    .filter(Boolean) as WorkshopListingCard[];
+}
+
 export function mapWorkshopDetailFromCMS(
   doc: WorkshopDetail | null | undefined,
   fallbackSlug?: string,
+  listingCard?: WorkshopListingCard | null,
 ): WorkshopDefinition | undefined {
   const defaults = workshopDetailsDefaults.find(
     (entry) => entry.slug === (doc?.slug ?? fallbackSlug),
   );
 
-  if (!doc && !defaults) return undefined;
+  if (!doc && !defaults && !listingCard) return undefined;
 
-  const slug = text(doc?.slug, defaults?.slug ?? fallbackSlug ?? "");
+  const slug = text(
+    doc?.slug,
+    defaults?.slug ?? listingCard?.slug ?? fallbackSlug ?? "",
+  );
   if (!slug) return undefined;
 
-  const title = text(doc?.card?.title, defaults?.card.title ?? "");
-  const summary = text(doc?.card?.summary, defaults?.card.summary ?? "");
+  const title = text(
+    listingCard?.title,
+    text(doc?.card?.title, defaults?.card.title ?? ""),
+  );
+  const summary = text(
+    listingCard?.summary,
+    text(doc?.card?.summary, defaults?.card.summary ?? ""),
+  );
   const layout = asLayout(doc?.agenda?.layout ?? defaults?.agenda.layout);
 
   const highlightsFromCms = (doc?.detail?.highlights ?? [])
@@ -201,8 +312,8 @@ export function mapWorkshopDetailFromCMS(
       : (defaults?.detail.highlights.map((h) => h.text) ?? []);
 
   const durationBaseline = text(
-    doc?.card?.durationBaseline,
-    defaults?.card.durationBaseline ?? "",
+    listingCard?.durationBaseline,
+    text(doc?.card?.durationBaseline, defaults?.card.durationBaseline ?? ""),
   );
   const mode = text(doc?.detail?.mode, defaults?.detail.mode ?? "");
   const speaker = text(doc?.detail?.speaker, defaults?.detail.speaker ?? "");
@@ -212,8 +323,12 @@ export function mapWorkshopDetailFromCMS(
     defaults?.detail.courseDetailSlug ?? "",
   );
   const navLabel = text(
-    doc?.navLabel,
-    defaults?.navLabel ?? text(doc?.card?.eyebrow, defaults?.card.eyebrow ?? title),
+    listingCard?.navLabel,
+    text(
+      doc?.navLabel,
+      defaults?.navLabel ??
+        text(doc?.card?.eyebrow, defaults?.card.eyebrow ?? title),
+    ),
   );
 
   const cmsModules = mapModules(doc?.agenda?.modules);
@@ -245,7 +360,10 @@ export function mapWorkshopDetailFromCMS(
   return {
     slug,
     title,
-    eyebrow: text(doc?.card?.eyebrow, defaults?.card.eyebrow ?? "Workshop"),
+    eyebrow: text(
+      listingCard?.eyebrow,
+      text(doc?.card?.eyebrow, defaults?.card.eyebrow ?? "Workshop"),
+    ),
     summary,
     description: text(
       doc?.detail?.description,
@@ -288,20 +406,26 @@ export function mapWorkshopsPageFromCMS(
   const cms: Partial<WorkshopsPage> = global ?? {};
   const shared = mapWorkshopsSharedFromCMS(global);
 
-  const fromCms = (workshopDocs ?? [])
-    .filter((doc) => doc.published !== false)
-    .slice()
-    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-    .map((doc) => mapWorkshopDetailFromCMS(doc))
-    .filter(Boolean) as WorkshopDefinition[];
+  const fromListing = listingCardsFromGlobal(global);
+  let workshops: WorkshopListingCard[];
 
-  const workshops =
-    fromCms.length > 0
-      ? fromCms
-      : (workshopDetailsDefaults
-          .filter((entry) => entry.published)
-          .map((entry) => mapWorkshopDetailFromDefaults(entry.slug))
-          .filter(Boolean) as WorkshopDefinition[]);
+  if (fromListing.length > 0) {
+    workshops = fromListing;
+  } else {
+    const fromDocs = (workshopDocs ?? [])
+      .filter((doc) => doc.published !== false)
+      .slice()
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+      .map((doc) => listingCardFromDetailDoc(doc))
+      .filter(Boolean) as WorkshopListingCard[];
+
+    workshops =
+      fromDocs.length > 0
+        ? fromDocs
+        : workshopsPageDefaults.workshops
+            .filter((entry) => entry.published)
+            .map(mapListingCardFromDefaults);
+  }
 
   const durationLabel = shared.durationLabel;
   const rawSubtext = text(cms.intro?.subtext, d.intro.subtext);

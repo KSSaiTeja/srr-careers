@@ -1,6 +1,8 @@
 import config from "@payload-config";
 import { getPayload } from "payload";
 import {
+  listingCardsFromGlobal,
+  mapListingCardsFromCMS,
   mapWorkshopDetailFromCMS,
   mapWorkshopDetailFromDefaults,
   mapWorkshopsPageFromCMS,
@@ -11,7 +13,7 @@ import type {
   WorkshopDetailPageContent,
   WorkshopsPageContent,
 } from "@/lib/types/workshops-content";
-import { workshopDetailsDefaults } from "@/payload/seed/workshop-details-defaults";
+import { workshopsPageDefaults } from "@/payload/seed/workshops-page-defaults";
 
 export async function getWorkshopsPageContent(): Promise<WorkshopsPageContent> {
   try {
@@ -48,8 +50,13 @@ export async function getWorkshopDetailPageContent(
       }),
     ]);
 
+    const listingCard =
+      listingCardsFromGlobal(global).find((card) => card.slug === slug) ??
+      mapListingCardsFromCMS(global).find((card) => card.slug === slug) ??
+      null;
+
     const workshop =
-      mapWorkshopDetailFromCMS(result.docs[0]) ??
+      mapWorkshopDetailFromCMS(result.docs[0], slug, listingCard) ??
       mapWorkshopDetailFromDefaults(slug);
 
     if (!workshop) return undefined;
@@ -71,6 +78,14 @@ export async function getWorkshopDetailPageContent(
 export async function getWorkshopSlugs(): Promise<string[]> {
   try {
     const payload = await getPayload({ config });
+    const global = await payload.findGlobal({
+      slug: "workshops-page",
+      depth: 0,
+    });
+
+    const fromListing = listingCardsFromGlobal(global).map((card) => card.slug);
+    if (fromListing.length > 0) return fromListing;
+
     const result = await payload.find({
       collection: "workshop-details",
       limit: 100,
@@ -89,7 +104,7 @@ export async function getWorkshopSlugs(): Promise<string[]> {
     // fall through
   }
 
-  return workshopDetailsDefaults
+  return workshopsPageDefaults.workshops
     .filter((entry) => entry.published)
     .map((entry) => entry.slug);
 }
@@ -99,6 +114,17 @@ export async function getWorkshopNavChildren(): Promise<
 > {
   try {
     const payload = await getPayload({ config });
+    const global = await payload.findGlobal({
+      slug: "workshops-page",
+      depth: 0,
+    });
+
+    const fromListing = listingCardsFromGlobal(global).map((card) => ({
+      label: card.navLabel,
+      href: card.href,
+    }));
+    if (fromListing.length > 0) return fromListing;
+
     const result = await payload.find({
       collection: "workshop-details",
       limit: 100,
@@ -124,11 +150,11 @@ export async function getWorkshopNavChildren(): Promise<
     // fall through
   }
 
-  return workshopDetailsDefaults
+  return workshopsPageDefaults.workshops
     .filter((entry) => entry.published)
     .map((entry) => ({
       label: entry.navLabel,
-      href: `/workshops/${entry.slug}`,
+      href: entry.href,
     }));
 }
 

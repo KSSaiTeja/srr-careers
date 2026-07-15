@@ -36,7 +36,7 @@ export const WorkshopDetails: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "slug", "published", "sortOrder", "updatedAt"],
     description:
-      "Individual workshop pages at /workshops/<slug>. Listing intro and shared labels live on the Workshops Page global. Changes go live after you click Save.",
+      "Individual workshop pages at /workshops/<slug> — intro, takeaways, and agenda. Catalogue cards, order, and the Workshops nav dropdown live on Workshops Listing. Changes go live after you click Save.",
   },
   access: {
     read: () => true,
@@ -98,7 +98,7 @@ export const WorkshopDetails: CollectionConfig = {
           admin: {
             width: "60%",
             description:
-              "Short label for the Workshops nav dropdown. Falls back to eyebrow/title if empty.",
+              "Fallback only. Prefer Nav label on Workshops Listing.",
           },
         },
       ],
@@ -130,8 +130,10 @@ export const WorkshopDetails: CollectionConfig = {
           ],
         },
         {
-          label: "2 · Listing card",
+          label: "2 · Card fallback",
           name: "card",
+          description:
+            "Fallback only when Workshops Listing has no cards. Prefer editing catalogue cards on Workshops Listing.",
           fields: [
             {
               name: "eyebrow",
@@ -149,7 +151,8 @@ export const WorkshopDetails: CollectionConfig = {
               type: "textarea",
               required: true,
               admin: {
-                description: "Short blurb on the /workshops card grid.",
+                description:
+                  "Used for the detail page title/summary fallback and meta when empty.",
               },
             },
             {
@@ -158,7 +161,7 @@ export const WorkshopDetails: CollectionConfig = {
               label: "Sample agenda length",
               admin: {
                 description:
-                  'Optional, e.g. "3 hours (including Q&A)". Shown as the sample on cards and detail.',
+                  'Optional, e.g. "3 hours (including Q&A)". Prefer the matching field on Workshops Listing.',
               },
             },
           ],

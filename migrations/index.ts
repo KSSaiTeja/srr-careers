@@ -21,6 +21,7 @@ import * as migration_20260714_130648_workshops_cms from './20260714_130648_work
 import * as migration_20260714_183000_blog_generate_slug from './20260714_183000_blog_generate_slug';
 import * as migration_20260714_190000_courses_listing_nav from './20260714_190000_courses_listing_nav';
 import * as migration_20260714_191000_nav_nested_children_rename from './20260714_191000_nav_nested_children_rename';
+import * as migration_20260715_060000_workshops_listing_cards from './20260715_060000_workshops_listing_cards';
 
 export const migrations = [
   {
@@ -137,5 +138,10 @@ export const migrations = [
     up: migration_20260714_191000_nav_nested_children_rename.up,
     down: migration_20260714_191000_nav_nested_children_rename.down,
     name: '20260714_191000_nav_nested_children_rename',
+  },
+  {
+    up: migration_20260715_060000_workshops_listing_cards.up,
+    down: migration_20260715_060000_workshops_listing_cards.down,
+    name: '20260715_060000_workshops_listing_cards',
   },
 ];
