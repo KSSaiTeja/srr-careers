@@ -22,6 +22,8 @@ import * as migration_20260714_183000_blog_generate_slug from './20260714_183000
 import * as migration_20260714_190000_courses_listing_nav from './20260714_190000_courses_listing_nav';
 import * as migration_20260714_191000_nav_nested_children_rename from './20260714_191000_nav_nested_children_rename';
 import * as migration_20260715_060000_workshops_listing_cards from './20260715_060000_workshops_listing_cards';
+import * as migration_20260820_120000_contact_locations from './20260820_120000_contact_locations';
+import * as migration_20260820_130000_footer_company_blurb from './20260820_130000_footer_company_blurb';
 
 export const migrations = [
   {
@@ -143,5 +145,15 @@ export const migrations = [
     up: migration_20260715_060000_workshops_listing_cards.up,
     down: migration_20260715_060000_workshops_listing_cards.down,
     name: '20260715_060000_workshops_listing_cards',
+  },
+  {
+    up: migration_20260820_120000_contact_locations.up,
+    down: migration_20260820_120000_contact_locations.down,
+    name: '20260820_120000_contact_locations',
+  },
+  {
+    up: migration_20260820_130000_footer_company_blurb.up,
+    down: migration_20260820_130000_footer_company_blurb.down,
+    name: '20260820_130000_footer_company_blurb',
   },
 ];

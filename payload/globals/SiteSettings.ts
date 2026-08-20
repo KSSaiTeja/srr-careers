@@ -53,9 +53,13 @@ export const SiteSettings: GlobalConfig = {
             {
               name: "footerDescription",
               type: "textarea",
-              label: "Footer tagline",
+              label: "Company information (below logo)",
               defaultValue:
                 "A dedicated finishing school for SAP S/4 HANA FICO consultants. Live mentors, real client scenarios, lifetime career support.",
+              admin: {
+                description:
+                  "Short company blurb under the footer logo. Office addresses belong in Contact → Offices — not here.",
+              },
             },
             {
               name: "topStrip",
@@ -293,6 +297,85 @@ export const SiteSettings: GlobalConfig = {
                   type: "textarea",
                   label: "WhatsApp pre-filled message",
                   admin: { width: "60%" },
+                },
+              ],
+            },
+            {
+              name: "locations",
+              type: "array",
+              label: "Offices & maps",
+              labels: { singular: "Office", plural: "Offices" },
+              admin: {
+                initCollapsed: false,
+                description:
+                  "Shown in the site footer with Google Maps embeds. Add one row per office.",
+              },
+              fields: [
+                {
+                  type: "row",
+                  fields: [
+                    {
+                      name: "label",
+                      type: "text",
+                      required: true,
+                      label: "Office label",
+                      admin: {
+                        width: "40%",
+                        description: 'e.g. "Head Office" or "Branch Office"',
+                      },
+                    },
+                    {
+                      name: "city",
+                      type: "text",
+                      required: true,
+                      label: "City",
+                      admin: { width: "30%" },
+                    },
+                    {
+                      name: "phone",
+                      type: "text",
+                      label: "Office phone (display)",
+                      admin: { width: "30%" },
+                    },
+                  ],
+                },
+                {
+                  name: "address",
+                  type: "textarea",
+                  required: true,
+                  label: "Full address",
+                },
+                {
+                  name: "phoneHref",
+                  type: "text",
+                  label: "Office phone link (optional)",
+                  admin: {
+                    description: "Leave blank to auto-build from the number.",
+                  },
+                },
+                {
+                  type: "row",
+                  fields: [
+                    {
+                      name: "mapsUrl",
+                      type: "text",
+                      label: "Google Maps link",
+                      admin: {
+                        width: "50%",
+                        description: "Share / place URL for “Open in Maps”.",
+                      },
+                    },
+                    {
+                      name: "mapsEmbedUrl",
+                      type: "text",
+                      label: "Google Maps embed URL",
+                      admin: {
+                        width: "50%",
+                        description:
+                          "iframe src — typically …/maps?q=LAT,LNG&z=17&output=embed",
+                      },
+                    },
+                  ],
                 },
               ],
             },

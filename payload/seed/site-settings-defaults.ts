@@ -79,6 +79,31 @@ export const siteSettingsDefaults = {
     whatsappLabel: "WhatsApp us",
     whatsappPrefillMessage:
       "Hi SRR Careers, I would like to know more about your SAP S/4 HANA FICO training.",
+    locations: [
+      {
+        label: "Head Office",
+        city: "Hyderabad",
+        address:
+          "304, Swarga Nivas Enclave, East Srinivasa Nagar, Ameerpet, Hyderabad - 500 038, Telangana",
+        phone: "+91 94904 30555",
+        phoneHref: "tel:+919490430555",
+        mapsUrl:
+          "https://www.google.com/maps/place/Swarga+nivas+apartments/@17.4381464,78.4450196,18z/data=!4m6!3m5!1s0x3bcb9140efd379fd:0x4503e74f4dea0d79!8m2!3d17.4382181!4d78.4456419!16s%2Fg%2F11t6mj_k1b?entry=ttu",
+        mapsEmbedUrl:
+          "https://www.google.com/maps?q=17.4382181,78.4456419&z=18&hl=en&output=embed",
+      },
+      {
+        label: "Branch Office",
+        city: "Visakhapatnam",
+        address:
+          "5-5/1/2, 2nd Floor, Teachers Layout, Sujathanagar, Chinnamushidivada, Pendurthi, Visakhapatnam - 530 051, Andhra Pradesh",
+        phone: "+91 91601 12225",
+        phoneHref: "tel:+919160112225",
+        mapsUrl: "https://www.google.com/maps?q=17.7980488,83.2220081&hl=en&z=17",
+        mapsEmbedUrl:
+          "https://www.google.com/maps?q=17.7980488,83.2220081&z=17&hl=en&output=embed",
+      },
+    ],
   },
   socialGroup: {
     social: [
@@ -109,7 +134,7 @@ export const siteSettingsDefaults = {
       { label: "Blog", href: "/blog" },
       { label: "Internships", href: "/internships" },
       { label: "Join our team", href: "/join-our-team" },
-      { label: "Contact", href: "/#demo-class" },
+      { label: "Contact", href: "/#locations" },
     ],
     courseTitle: "SAP FI-CO with S/4 HANA",
     courseLinks: [

@@ -18,7 +18,10 @@ export function FloatingActions() {
   const [dismissed, setDismissed] = useState(false);
 
   const onInternshipsPage = pathname === "/internships";
-  const showInternship = !dismissed && !onInternshipsPage;
+  const onBrochurePage = pathname === "/brochure";
+  const showInternship = !dismissed && !onInternshipsPage && !onBrochurePage;
+
+  if (onBrochurePage) return null;
 
   return (
     <div

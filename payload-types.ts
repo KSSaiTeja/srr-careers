@@ -1085,6 +1085,9 @@ export interface SiteSetting {
      * Shown next to the logo in the header and footer.
      */
     siteName?: string | null;
+    /**
+     * Short company blurb under the footer logo. Office addresses belong in Contact → Offices — not here.
+     */
     footerDescription?: string | null;
     /**
      * Thin bar above the navbar. Phone & email on the right come from the Contact tab.
@@ -1152,6 +1155,33 @@ export interface SiteSetting {
     whatsappNumber?: string | null;
     whatsappLabel?: string | null;
     whatsappPrefillMessage?: string | null;
+    /**
+     * Shown in the site footer with Google Maps embeds. Add one row per office.
+     */
+    locations?:
+      | {
+          /**
+           * e.g. "Head Office" or "Branch Office"
+           */
+          label: string;
+          city: string;
+          phone?: string | null;
+          address: string;
+          /**
+           * Leave blank to auto-build from the number.
+           */
+          phoneHref?: string | null;
+          /**
+           * Share / place URL for “Open in Maps”.
+           */
+          mapsUrl?: string | null;
+          /**
+           * iframe src — typically …/maps?q=LAT,LNG&z=17&output=embed
+           */
+          mapsEmbedUrl?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   socialGroup?: {
     social?:
@@ -1920,6 +1950,18 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         whatsappNumber?: T;
         whatsappLabel?: T;
         whatsappPrefillMessage?: T;
+        locations?:
+          | T
+          | {
+              label?: T;
+              city?: T;
+              phone?: T;
+              address?: T;
+              phoneHref?: T;
+              mapsUrl?: T;
+              mapsEmbedUrl?: T;
+              id?: T;
+            };
       };
   socialGroup?:
     | T

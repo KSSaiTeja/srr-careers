@@ -4,6 +4,7 @@ import type { SocialPlatform } from "@/lib/constants/social";
 import type {
   NavChildLink,
   NavLink,
+  OfficeLocation,
   SiteSettingsContent,
   SocialLink,
 } from "@/lib/types/site-settings-content";
@@ -192,6 +193,40 @@ export function mapSiteSettingsFromCMS(
   );
   const whatsappHref = buildWhatsAppHref(whatsappNumber, whatsappPrefillMessage);
 
+  const rawFooterDescription = text(
+    cms.brand?.footerDescription,
+    d.brand.footerDescription,
+  );
+  // Addresses belong in contact.locations — never in the brand column.
+  const footerDescriptionLooksLikeAddress =
+    /swarga nivas|ameerpet|srinivasa nagar|sujathanagar|visakhapatnam|hyderabad\s*-\s*\d{3}/i.test(
+      rawFooterDescription,
+    );
+  const footerDescription = footerDescriptionLooksLikeAddress
+    ? d.brand.footerDescription
+    : rawFooterDescription;
+
+  const cmsLocations = cms.contact?.locations;
+  const locations: OfficeLocation[] =
+    cmsLocations && cmsLocations.length > 0
+      ? cmsLocations
+          .map((loc) => {
+            const phone = text(loc.phone);
+            return {
+              label: text(loc.label),
+              city: text(loc.city),
+              address: text(loc.address),
+              phone,
+              phoneHref:
+                text(loc.phoneHref) ||
+                (phone ? `tel:${phone.replace(/[^\d+]/g, "")}` : ""),
+              mapsUrl: text(loc.mapsUrl),
+              mapsEmbedUrl: text(loc.mapsEmbedUrl),
+            };
+          })
+          .filter((loc) => loc.label && loc.address)
+      : d.contact.locations.map((loc) => ({ ...loc }));
+
   const cmsSocial = cms.socialGroup?.social;
   const social: SocialLink[] = (
     cmsSocial && cmsSocial.length > 0
@@ -246,10 +281,7 @@ export function mapSiteSettingsFromCMS(
   return {
     brand: {
       siteName: text(cms.brand?.siteName, d.brand.siteName),
-      footerDescription: text(
-        cms.brand?.footerDescription,
-        d.brand.footerDescription,
-      ),
+      footerDescription,
     },
     header: {
       ctaLabel: text(cms.brand?.header?.ctaLabel, d.brand.header.ctaLabel),
@@ -275,6 +307,7 @@ export function mapSiteSettingsFromCMS(
       whatsappLabel: text(cms.contact?.whatsappLabel, d.contact.whatsappLabel),
       whatsappPrefillMessage,
       whatsappHref,
+      locations,
     },
     social,
     footer: {

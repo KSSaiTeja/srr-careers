@@ -61,9 +61,9 @@ Click **Save** (top right). Refresh https://srrcareers.in to see changes.
 
 | Tab | Use for |
 |---|---|
-| **Brand & Header** | Site name, tagline, top strip, header button |
+| **Brand & Header** | Site name, company blurb (below logo), top strip, header button |
 | **Navigation** | Main menu links (and dropdowns) |
-| **Contact** | Phone, email, WhatsApp |
+| **Contact** | Phone, email, WhatsApp, office addresses & Google Maps |
 | **Social** | Social profile links |
 
 ---

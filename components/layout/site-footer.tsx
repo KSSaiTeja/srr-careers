@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { FooterSocialLinks } from "@/components/layout/footer-social-links";
 import { MsmeBadge } from "@/components/layout/msme-badge";
+import { OfficeLocations } from "@/components/layout/office-locations";
 import { useSiteSettings } from "@/components/layout/site-settings-context";
 import type { FooterLink } from "@/lib/types/site-settings-content";
 import { images } from "@/lib/constants/images";
@@ -105,7 +106,9 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-[#e3e3f2] pt-6 text-xs leading-4 text-[#5a637b] sm:flex-row sm:items-center">
+        <OfficeLocations className="mt-10 border-t border-[#e3e3f2] pt-10 sm:mt-12 sm:pt-12" />
+
+        <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-[#e3e3f2] pt-6 text-xs leading-4 text-[#5a637b] sm:mt-12 sm:flex-row sm:items-center">
           <p>{footer.copyright}</p>
           <p>{footer.craftedText}</p>
         </div>

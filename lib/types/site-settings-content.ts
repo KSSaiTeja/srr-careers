@@ -26,6 +26,16 @@ export type SocialLink = {
   href: string;
 };
 
+export type OfficeLocation = {
+  label: string;
+  city: string;
+  address: string;
+  phone: string;
+  phoneHref: string;
+  mapsUrl: string;
+  mapsEmbedUrl: string;
+};
+
 export type SiteSettingsContent = {
   brand: {
     siteName: string;
@@ -51,6 +61,7 @@ export type SiteSettingsContent = {
     whatsappLabel: string;
     whatsappPrefillMessage: string;
     whatsappHref: string;
+    locations: OfficeLocation[];
   };
   social: SocialLink[];
   footer: {
