@@ -23,14 +23,32 @@ export default function MaintenancePage() {
         }}
       />
       <div className="relative mx-auto flex w-full max-w-xl flex-col items-center text-center">
-        <div className="rounded-2xl bg-white px-6 py-4 shadow-lg shadow-black/20">
+        <div className="relative inline-flex items-center justify-center">
+          <span
+            aria-hidden
+            className="absolute inset-x-[-22%] inset-y-[-40%] -z-10 rounded-full"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(255,213,73,0.55) 0%, rgba(255,197,25,0.16) 46%, transparent 72%)",
+              filter: "blur(18px)",
+            }}
+          />
+          <Image
+            src="/images/logo.png"
+            alt=""
+            aria-hidden
+            width={950}
+            height={380}
+            className="pointer-events-none absolute h-28 w-auto max-w-none opacity-70 sm:h-32"
+            style={{ filter: "blur(20px)", transform: "scale(1.06)" }}
+          />
           <Image
             src="/images/logo.png"
             alt="SRR Careers"
             width={950}
             height={380}
             priority
-            className="h-20 w-auto sm:h-24"
+            className="relative h-28 w-auto sm:h-32"
           />
         </div>
 
